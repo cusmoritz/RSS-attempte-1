@@ -1,11 +1,14 @@
 let Parser = require('rss-parser');
 let parser = new Parser();
 
-(async () => {
+
+// we need to get a new link into the parser from somewhere
+
+const linkParse = async (link) => {
 
     // parseURL OR parseString
-  let feed = await parser.parseURL('https://feeds.arstechnica.com/arstechnica/staff-blogs');
-  console.log(feed);
+  let feed = await parser.parseURL(link);
+  // console.log(feed);
 
   /* feed (for each item (below)) gives us 
     - creator
@@ -17,7 +20,14 @@ let parser = new Parser();
   */
 
   feed.items.forEach(item => {
-    console.log(item.title + ':' + item.link + ':' + item.isoDate)
+    return {title: item.title, link: item.link, date: item.isoDate, content: item.content }
   });
+  
+}; 
 
-})();
+module.exports = {
+  linkParse,
+
+}
+
+// 
