@@ -1,18 +1,15 @@
-// get client for postgres
-const {Client} = require('pg');
-//either local host or a PORT when deploying
-const client = new Client('postgres://localhost:5432/rss-feed')
-
+const {client} = require('./index.js')
 
 // rebuild the database
 rebuildDatabase = async () => {
-    
+    console.log('dropping tables...')
     // drop the tables
     await client.query(`
     DROP TABLE IF EXISTS rss
     ;
     `);
 
+    console.log('creating tables...')
     // create the tables
     await client.query(`
     CREATE TABLE IF NOT EXISTS rss (
@@ -20,7 +17,7 @@ rebuildDatabase = async () => {
         "website-name" text NOT NULL,
         url text NOT NULL,
         title text NOT NULL,
-        date INTEGER NOT NULL)
+        publish_date INTEGER NOT NULL)
         ;
     `)
 };
@@ -29,5 +26,6 @@ rebuildDatabase = async () => {
 client.connect();
 
 rebuildDatabase().then(() => {
+    console.log('bye bye!')
     client.end();
 });
