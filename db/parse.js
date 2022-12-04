@@ -1,12 +1,9 @@
 let Parser = require('rss-parser');
 let parser = new Parser();
 
-
-// we need to get a new link into the parser from somewhere
-
 const linkParse = async (link) => {
 
-    // parseURL OR parseString
+  // parseURL OR parseString
   let feed = await parser.parseURL(link);
   // console.log(feed);
 
@@ -19,15 +16,36 @@ const linkParse = async (link) => {
     ((((( for the ars technica staf--blogs link anyway )))))
   */
 
-  feed.items.forEach(item => {
-    return {title: item.title, link: item.link, date: item.isoDate, content: item.content }
+  const linkArray = [];
+
+  feed.items.map(item => {
+
+    // console.log('each item here', item);
+    // console.log('checking the date, ', item.date)
+
+      if (!item.content) {
+        const youtubeLink = {
+          title: item.title, 
+          link: item.link, 
+          date: item.isoDate, 
+        }
+        linkArray.push(youtubeLink);
+      } else {
+        const eachItem = { 
+          title: item.title, 
+          link: item.link, 
+          date: item.isoDate, 
+          content: item.content 
+        };
+        linkArray.push(eachItem)
+      }
+    
   });
-  
+  return linkArray;
 }; 
 
 module.exports = {
   linkParse,
-
 }
 
 // 
