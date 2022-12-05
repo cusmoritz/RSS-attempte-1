@@ -41,6 +41,7 @@ const linkParse = async (link) => {
       }
     
   });
+  console.log('this is the feed array before we send it out: ', linkArray)
   return linkArray;
 }; 
 

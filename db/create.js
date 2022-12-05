@@ -79,5 +79,4 @@ client.connect().then(rebuildDatabase).then(buildDb).finally(() => client.end())
 module.exports = {
     buildDb, 
     rebuildDatabase, 
-
 }
