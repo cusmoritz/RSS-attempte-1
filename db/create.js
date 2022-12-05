@@ -7,13 +7,14 @@ const client = new Client(DATABASE_URL)
 
 // item should be an object type
 const addRssItemDatabase = async (item) => {
+    console.log('did we get here?')
     await client.query(`
-    INSERT INTO rss (url, title, publish_date)
+    INSERT INTO rss (url, title, date)
     VALUES ($1, $2, $3);
     `, [item.link, item.title, item.date])
 };
 
-// addRssItemDatabase({title: "lets try", link: "http://www.google.com", date: 1977});
+
 
 
 // rebuild the database
@@ -33,13 +34,14 @@ const rebuildDatabase = async () => {
         content text,
         url text NOT NULL,
         title text NOT NULL,
-        publish_date INTEGER NOT NULL)
+        date DATE)
         ;
-    `)
+    `);
     await client.query(`
-    INSERT INTO rss (content, url, title, publish_date)
+    INSERT INTO rss (content, url, title, date)
     VALUES($1, $2, $3, $4);
-    `, [`'<img src="https://imgs.xkcd.com/comics/paper_title.png" title="CONFLICT OF INTEREST STATEMENT: The authors hope these results are correct because we all want to be cool people who are good at science." alt="CONFLICT OF INTEREST STATEMENT: The authors hope these results are correct because we all want to be cool people who are good at science." />'`, 'www.google.com', 'XKCD', 1987]);
+    `, [`'<img src="https://imgs.xkcd.com/comics/paper_title.png" title="CONFLICT OF INTEREST STATEMENT: The authors hope these results are correct because we all want to be cool people who are good at science." alt="CONFLICT OF INTEREST STATEMENT: The authors hope these results are correct because we all want to be cool people who are good at science." />'`, 'www.google.com', 'XKCD', '2022-11-28']);
+    // addRssItemDatabase({title: "lets try", link: "http://www.google.com", date: '1977'});
 };
 
 const buildDb = async () => {
@@ -65,7 +67,7 @@ const buildDb = async () => {
         parsedOurLinks.forEach(async (rssObject) => {
             console.log('inside the parse, ', rssObject);
             await client.query(`
-            INSERT INTO rss (url, title, publish_date)
+            INSERT INTO rss (url, title, date)
             VALUES ($1, $2, $3);
             `, [rssObject.link, rssObject.title, rssObject.date])
             });
@@ -79,4 +81,4 @@ client.connect().then(rebuildDatabase).then(buildDb).finally(() => client.end())
 module.exports = {
     buildDb, 
     rebuildDatabase, 
-}
+};

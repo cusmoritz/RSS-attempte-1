@@ -1,6 +1,19 @@
 let Parser = require('rss-parser');
 let parser = new Parser();
 
+
+// convert iso string into date format
+const createDateFormat = (isoDate) => {
+  const oldDate = new Date(isoDate);
+
+  // get the year, month, and day
+  const year = oldDate.getFullYear();
+  const month = oldDate.getMonth() + 1;
+  const day = oldDate.getDate();
+
+  return `${year}-${month}-${day}`
+}
+
 const linkParse = async (link) => {
 
   // parseURL OR parseString
@@ -15,6 +28,7 @@ const linkParse = async (link) => {
     - isoDate
     ((((( for the ars technica staf--blogs link anyway )))))
   */
+  
 
   const linkArray = [];
 
@@ -22,19 +36,20 @@ const linkParse = async (link) => {
 
     // console.log('each item here', item);
     // console.log('checking the date, ', item.date)
+    newDate = createDateFormat(item.date)
 
       if (!item.content) {
         const youtubeLink = {
           title: item.title, 
           link: item.link, 
-          date: item.isoDate, 
+          date: newDate, 
         }
         linkArray.push(youtubeLink);
       } else {
         const eachItem = { 
           title: item.title, 
           link: item.link, 
-          date: item.isoDate, 
+          date: newDate, 
           content: item.content 
         };
         linkArray.push(eachItem)
