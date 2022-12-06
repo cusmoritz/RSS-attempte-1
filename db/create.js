@@ -15,11 +15,11 @@ const FEED_LINKS = [
     // 'https://www.wired.com/feed/category/ideas/latest/rss', // works with parseURL
     // 'https://www.youtube.com/feeds/videos.xml?channel_id=UCZy67OUMYggYSGDyYAviFUg',
     // 'https://www.youtube.com/feeds/videos.xml?channel_id=UCRHXUZ0BxbkU2MYZgsuFgkQ',
-    {'ed zitron': 'https://ez.substack.com/feed'},
+    {name: 'ed zitron', link: 'https://ez.substack.com/feed'},
     // 'https://www.garbageday.email/feed',
-    {'everything is amazing': 'https://everythingisamazing.substack.com/feed'},
-    {'stonemountain': 'https://www.youtube.com/feeds/videos.xml?channel_id=UCw7FkXsC00lH2v2yB5LQoYA'},
-    {'xkcd': 'https://xkcd.com/rss.xml'},    
+    {name: 'everything is amazing', link: 'https://everythingisamazing.substack.com/feed'},
+    {name: 'stonemountain', link: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCw7FkXsC00lH2v2yB5LQoYA'},
+    {name: 'xkcd', link: 'https://xkcd.com/rss.xml'},    
 ]
 
 // item should be an object type
@@ -40,14 +40,14 @@ const addRssItemDatabase = async (item) => {
 const addLinktoTable = async (link) => {
     try {
         await client.query(`
-        INSERT INTO rss_links (name, url)
+        INSERT INTO rss_links (link_id, url)
         VALUES ($1, $2);
         `, [link.name, link.url]);
     } catch (error) {
         console.log('there was an error putting a link in the database: ', error);
         throw (error)
     }
-}
+};
 
 // rebuild the database
 const rebuildDatabase = async () => {
@@ -64,11 +64,11 @@ const rebuildDatabase = async () => {
         console.log('creating links table...')
         await client.query(`
         CREATE TABLE IF NOT EXISTS rss_links (
-            id SERIAL PRIMARY KEY,
-            name TEXT NOT NULL,
+            link_id SERIAL PRIMARY KEY,
+            link_title TEXT NOT NULL,
             url TEXT NOT NULL,
-            enabled boolean DEFAULT TRUE
-        );
+            user_id INTEGER
+            );
         `);
 
         console.log('creating tables...')
@@ -76,8 +76,8 @@ const rebuildDatabase = async () => {
         await client.query(`
         CREATE TABLE IF NOT EXISTS rss (
             id SERIAL PRIMARY KEY,
-            link_name text REFERENCES rss_links(name),
-            link_id INTEGER REFERENCES rss_links(id),
+            link_name text REFERENCES rss_links(link_title),
+            link_id INTEGER REFERENCES rss_links(link_id),
             content text,
             url text NOT NULL,
             title text NOT NULL,
@@ -119,6 +119,7 @@ const buildDb = async () => {
         throw (error);
     }
 };
+
 client.connect();
 rebuildDatabase().then(buildDb);
 
