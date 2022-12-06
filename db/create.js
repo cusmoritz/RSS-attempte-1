@@ -86,7 +86,7 @@ const buildDb = async () => {
     }
 };
 client.connect();
-rebuildDatabase();
+rebuildDatabase().then(buildDb);
 
 module.exports = {
     buildDb, 
