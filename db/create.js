@@ -7,44 +7,53 @@ const client = new Client(DATABASE_URL)
 
 // item should be an object type
 const addRssItemDatabase = async (item) => {
-    console.log('did we get here?')
-    await client.query(`
-    INSERT INTO rss (url, title, date)
-    VALUES ($1, $2, $3);
-    `, [item.link, item.title, item.date])
+    try {
+        console.log('did we get here?')
+        await client.query(`
+        INSERT INTO rss (url, title, date)
+        VALUES ($1, $2, $3);
+        `, [item.link, item.title, item.date])
+    } catch (error) {
+        console.log('there was an error inserting an item to the database: ', error);
+        throw(error);
+    }
 };
-
-
-
 
 // rebuild the database
 const rebuildDatabase = async () => {
-    console.log('dropping tables...')
-    // drop the tables
-    await client.query(`
-    DROP TABLE IF EXISTS rss
-    ;
-    `);
-
-    console.log('creating tables...')
-    // create the tables
-    await client.query(`
-    CREATE TABLE IF NOT EXISTS rss (
-        id SERIAL PRIMARY KEY,
-        content text,
-        url text NOT NULL,
-        title text NOT NULL,
-        date DATE)
+    try {
+        console.log('dropping tables...')
+        // drop the tables
+        await client.query(`
+        DROP TABLE IF EXISTS rss
         ;
-    `);
-    await client.query(`
-    INSERT INTO rss (content, url, title, date)
-    VALUES($1, $2, $3, $4);
-    `, [`'<img src="https://imgs.xkcd.com/comics/paper_title.png" title="CONFLICT OF INTEREST STATEMENT: The authors hope these results are correct because we all want to be cool people who are good at science." alt="CONFLICT OF INTEREST STATEMENT: The authors hope these results are correct because we all want to be cool people who are good at science." />'`, 'www.google.com', 'XKCD', '2022-11-28']);
-    // addRssItemDatabase({title: "lets try", link: "http://www.google.com", date: '1977'});
+        `);
+
+        console.log('creating tables...')
+        // create the tables
+        await client.query(`
+        CREATE TABLE IF NOT EXISTS rss (
+            id SERIAL PRIMARY KEY,
+            content text,
+            url text NOT NULL,
+            title text NOT NULL,
+            date DATE)
+            ;
+        `);
+
+        await client.query(`
+        INSERT INTO rss (content, url, title, date)
+        VALUES($1, $2, $3, $4);
+        `, [`'<img src="https://imgs.xkcd.com/comics/paper_title.png" title="CONFLICT OF INTEREST STATEMENT: The authors hope these results are correct because we all want to be cool people who are good at science." alt="CONFLICT OF INTEREST STATEMENT: The authors hope these results are correct because we all want to be cool people who are good at science." />'`, 'www.google.com', 'XKCD', '2022-11-28']);
+
+    } catch (error) {
+        console.log('there was an error rebuilding the database: ', error);
+        throw (error);
+    }
 };
 
 const buildDb = async () => {
+
     // this is where we will run the links through the parser
     // then after we parse them, send each 'item' to the database
     const FEED_LINKS = [
@@ -55,28 +64,29 @@ const buildDb = async () => {
         // 'https://www.wired.com/feed/category/ideas/latest/rss', // works with parseURL
         // 'https://www.youtube.com/feeds/videos.xml?channel_id=UCZy67OUMYggYSGDyYAviFUg',
         // 'https://www.youtube.com/feeds/videos.xml?channel_id=UCRHXUZ0BxbkU2MYZgsuFgkQ',
+        // 'https://ez.substack.com/feed',
+        // 'https://www.garbageday.email/feed',
+        // 'https://everythingisamazing.substack.com/feed',
         'https://www.youtube.com/feeds/videos.xml?channel_id=UCw7FkXsC00lH2v2yB5LQoYA',
         'https://xkcd.com/rss.xml',    
     ]
 
-    FEED_LINKS.forEach(async (url) => {
+    try {
+        FEED_LINKS.forEach(async (url) => {
         
-        const parsedOurLinks = await linkParse(url)
-        // console.log('whatDoWeHaveHere', parsedOurLinks);
-
-        parsedOurLinks.forEach(async (rssObject) => {
-            console.log('inside the parse, ', rssObject);
-            await client.query(`
-            INSERT INTO rss (url, title, date)
-            VALUES ($1, $2, $3);
-            `, [rssObject.link, rssObject.title, rssObject.date])
+            const parsedLinks = await linkParse(url);
+    
+            parsedLinks.forEach(async (rssObject) => {
+                addRssItemDatabase(rssObject)
             });
-    });
+        });
+    } catch (error) {
+        console.log('there was an error building the database: ', error);
+        throw (error);
+    }
 };
-
-
-// start connection
-client.connect().then(rebuildDatabase).then(buildDb).finally(() => client.end());
+client.connect();
+rebuildDatabase();
 
 module.exports = {
     buildDb, 
