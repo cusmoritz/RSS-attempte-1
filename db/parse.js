@@ -26,7 +26,7 @@ const linkParse = async (link) => {
 
   feed.items.map(item => {
 
-    console.log('each item here', item);
+    // console.log('each item here', item);
     // console.log('checking the date, ', item.isoDate)
     newDate = createDateFormat(item.isoDate)
 

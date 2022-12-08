@@ -25,11 +25,11 @@ const FEED_LINKS = [
 // item should be an object type
 const addRssItemDatabase = async (item) => {
     try {
-        console.log('did we get here?')
+        // console.log('did we get here?')
         await client.query(`
         INSERT INTO rss (url, title, date)
         VALUES ($1, $2, $3);
-        `, [item.link, item.title, item.date])
+        `, [item.link, item.title, item.date]);
     } catch (error) {
         console.log('there was an error inserting an item to the database: ', error);
         throw(error);
@@ -38,7 +38,7 @@ const addRssItemDatabase = async (item) => {
 
 // add links to database link table
 const addLinktoTable = async (link) => {
-    console.log('what are we working with again: ', link);
+    // console.log('what are we working with again: ', link);
     try {
         await client.query(`
         INSERT INTO rss_links (link_title, url)
@@ -101,21 +101,36 @@ const rebuildDatabase = async () => {
     }
 };
 
+const getAllLinks = async () => {
+    try {
+        const {rows: allLinks} = await client.query(`
+        SELECT * FROM rss_links
+        ;
+        `);
+        console.log('ALL THE LINKS: ', allLinks);
+        return allLinks;
+    } catch (error) {
+        console.log('there was an error getting all links: ', error);
+        throw error;
+    }
+};
+
+
 const buildDb = async () => {
 
     try {
 
         // build links table
         FEED_LINKS.forEach((link) => {
-            console.log('links: ', link);
+            // console.log('links: ', link);
             addLinktoTable(link);
         })
 
         FEED_LINKS.forEach(async (link) => {
             // get link part of pbject 
             const realUrl = link.link;
-            console.log('this is the link: ', link);
-            console.log('and this is the real url: ', realUrl);
+            // console.log('this is the link: ', link);
+            // console.log('and this is the real url: ', realUrl);
         
             const parsedLinks = await linkParse(realUrl);
     
@@ -130,7 +145,7 @@ const buildDb = async () => {
 };
 
 client.connect();
-rebuildDatabase().then(buildDb);
+rebuildDatabase().then(buildDb).then(getAllLinks);
 
 module.exports = {
     buildDb, 
