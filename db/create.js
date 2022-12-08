@@ -20,16 +20,16 @@ const FEED_LINKS = [
     {name: 'everything is amazing', link: 'https://everythingisamazing.substack.com/feed'},
     {name: 'stonemountain', link: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCw7FkXsC00lH2v2yB5LQoYA'},
     {name: 'xkcd', link: 'https://xkcd.com/rss.xml'},    
-]
+];
 
 // item should be an object type
-const addRssItemDatabase = async (item) => {
+const addRssItemDatabase = async (item, link_id) => {
     try {
-        // console.log('did we get here?')
+        // console.log('did we get here?: ', item);
         await client.query(`
-        INSERT INTO rss (url, title, date)
-        VALUES ($1, $2, $3);
-        `, [item.link, item.title, item.date]);
+        INSERT INTO rss (url, title, date, link_id)
+        VALUES ($1, $2, $3, $4);
+        `, [item.link, item.title, item.date, link_id]);
     } catch (error) {
         console.log('there was an error inserting an item to the database: ', error);
         throw(error);
@@ -40,10 +40,14 @@ const addRssItemDatabase = async (item) => {
 const addLinktoTable = async (link) => {
     // console.log('what are we working with again: ', link);
     try {
-        await client.query(`
+        const {rows: newLinksInTable} = await client.query(`
         INSERT INTO rss_links (link_title, url)
-        VALUES ($1, $2);
+        VALUES ($1, $2)
+        RETURNING *
+        ;
         `, [link.name, link.link]);
+        // console.log('newLinksInTable: ', newLinksInTable);
+        return newLinksInTable;
     } catch (error) {
         console.log('there was an error putting a link in the database: ', error);
         throw (error)
@@ -80,10 +84,10 @@ const rebuildDatabase = async () => {
         await client.query(`
         CREATE TABLE IF NOT EXISTS rss (
             id SERIAL PRIMARY KEY,
-            content text,
+            content TEXT,
             link_id INTEGER REFERENCES rss_links(link_id),
-            url text NOT NULL,
-            title text NOT NULL,
+            url TEXT NOT NULL,
+            title TEXT NOT NULL,
             date DATE
             );
         `);
@@ -101,8 +105,10 @@ const rebuildDatabase = async () => {
     }
 };
 
+// get every link from the rss_links tabls
 const getAllLinks = async () => {
     try {
+        // allLinks has: link_id, link_title, url
         const {rows: allLinks} = await client.query(`
         SELECT * FROM rss_links
         ;
@@ -116,36 +122,67 @@ const getAllLinks = async () => {
 };
 
 
+
+// const getPostsFromLinkId = () => {
+//     try {
+//         const postsFromId = await client.query(`
+//         SELECT * FROM rss
+//         WHERE id
+//         `)
+//     } catch (error) {
+//         console.log('there was an error getting post by id number: ', error);
+//         throw error;
+//     }
+// }
+
+
 const buildDb = async () => {
 
     try {
 
         // build links table
-        FEED_LINKS.forEach((link) => {
+        console.log('putting links in rss_links...')
+        FEED_LINKS.forEach( async (link) => {
             // console.log('links: ', link);
-            addLinktoTable(link);
+            const linksInTable = await addLinktoTable(link);
+                console.log('getting each url and finding posts...')
+                linksInTable.forEach( async (linkInTable) => {
+                    console.log('getting each post and adding to rss table...')
+                    const allPosts = await linkParse(linkInTable.url);
+                    allPosts.forEach((individualPost) => {
+                        addRssItemDatabase(individualPost, linkInTable.id);
+                    })
+                    
+                })
         })
 
-        FEED_LINKS.forEach(async (link) => {
-            // get link part of pbject 
-            const realUrl = link.link;
-            // console.log('this is the link: ', link);
-            // console.log('and this is the real url: ', realUrl);
+        // FEED_LINKS.forEach(async (link) => {
+        //     // get link part of object 
+        //     console.log('link in our FOR EACH: ', link);
+        //     const realUrl = link.link;
+        //     // console.log('this is the link: ', link);
+        //     // console.log('and this is the real url: ', realUrl);
         
-            const parsedLinks = await linkParse(realUrl);
+        //     const parsedLinks = await linkParse(realUrl);
     
-            parsedLinks.forEach(async (rssObject) => {
-                addRssItemDatabase(rssObject)
-            });
-        });
+        //     parsedLinks.forEach(async (rssObject) => {
+        //         addRssItemDatabase(rssObject)
+        //     });
+        // });
     } catch (error) {
         console.log('there was an error building the database: ', error);
         throw (error);
     }
 };
 
+
+// put all links in the database
+    // fetch all links from the database,
+        // parse each link through the parser, returning posts
+            // send each post into the database, this time tied to the rss_link id
+
 client.connect();
-rebuildDatabase().then(buildDb).then(getAllLinks);
+rebuildDatabase().then(buildDb);
 
 module.exports = {
     buildDb, 
