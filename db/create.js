@@ -38,11 +38,12 @@ const addRssItemDatabase = async (item) => {
 
 // add links to database link table
 const addLinktoTable = async (link) => {
+    console.log('what are we working with again: ', link);
     try {
         await client.query(`
-        INSERT INTO rss_links (link_id, url)
+        INSERT INTO rss_links (link_title, url)
         VALUES ($1, $2);
-        `, [link.name, link.url]);
+        `, [link.name, link.link]);
     } catch (error) {
         console.log('there was an error putting a link in the database: ', error);
         throw (error)
@@ -66,24 +67,28 @@ const rebuildDatabase = async () => {
         CREATE TABLE IF NOT EXISTS rss_links (
             link_id SERIAL PRIMARY KEY,
             link_title TEXT NOT NULL,
-            url TEXT NOT NULL,
-            user_id INTEGER
+            url TEXT NOT NULL
+            
             );
         `);
+        // user_id INTEGER
+        // link_name text REFERENCES rss_links(link_title),
+        // link_id INTEGER REFERENCES rss_links(link_id),
 
         console.log('creating tables...')
         // create the tables
         await client.query(`
         CREATE TABLE IF NOT EXISTS rss (
             id SERIAL PRIMARY KEY,
-            link_name text REFERENCES rss_links(link_title),
-            link_id INTEGER REFERENCES rss_links(link_id),
             content text,
+            link_id INTEGER REFERENCES rss_links(link_id),
             url text NOT NULL,
             title text NOT NULL,
-            date DATE)
-            ;
+            date DATE
+            );
         `);
+
+        console.log('done creating tables...');
 
         await client.query(`
         INSERT INTO rss (content, url, title, date)
@@ -106,9 +111,13 @@ const buildDb = async () => {
             addLinktoTable(link);
         })
 
-        FEED_LINKS.forEach(async (url) => {
+        FEED_LINKS.forEach(async (link) => {
+            // get link part of pbject 
+            const realUrl = link.link;
+            console.log('this is the link: ', link);
+            console.log('and this is the real url: ', realUrl);
         
-            const parsedLinks = await linkParse(url);
+            const parsedLinks = await linkParse(realUrl);
     
             parsedLinks.forEach(async (rssObject) => {
                 addRssItemDatabase(rssObject)
