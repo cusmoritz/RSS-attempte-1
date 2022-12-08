@@ -25,7 +25,7 @@ const FEED_LINKS = [
 // item should be an object type
 const addRssItemDatabase = async (item, link_id) => {
     try {
-        // console.log('did we get here?: ', item);
+        // console.log('did we get here?: ', item, link_id);
         await client.query(`
         INSERT INTO rss (url, title, date, link_id)
         VALUES ($1, $2, $3, $4);
@@ -121,19 +121,21 @@ const getAllLinks = async () => {
     }
 };
 
-
-
-// const getPostsFromLinkId = () => {
-//     try {
-//         const postsFromId = await client.query(`
-//         SELECT * FROM rss
-//         WHERE id
-//         `)
-//     } catch (error) {
-//         console.log('there was an error getting post by id number: ', error);
-//         throw error;
-//     }
-// }
+// get posts from an individual link id number (rss_links)
+const getPostsFromLinkId = async (link_id) => {
+    try {
+        const {rows: postsFromId} = await client.query(`
+        SELECT * FROM rss
+        WHERE link_id=$1
+        ;
+        `, [link_id]);
+        console.log('should be 4 posts: ', postsFromId);
+        return postsFromId;
+    } catch (error) {
+        console.log('there was an error getting post by id number: ', error);
+        throw error;
+    }
+}
 
 
 const buildDb = async () => {
@@ -143,32 +145,18 @@ const buildDb = async () => {
         // build links table
         console.log('putting links in rss_links...')
         FEED_LINKS.forEach( async (link) => {
-            // console.log('links: ', link);
             const linksInTable = await addLinktoTable(link);
                 console.log('getting each url and finding posts...')
                 linksInTable.forEach( async (linkInTable) => {
-                    console.log('getting each post and adding to rss table...')
+                    console.log('getting all posts for each url...')
                     const allPosts = await linkParse(linkInTable.url);
-                    allPosts.forEach((individualPost) => {
-                        addRssItemDatabase(individualPost, linkInTable.id);
+                    console.log('putting each individual post in the rss table...');
+                    // console.log('link in table: ', linkInTable)
+                    allPosts.forEach(async (individualPost) => {
+                        await addRssItemDatabase(individualPost, linkInTable.link_id);
                     })
-                    
                 })
         })
-
-        // FEED_LINKS.forEach(async (link) => {
-        //     // get link part of object 
-        //     console.log('link in our FOR EACH: ', link);
-        //     const realUrl = link.link;
-        //     // console.log('this is the link: ', link);
-        //     // console.log('and this is the real url: ', realUrl);
-        
-        //     const parsedLinks = await linkParse(realUrl);
-    
-        //     parsedLinks.forEach(async (rssObject) => {
-        //         addRssItemDatabase(rssObject)
-        //     });
-        // });
     } catch (error) {
         console.log('there was an error building the database: ', error);
         throw (error);
