@@ -8,15 +8,15 @@ const client = new Client(DATABASE_URL);
 // this is where we will run the links through the parser
 // then after we parse them, send each 'item' to the database
 const FEED_LINKS = [
-    // 'https://feeds.arstechnica.com/arstechnica/staff-blogs', // works with parseURL
-    // 'https://www.youtube.com/feeds/videos.xml?channel_id=UCN-v-Xn9S7oYk0X2v1jx1Qg', // works with parseURL
-    // 'https://www.theverge.com/rss/index.xml', // works with parseURL
-    // 'https://pluralistic.net/feed/', // works with parseURL
-    // 'https://www.wired.com/feed/category/ideas/latest/rss', // works with parseURL
-    // 'https://www.youtube.com/feeds/videos.xml?channel_id=UCZy67OUMYggYSGDyYAviFUg',
-    // 'https://www.youtube.com/feeds/videos.xml?channel_id=UCRHXUZ0BxbkU2MYZgsuFgkQ',
+    {name: 'Ars Technica', link: 'https://feeds.arstechnica.com/arstechnica/staff-blogs'}, // works with parseURL
+    {name: 'NotSure', link: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCN-v-Xn9S7oYk0X2v1jx1Qg'}, // works with parseURL
+    {name: 'The Verge', link: 'https://www.theverge.com/rss/index.xml'}, // works with parseURL
+    {name: 'Corey Doctrow', link: 'https://pluralistic.net/feed/'}, // works with parseURL
+    {name: 'WIRED Latest Ideas', link: 'https://www.wired.com/feed/category/ideas/latest/rss'}, // works with parseURL
+    {name: 'NotSure2', link: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCZy67OUMYggYSGDyYAviFUg'},
+    {name: 'NotSure3', link: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCRHXUZ0BxbkU2MYZgsuFgkQ'},
     {name: 'ed zitron', link: 'https://ez.substack.com/feed'},
-    // 'https://www.garbageday.email/feed',
+    {name: 'Garbage Day', link: 'https://www.garbageday.email/feed'},
     {name: 'everything is amazing', link: 'https://everythingisamazing.substack.com/feed'},
     {name: 'stonemountain', link: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCw7FkXsC00lH2v2yB5LQoYA'},
     {name: 'xkcd', link: 'https://xkcd.com/rss.xml'},    
@@ -71,8 +71,8 @@ const rebuildDatabase = async () => {
         CREATE TABLE IF NOT EXISTS rss_links (
             link_id SERIAL PRIMARY KEY,
             link_title TEXT NOT NULL,
-            url TEXT NOT NULL
-            
+            url TEXT NOT NULL,
+            active BOOLEAN DEFAULT TRUE
             );
         `);
         // user_id INTEGER
@@ -121,6 +121,21 @@ const getAllLinks = async () => {
     }
 };
 
+const getLinkFromIdNumber = async (link_id) => {
+    try {
+        const linkFromId = await client.query(`
+        SELECT * FROM rss_links
+        WHERE link_id=$1
+        ;
+        `, [link_id]);
+        console.log('we got a link from its id: ', linkFromId);
+        return linkFromId;
+    } catch (error) {
+        console.log('there was an error getting a link from its id number: ', error);
+        throw (error);
+    }
+}
+
 // get posts from an individual link id number (rss_links)
 const getPostsFromLinkId = async (link_id) => {
     try {
@@ -135,7 +150,7 @@ const getPostsFromLinkId = async (link_id) => {
         console.log('there was an error getting post by id number: ', error);
         throw error;
     }
-}
+};
 
 
 const buildDb = async () => {
