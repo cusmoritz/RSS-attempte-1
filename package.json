@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "db:build": "node db/create.js"
+    "db:build": "node db/create.js",
+    "api:test": "node api/index.js"
   },
   "author": "Marcus",
   "license": "ISC",

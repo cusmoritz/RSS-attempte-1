@@ -190,4 +190,9 @@ rebuildDatabase().then(buildDb);
 module.exports = {
     buildDb, 
     rebuildDatabase, 
+    getPostsFromLinkId,
+    getLinkFromIdNumber,
+    getAllLinks,
+    addLinktoTable,
+    addRssItemDatabase,
 };
