@@ -121,6 +121,18 @@ const getAllLinks = async () => {
     }
 };
 
+const getAllPosts = async () => {
+    try {
+        const allPosts = await client.query(`
+        SELECT * FROM rss;
+        `);
+        return allPosts;
+    } catch (error) {
+        console.log('there was an error inside getAllPosts: ', error);
+        throw error;
+    }
+};
+
 const getLinkFromIdNumber = async (link_id) => {
     try {
         const linkFromId = await client.query(`
@@ -134,7 +146,7 @@ const getLinkFromIdNumber = async (link_id) => {
         console.log('there was an error getting a link from its id number: ', error);
         throw (error);
     }
-}
+};
 
 // get posts from an individual link id number (rss_links)
 const getPostsFromLinkId = async (link_id) => {
@@ -195,4 +207,5 @@ module.exports = {
     getAllLinks,
     addLinktoTable,
     addRssItemDatabase,
+    getAllPosts,
 };

@@ -6,21 +6,39 @@ const PORT = process.env.PORT || 3000;
 // get our client so we can connect
 const { client } = require('../db/index.js');
 // get stuff from db/buildDb
-const { buildDb, getAllLinks } = require('../db/create');
+const { buildDb, getAllLinks, getAllPosts } = require('../db/create');
 
 // create an apiRouter
 const apiRouter = express();
 
 apiRouter.use((request, response, next) => {
-    console.log('here is our request body: ', request.body);
+    // console.log('here is our request body: ', request.body);
+    // response.send('Hello!');
     next();
 });
 
 apiRouter.get('/api', async (request, response, next) => {
-    await buildDb();
-    const allLinks = getAllLinks();
-    response.send(allLinks)
-    next();
+    console.log('here we got the request: ', request);
+    try {
+        console.log('why arent we in here');
+        await buildDb();
+        const allLinks = await getAllLinks();
+        response.send(allLinks).status(200);
+    } catch (error) {
+        console.log('there was an error running apiRouter/get/api: ', error);
+        throw error;
+    }
+});
+
+apiRouter.get('/api/posts', async (request, response, next) => {
+    try {
+        await buildDb();
+        const allPosts = await getAllPosts();
+        response.send(allPosts);
+    } catch (error) {
+        console.log('there was an error in apiRouter/get/api/posts: ', error);
+        throw error;
+    }
 });
 
 client.connect();
