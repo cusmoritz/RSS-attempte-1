@@ -20,7 +20,21 @@ const FEED_LINKS = [
     {name: 'everything is amazing', link: 'https://everythingisamazing.substack.com/feed'},
     {name: 'JackFrags', link: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCw7FkXsC00lH2v2yB5LQoYA'},
     {name: 'xkcd', link: 'https://xkcd.com/rss.xml'},    
+    // {name: 'The Intercept', link: 'https://theintercept.com/feed/?lang=en'}
 ];
+
+const parseNewLinkPosts = async (link) => {
+    try {
+        const parsedPosts = await linkParse(link);
+        console.log('this is the parsed post: ', parsedPosts)
+        parsedPosts.forEach( async (post) => {
+            await addRssItemDatabase(post);
+        })
+    } catch (error) {
+        console.log('there was an error parsing the new link: ', error);
+        throw error;
+    }
+}
 
 // item should be an object type
 const addRssItemDatabase = async (item, link_id) => {
@@ -46,7 +60,17 @@ const addLinktoTable = async (link) => {
         RETURNING *
         ;
         `, [link.name, link.link]);
+
+        // parse and input the posts from the new link
+        // const newPosts = linkParse(newLinksInTable.url);
+        // console.log('new posts: ', newPosts)
+        // newPosts.forEach( async (eachPost) => {
+        //     await addRssItemDatabase(eachPost, newLinksInTable.link_id);
+        // })
+
         // console.log('newLinksInTable: ', newLinksInTable);
+        // const newLinkPosts = await linkParse(newLinksInTable.url);
+        // console.log('newLinkPosts: ', newLinkPosts);
         return newLinksInTable;
     } catch (error) {
         console.log('there was an error putting a link in the database: ', error);
@@ -92,12 +116,12 @@ const rebuildDatabase = async () => {
             );
         `);
 
-        console.log('done creating tables...');
+        // console.log('done creating tables...');
 
-        await client.query(`
-        INSERT INTO rss (content, url, title, date)
-        VALUES($1, $2, $3, $4);
-        `, [`'<img src="https://imgs.xkcd.com/comics/paper_title.png" title="CONFLICT OF INTEREST STATEMENT: The authors hope these results are correct because we all want to be cool people who are good at science." alt="CONFLICT OF INTEREST STATEMENT: The authors hope these results are correct because we all want to be cool people who are good at science." />'`, 'www.google.com', 'XKCD', '2022-11-28']);
+        // await client.query(`
+        // INSERT INTO rss (content, url, title, date)
+        // VALUES($1, $2, $3, $4);
+        // `, [`'<img src="https://imgs.xkcd.com/comics/paper_title.png" title="CONFLICT OF INTEREST STATEMENT: The authors hope these results are correct because we all want to be cool people who are good at science." alt="CONFLICT OF INTEREST STATEMENT: The authors hope these results are correct because we all want to be cool people who are good at science." />'`, 'www.google.com', 'XKCD', '2022-11-28']);
 
     } catch (error) {
         console.log('there was an error rebuilding the database: ', error);
@@ -154,7 +178,7 @@ const getLinkFromIdNumber = async (link_id) => {
         WHERE link_id=$1
         ;
         `, [link_id]);
-        console.log('we got a link from its id: ', linkFromId);
+        // console.log('we got a link from its id: ', linkFromId);
         return linkFromId;
     } catch (error) {
         console.log('there was an error getting a link from its id number: ', error);
@@ -170,7 +194,7 @@ const getPostsFromLinkId = async (link_id) => {
         WHERE link_id=$1
         ;
         `, [link_id]);
-        console.log('should be 4 posts: ', postsFromId);
+        // console.log('should be 4 posts: ', postsFromId);
         return postsFromId;
     } catch (error) {
         console.log('there was an error getting post by id number: ', error);
@@ -178,26 +202,20 @@ const getPostsFromLinkId = async (link_id) => {
     }
 };
 
-
 const buildDb = async () => {
 
     try {
 
         // build links table
-        console.log('putting links in rss_links...')
+        // console.log('putting links in rss_links...')
         FEED_LINKS.forEach( async (link) => {
             const linksInTable = await addLinktoTable(link);
-                console.log('getting each url and finding posts...')
-                linksInTable.forEach( async (linkInTable) => {
-                    console.log('getting all posts for each url...')
-                    const allPosts = await linkParse(linkInTable.url);
-                    console.log('putting each individual post in the rss table...');
-                    // console.log('link in table: ', linkInTable)
-                    allPosts.forEach(async (individualPost) => {
-                        await addRssItemDatabase(individualPost, linkInTable.link_id);
-                    })
-                })
-        })
+            console.log('linksInTable: ', linksInTable);
+            linksInTable.forEach( async(link) => {
+                await parseNewLinkPosts(link.url);
+            })
+            });
+        
     } catch (error) {
         console.log('there was an error building the database: ', error);
         throw (error);
@@ -223,4 +241,5 @@ module.exports = {
     addRssItemDatabase,
     getAllPosts,
     getOnePostById,
+    parseNewLinkPosts,
 };

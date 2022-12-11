@@ -6,16 +6,22 @@ const PORT = process.env.PORT || 3000;
 // get our client so we can connect
 const { client } = require('../db/index.js');
 // get stuff from db/buildDb
-const { buildDb, getAllLinks, getAllPosts, getOnePostById } = require('../db/create');
+const { buildDb, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts } = require('../db/create');
+
+// get the parser
+const { linkParse } = require('../db/parse');
 
 // create an apiRouter
 const apiRouter = express();
 
 apiRouter.use((request, response, next) => {
-    // console.log('here is our request body: ', request.body);
+    console.log('request.method: ', request.method);
+    console.log('request.url: ', request.url);
     // response.send('Hello!');
     next();
 });
+
+apiRouter.use(express.json());
 
 apiRouter.get('/api/posts', async (request, response, next) => {
     try {
@@ -28,6 +34,17 @@ apiRouter.get('/api/posts', async (request, response, next) => {
     }
 });
 
+apiRouter.get('/api/links/:linkId', async (request, response, next) => {
+    try {
+        const { linkId } = request.params;
+        const postFromLink = await getPostsFromLinkId(linkId);
+        response.send(postFromLink);
+    } catch (error) {
+        console.log('there was an error in apiRouter/get/api/links/:linkId: ', error);
+        throw error;
+    }
+})
+
 apiRouter.get('/api/links', async (request, response, next) => {
     try {
         const allLinks = await getAllLinks();
@@ -37,13 +54,19 @@ apiRouter.get('/api/links', async (request, response, next) => {
      throw error;   
     }
 
-})
+});
 
 // add a new link to scrape the rss from
 apiRouter.post('/api/links/new', async (request, response, next) => {
     try {
-        const postInformation = await request.body;
-        console.log('this is the request body: ', postInformation);
+        // request.body is an object
+        const newLink = request.body;
+        console.log('this is the request body: ', newLink);
+        const newLinkInDatabase = await addLinktoTable(newLink);
+        console.log('this is the new link: ', newLinkInDatabase);
+        await parseNewLinkPosts(newLink.link);
+        // const putNewLinkPostsInDatabase = linkParse(newLink.url);
+        response.send(newLinkInDatabase);
     } catch (error) {
         console.log('there was an error in apiRouter/post/api/posts/new: ', error);
         throw error;
@@ -70,6 +93,7 @@ apiRouter.get('/api', async (request, response, next) => {
         await buildDb();
         const allLinks = await getAllLinks();
         response.send(allLinks).status(200);
+        // send is sinternally using JSON.Stringify
     } catch (error) {
         console.log('there was an error running apiRouter/get/api: ', error);
         throw error;
