@@ -17,19 +17,6 @@ apiRouter.use((request, response, next) => {
     next();
 });
 
-apiRouter.get('/api', async (request, response, next) => {
-    // console.log('here we got the request: ', request);
-    try {
-        // console.log('why arent we in here');
-        await buildDb();
-        const allLinks = await getAllLinks();
-        response.send(allLinks).status(200);
-    } catch (error) {
-        console.log('there was an error running apiRouter/get/api: ', error);
-        throw error;
-    }
-});
-
 apiRouter.get('/api/posts', async (request, response, next) => {
     try {
         // await buildDb();
@@ -37,6 +24,28 @@ apiRouter.get('/api/posts', async (request, response, next) => {
         response.send(allPosts);
     } catch (error) {
         console.log('there was an error in apiRouter/get/api/posts: ', error);
+        throw error;
+    }
+});
+
+apiRouter.get('/api/links', async (request, response, next) => {
+    try {
+        const allLinks = await getAllLinks();
+        response.send(allLinks);
+    } catch (error) {
+     console.log('there was an error in apiRouter/get/api/links: ', error);
+     throw error;   
+    }
+
+})
+
+// add a new link to scrape the rss from
+apiRouter.post('/api/links/new', async (request, response, next) => {
+    try {
+        const postInformation = await request.body;
+        console.log('this is the request body: ', postInformation);
+    } catch (error) {
+        console.log('there was an error in apiRouter/post/api/posts/new: ', error);
         throw error;
     }
 });
@@ -52,7 +61,22 @@ apiRouter.get('/api/posts/:postId', async (request, response, next) => {
         console.log('there was an error in apiRouter/get/api/posts/:postId: ', error);
         throw error;
     }
-})
+});
+
+apiRouter.get('/api', async (request, response, next) => {
+    // console.log('here we got the request: ', request);
+    try {
+        // console.log('why arent we in here');
+        await buildDb();
+        const allLinks = await getAllLinks();
+        response.send(allLinks).status(200);
+    } catch (error) {
+        console.log('there was an error running apiRouter/get/api: ', error);
+        throw error;
+    }
+});
+
+
 
 client.connect();
 
