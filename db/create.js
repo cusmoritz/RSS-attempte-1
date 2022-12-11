@@ -23,12 +23,13 @@ const FEED_LINKS = [
     // {name: 'The Intercept', link: 'https://theintercept.com/feed/?lang=en'}
 ];
 
-const parseNewLinkPosts = async (link) => {
+const parseNewLinkPosts = async (link, linkId) => {
     try {
+
         const parsedPosts = await linkParse(link);
         console.log('this is the parsed post: ', parsedPosts)
         parsedPosts.forEach( async (post) => {
-            await addRssItemDatabase(post);
+            await addRssItemDatabase(post, linkId);
         })
     } catch (error) {
         console.log('there was an error parsing the new link: ', error);
@@ -212,7 +213,7 @@ const buildDb = async () => {
             const linksInTable = await addLinktoTable(link);
             console.log('linksInTable: ', linksInTable);
             linksInTable.forEach( async(link) => {
-                await parseNewLinkPosts(link.url);
+                await parseNewLinkPosts(link.url, link.link_id);
             })
             });
         

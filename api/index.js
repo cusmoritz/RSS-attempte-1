@@ -61,12 +61,15 @@ apiRouter.post('/api/links/new', async (request, response, next) => {
     try {
         // request.body is an object
         const newLink = request.body;
-        console.log('this is the request body: ', newLink);
+
+        // we get a new link from the request and add it to the database
         const newLinkInDatabase = await addLinktoTable(newLink);
         console.log('this is the new link: ', newLinkInDatabase);
-        await parseNewLinkPosts(newLink.link);
-        // const putNewLinkPostsInDatabase = linkParse(newLink.url);
-        response.send(newLinkInDatabase);
+
+        // then we bother to get the posts and add them to the database 
+        await parseNewLinkPosts(newLink.link, newLinkInDatabase[0].link_id);
+
+        response.send(newLinkInDatabase[0]);
     } catch (error) {
         console.log('there was an error in apiRouter/post/api/posts/new: ', error);
         throw error;
