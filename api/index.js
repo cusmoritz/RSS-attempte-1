@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3000;
 // get our client so we can connect
 const { client } = require('../db/index.js');
 // get stuff from db/buildDb
-const { buildDb, getAllLinks, getAllPosts } = require('../db/create');
+const { buildDb, getAllLinks, getAllPosts, getOnePostById } = require('../db/create');
 
 // create an apiRouter
 const apiRouter = express();
@@ -18,9 +18,9 @@ apiRouter.use((request, response, next) => {
 });
 
 apiRouter.get('/api', async (request, response, next) => {
-    console.log('here we got the request: ', request);
+    // console.log('here we got the request: ', request);
     try {
-        console.log('why arent we in here');
+        // console.log('why arent we in here');
         await buildDb();
         const allLinks = await getAllLinks();
         response.send(allLinks).status(200);
@@ -32,7 +32,7 @@ apiRouter.get('/api', async (request, response, next) => {
 
 apiRouter.get('/api/posts', async (request, response, next) => {
     try {
-        await buildDb();
+        // await buildDb();
         const allPosts = await getAllPosts();
         response.send(allPosts);
     } catch (error) {
@@ -40,6 +40,19 @@ apiRouter.get('/api/posts', async (request, response, next) => {
         throw error;
     }
 });
+
+// get one post
+apiRouter.get('/api/posts/:postId', async (request, response, next) => {
+    const { postId } = request.params;
+    console.log('postId: ', postId);
+    try {
+        const onePost = await getOnePostById(postId);
+        response.send(onePost);
+    } catch (error) {
+        console.log('there was an error in apiRouter/get/api/posts/:postId: ', error);
+        throw error;
+    }
+})
 
 client.connect();
 

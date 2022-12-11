@@ -113,13 +113,27 @@ const getAllLinks = async () => {
         SELECT * FROM rss_links
         ;
         `);
-        console.log('ALL THE LINKS: ', allLinks);
+        // console.log('ALL THE LINKS: ', allLinks);
         return allLinks;
     } catch (error) {
         console.log('there was an error getting all links: ', error);
         throw error;
     }
 };
+
+const getOnePostById = async(postId) => {
+    try {
+        const onePost = await client.query(`
+        SELECT * from rss
+        WHERE id=$1;
+        `, [postId]);
+        // console.log('here we got one post: ', onePost);
+        return onePost.rows;
+    } catch (error) {
+        console.log('there was an error in getOnePostById: ', error);
+        throw error;
+    }
+}
 
 const getAllPosts = async () => {
     try {
@@ -208,4 +222,5 @@ module.exports = {
     addLinktoTable,
     addRssItemDatabase,
     getAllPosts,
+    getOnePostById,
 };
