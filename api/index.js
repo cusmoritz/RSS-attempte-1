@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3000;
 // get our client so we can connect
 const { client } = require('../db/index.js');
 // get stuff from db/buildDb
-const { buildDb, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts } = require('../db/create');
+const { buildDb, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate } = require('../db/create');
 
 // get the parser
 const { linkParse } = require('../db/parse');
@@ -38,6 +38,14 @@ apiRouter.get('/api/links/:linkId', async (request, response, next) => {
     try {
         const { linkId } = request.params;
         const postFromLink = await getPostsFromLinkId(linkId);
+        //should we error catch here in case there's not a link to the id? 
+        /*
+        postFromLink.forEach((link) => {
+            if (link.link_id != linkId) {
+                throw new "There is no link with that id."
+            }
+        })
+        */
         response.send(postFromLink);
     } catch (error) {
         console.log('there was an error in apiRouter/get/api/links/:linkId: ', error);
@@ -93,7 +101,7 @@ apiRouter.get('/api', async (request, response, next) => {
     // console.log('here we got the request: ', request);
     try {
         // console.log('why arent we in here');
-        await buildDb();
+        // await buildDb();
         const allLinks = await getAllLinks();
         response.send(allLinks).status(200);
         // send is sinternally using JSON.Stringify
@@ -103,7 +111,46 @@ apiRouter.get('/api', async (request, response, next) => {
     }
 });
 
+// create function to just recturn the 10 most recent posts
+apiRouter.get('/today', async (request, response, next) => {
+    try {
+        // build the day
+        const now = new Date();
+        const nowYear = now.getFullYear();
+        // console.log('year: ', todayYear);
+        const nowMonth = now.getMonth() + 1;
+        // console.log('month: ', todayMonth);
+        const nowDay = now.getDate();
+        // build string for database call
+        const inputDate = `${nowYear}-${nowMonth}-${nowDay}`
+        // console.log('our input datE: ', inputDate)
+        const postsToday = await getPostsByDate(inputDate);
+        // console.log('postsToday: ', postsToday)
+        response.send(postsToday);
+    } catch (error) {
+        console.log('there was a jjjjjjjjjj');
+        throw error;
+    }
+});
 
+// apiRouter.get('/jjjj', async (request, response, next) => {
+//     try {
+//         const now = new Date();
+//         const nowYear = now.getFullYear();
+//         // console.log('year: ', todayYear);
+//         const nowMonth = now.getMonth() + 1;
+//         // console.log('month: ', todayMonth);
+//         const nowDay = now.getDate();
+//         const inputDate = `${nowYear}-${nowMonth}-${nowDay}`
+//         console.log('our input datE: ', inputDate)
+//         const postsToday = await getPostsByDate(inputDate);
+//         console.log('postsToday: ', postsToday)
+//         response.send(postsToday);
+//     } catch (error) {
+//         console.log('there was a jjjjjjjjjj');
+//         throw error;
+//     }
+// })
 
 client.connect();
 

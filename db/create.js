@@ -20,6 +20,7 @@ const FEED_LINKS = [
     {name: 'everything is amazing', link: 'https://everythingisamazing.substack.com/feed'},
     {name: 'JackFrags', link: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCw7FkXsC00lH2v2yB5LQoYA'},
     {name: 'xkcd', link: 'https://xkcd.com/rss.xml'},    
+    {name: 'New Means', link: 'https://newmeans.substack.com/feed'},
     // {name: 'The Intercept', link: 'https://theintercept.com/feed/?lang=en'}
 ];
 
@@ -172,6 +173,21 @@ const getAllPosts = async () => {
     }
 };
 
+// getPosts by Date works for any date in YYYY-MM-DD format
+const getPostsByDate = async (date) => { // has to be year-month-day format
+    try {
+        // const date = new Date(); // this is the instance the function runs
+        const {rows: postsByDate} = await client.query(`
+        SELECT * FROM rss
+        WHERE date=$1;
+        `, [date]);
+        return postsByDate;
+    } catch (error) {
+        console.log('there was an error in getPostsByDate: ', error);
+        throw error;
+    }
+}
+
 const getLinkFromIdNumber = async (link_id) => {
     try {
         const linkFromId = await client.query(`
@@ -243,4 +259,6 @@ module.exports = {
     getAllPosts,
     getOnePostById,
     parseNewLinkPosts,
+    getPostsByDate,
+
 };
