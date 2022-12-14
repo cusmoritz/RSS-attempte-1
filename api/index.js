@@ -23,6 +23,7 @@ apiRouter.use((request, response, next) => {
 
 apiRouter.use(express.json());
 
+// /api/posts returns all the posts, currently
 apiRouter.get('/api/posts', async (request, response, next) => {
     try {
         // await buildDb();
@@ -34,6 +35,7 @@ apiRouter.get('/api/posts', async (request, response, next) => {
     }
 });
 
+// /links/:linkId returns posts from that specific link
 apiRouter.get('/api/links/:linkId', async (request, response, next) => {
     try {
         const { linkId } = request.params;
@@ -53,6 +55,7 @@ apiRouter.get('/api/links/:linkId', async (request, response, next) => {
     }
 })
 
+// /api/links shows every link that has been 'subscsribed' to 
 apiRouter.get('/api/links', async (request, response, next) => {
     try {
         const allLinks = await getAllLinks();
@@ -84,7 +87,7 @@ apiRouter.post('/api/links/new', async (request, response, next) => {
     }
 });
 
-// get one post
+// get one post from its ID
 apiRouter.get('/api/posts/:postId', async (request, response, next) => {
     const { postId } = request.params;
     console.log('postId: ', postId);
@@ -97,6 +100,7 @@ apiRouter.get('/api/posts/:postId', async (request, response, next) => {
     }
 });
 
+// /api currently returns all the links that have been 'subscribed' to
 apiRouter.get('/api', async (request, response, next) => {
     // console.log('here we got the request: ', request);
     try {
@@ -111,7 +115,7 @@ apiRouter.get('/api', async (request, response, next) => {
     }
 });
 
-// create function to just recturn the 10 most recent posts
+// /today returns every post that was posted on 'todays date'
 apiRouter.get('/today', async (request, response, next) => {
     try {
         // build the day
@@ -151,6 +155,25 @@ apiRouter.get('/today', async (request, response, next) => {
 //         throw error;
 //     }
 // })
+
+// this function handles our logins
+apiRouter.get('/login', async (request, response, next) => {
+    // assuming our logins are in the form of an object
+    const { username, password } = request.body;
+    const user = await client.query(`
+    SELECT * FROM users
+    WHERE username=$1
+    ;
+    `, [username]);
+
+    // we could check our hashed passwords here 
+
+    if (user.password != password) {
+        response.send('You must type the right password').status(401);
+    } else {
+        response.send('login successful!').status(200);
+    }
+})
 
 client.connect();
 

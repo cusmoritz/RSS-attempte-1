@@ -24,6 +24,14 @@ const FEED_LINKS = [
     // {name: 'The Intercept', link: 'https://theintercept.com/feed/?lang=en'}
 ];
 
+const fakeUsers = [
+    {username: 'johnCReilley', password: 'StepBrothers'},
+    {username: 'FamousAmos', password: 'ItsC00kieTime'},
+    {username: 'Andrew', password: 'AndrewTime!!'},
+    {username: 'Noah', password: 'Ark,TheHarald'},
+    {username: 'Seamore', password: 'UnderTheBleachers'}
+]
+
 const parseNewLinkPosts = async (link, linkId) => {
     try {
 
@@ -89,6 +97,7 @@ const rebuildDatabase = async () => {
         await client.query(`
         DROP TABLE IF EXISTS rss;
         DROP TABLE IF EXISTS rss_links;
+        DROP TABLE IF EXISTS users;
         `);
 
         // table for links
@@ -114,10 +123,20 @@ const rebuildDatabase = async () => {
             link_id INTEGER REFERENCES rss_links(link_id),
             url TEXT NOT NULL,
             title TEXT NOT NULL,
-            date DATE
+            date DATE,
+            saved BOOLEAN DEFAULT TRUE
             );
         `);
 
+        console.log('creating users table...')
+        await client.query(`
+        CREATE TABLE IF NOT EXISTS users (
+            user_id SERIAL PRIMARY KEY,
+            username TEXT UNIQUE NOT NULL,
+            password VARCHAR(255),
+            active BOOLEAN DEFAULT TRUE
+        );
+        `);
         // console.log('done creating tables...');
 
         // await client.query(`
@@ -219,6 +238,23 @@ const getPostsFromLinkId = async (link_id) => {
     }
 };
 
+// puts a new user into the database
+const createNewUser = async ({username, password}) => {
+    try {
+        const {rows: user} = await client.query(`
+        INSERT INTO users (username, password)
+        VALUES ($1, $2)
+        RETURNING *
+        ;
+        `, [username, password]);
+        console.log('new user here: ', user);
+        return user;
+    } catch (error) {
+        console.log('there was an error creating a new user: ', error);
+        throw error;
+    } 
+}
+
 const buildDb = async () => {
 
     try {
@@ -232,6 +268,9 @@ const buildDb = async () => {
                 await parseNewLinkPosts(link.url, link.link_id);
             })
             });
+        fakeUsers.forEach( async (user) => {
+            await createNewUser(user);
+        })
         
     } catch (error) {
         console.log('there was an error building the database: ', error);
