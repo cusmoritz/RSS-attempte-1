@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3000;
 // get our client so we can connect
 const { client } = require('../db/index.js');
 // get stuff from db/buildDb
-const { buildDb, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate } = require('../db/create');
+const { buildDb, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, fetchUser, createNewUser, } = require('../db/create');
 
 // get the parser
 const { linkParse } = require('../db/parse');
@@ -158,20 +158,31 @@ apiRouter.get('/today', async (request, response, next) => {
 
 // this function handles our logins
 apiRouter.get('/login', async (request, response, next) => {
-    // assuming our logins are in the form of an object
-    const { username, password } = request.body;
-    const user = await client.query(`
-    SELECT * FROM users
-    WHERE username=$1
-    ;
-    `, [username]);
+    console.log('request body: ', request.body);
+    try {
+        // assuming our logins are in the form of an object
+        const { username, password } = request.body;
+        const user = await fetchUser(username);
 
-    // we could check our hashed passwords here 
+        // we could check our hashed passwords here 
+        console.log('do these match? :', user);
+        console.log('this is the input password: ', password);
+        if (user.password == password) {
+            response.send('login successful!').status(200);
+        } else {
+            response.send('You must type the right password').status(401);
+        }
+    } catch (error) {
+        console.log('there was an error in router.get/login: ', error);
+        throw error;
+    }
+});
 
-    if (user.password != password) {
-        response.send('You must type the right password').status(401);
-    } else {
-        response.send('login successful!').status(200);
+apiRouter.post('/sign-up', async (request, response, next) => {
+    try {
+        
+    } catch (error) {
+        
     }
 })
 

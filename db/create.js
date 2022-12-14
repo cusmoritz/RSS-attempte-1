@@ -36,7 +36,7 @@ const parseNewLinkPosts = async (link, linkId) => {
     try {
 
         const parsedPosts = await linkParse(link);
-        console.log('this is the parsed post: ', parsedPosts)
+        // console.log('this is the parsed post: ', parsedPosts)
         parsedPosts.forEach( async (post) => {
             await addRssItemDatabase(post, linkId);
         })
@@ -240,6 +240,7 @@ const getPostsFromLinkId = async (link_id) => {
 
 // puts a new user into the database
 const createNewUser = async ({username, password}) => {
+    // console.log('this is our input from the get: ', username, password);
     try {
         const {rows: user} = await client.query(`
         INSERT INTO users (username, password)
@@ -253,6 +254,21 @@ const createNewUser = async ({username, password}) => {
         console.log('there was an error creating a new user: ', error);
         throw error;
     } 
+};
+
+const fetchUser = async ({username}) => {
+    try {
+        const {rows: user} = await client.query(`
+        SELECT * FROM users
+        WHERE username=$1
+        ;
+        `, [username]);
+        console.log('user in fetchUser', user)
+        return user;
+    } catch (error) {
+        console.log('there was an error fetching a user: ', error);
+        throw error;
+    }
 }
 
 const buildDb = async () => {
@@ -263,7 +279,7 @@ const buildDb = async () => {
         // console.log('putting links in rss_links...')
         FEED_LINKS.forEach( async (link) => {
             const linksInTable = await addLinktoTable(link);
-            console.log('linksInTable: ', linksInTable);
+            // console.log('linksInTable: ', linksInTable);
             linksInTable.forEach( async(link) => {
                 await parseNewLinkPosts(link.url, link.link_id);
             })
@@ -299,5 +315,8 @@ module.exports = {
     getOnePostById,
     parseNewLinkPosts,
     getPostsByDate,
+    fetchUser,
+    createNewUser,
+
 
 };
