@@ -17,6 +17,7 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.20",
     "pg": "^8.8.0",
+    "postgrator-cli": "^6.0.0",
     "rss-parser": "^3.12.0"
   }
 }
