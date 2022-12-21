@@ -1,5 +1,6 @@
 const { Client } = require('pg');
 const { linkParse } = require('./parse.js')
+// const {FEED_LINKS, fakeUsers } = require('../scr/seed');
 
 const DATABASE_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/rss-feed';
 //either local host or a PORT when deploying
@@ -285,9 +286,9 @@ const buildDb = async () => {
                 await parseNewLinkPosts(link.url, link.link_id);
             })
             });
-        // fakeUsers.forEach( async (user) => {
-        //     await createNewUser(user.username, user.password);
-        // })
+        fakeUsers.forEach( async (user) => {
+            await createNewUser(user.username, user.password);
+        })
         
     } catch (error) {
         console.log('there was an error building the database: ', error);
@@ -295,6 +296,20 @@ const buildDb = async () => {
     }
 };
 
+const updateDb = async () => {
+    try {
+        FEED_LINKS.forEach( async (link) => {
+            const linksInTable = await addLinktoTable(link);
+            // console.log('linksInTable: ', linksInTable);
+            linksInTable.forEach( async(link) => {
+                await parseNewLinkPosts(link.url, link.link_id);
+            })
+            });
+    } catch (error) {
+        console.log('there was an error updating the database: ', error);
+        throw error;
+    }
+}
 
 // put all links in the database
     // fetch all links from the database,
@@ -302,7 +317,7 @@ const buildDb = async () => {
             // send each post into the database, this time tied to the rss_link id
 
 client.connect();
-buildDb();
+rebuildDatabase().then(buildDb);
 
 module.exports = {
     buildDb, 
