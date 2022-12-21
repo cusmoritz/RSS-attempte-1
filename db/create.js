@@ -264,7 +264,7 @@ const fetchUser = async (username) => {
         WHERE username=$1
         ;
         `, [username]);
-        console.log('user in fetchUser', user)
+        // console.log('user in fetchUser', user)
         return user;
     } catch (error) {
         console.log('there was an error fetching a user: ', error);

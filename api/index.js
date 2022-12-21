@@ -8,6 +8,9 @@ const { client } = require('../db/index.js');
 // get stuff from db/buildDb
 const { buildDb, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, fetchUser, createNewUser, } = require('../db/create');
 
+const bcrypt = require('bcrypt');
+const SALTY_ROUNDS = 10;
+
 // get the parser
 const { linkParse } = require('../db/parse');
 
@@ -144,17 +147,19 @@ apiRouter.get('/api/today', async (request, response, next) => {
 // this function handles our logins
 
 apiRouter.get('/api/login', async (request, response, next) => {
-    console.log('request body: ', request.body);
+    // console.log('request body: ', request.body);
     try {
         // assuming our logins are in the form of an object
         const { username, password } = request.body;
+
         const user = await fetchUser(username);
 
-        // we could check our hashed passwords here 
-        console.log('do these match? :', user);
-        console.log('this is the input password: ', password);
-        if (user.password == password) {
-            response.send('login successful!').status(200);
+        // check the typed password against the stored (db) hashed password
+        const passwordCheck = await bcrypt.compareSync(password, user.password)
+        // console.log('password check here: ', passwordCheck)
+
+        if (passwordCheck) {
+            response.send({message: 'login successful!', user}).status(200);
         } else {
             response.send('You must type the right password').status(401);
         }
@@ -171,12 +176,13 @@ apiRouter.post('/api/sign-up', async (request, response, next) => {
         console.log('new password? ', password);
         // check for dupe usernames
         const _user = await fetchUser(username);
-        console.log('_user?', _user)
         if (_user) {
             // this should be error handling instead
             response.send({message: "That username is already taken, try again."});
         } else {
-            const newUser = await createNewUser(username, password);
+            const hashedPass = await bcrypt.hashSync(password, SALTY_ROUNDS);
+            // console.log('hashed pass?', hashedPass)
+            const newUser = await createNewUser(username, hashedPass);
             console.log('we got a new user signed up: ', newUser)
             response.send({message: "You're signed up!", newUser});
         }
