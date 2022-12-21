@@ -137,7 +137,7 @@ const rebuildDatabase = async () => {
             active BOOLEAN DEFAULT TRUE
         );
         `);
-        // console.log('done creating tables...');
+        console.log('done creating tables...');
 
         // await client.query(`
         // INSERT INTO rss (content, url, title, date)
@@ -239,26 +239,27 @@ const getPostsFromLinkId = async (link_id) => {
 };
 
 // puts a new user into the database
-const createNewUser = async ({username, password}) => {
+const createNewUser = async (username, password) => {
     // console.log('this is our input from the get: ', username, password);
     try {
-        const {rows: user} = await client.query(`
+        const {rows: [user]} = await client.query(`
         INSERT INTO users (username, password)
         VALUES ($1, $2)
         RETURNING *
         ;
         `, [username, password]);
         console.log('new user here: ', user);
-        return user;
+        return (user);
     } catch (error) {
         console.log('there was an error creating a new user: ', error);
         throw error;
     } 
 };
 
-const fetchUser = async ({username}) => {
+const fetchUser = async (username) => {
     try {
-        const {rows: user} = await client.query(`
+        // console.log('username? :', username)
+        const {rows: [user]} = await client.query(`
         SELECT * FROM users
         WHERE username=$1
         ;
@@ -284,9 +285,9 @@ const buildDb = async () => {
                 await parseNewLinkPosts(link.url, link.link_id);
             })
             });
-        fakeUsers.forEach( async (user) => {
-            await createNewUser(user);
-        })
+        // fakeUsers.forEach( async (user) => {
+        //     await createNewUser(user.username, user.password);
+        // })
         
     } catch (error) {
         console.log('there was an error building the database: ', error);
@@ -301,7 +302,7 @@ const buildDb = async () => {
             // send each post into the database, this time tied to the rss_link id
 
 client.connect();
-rebuildDatabase().then(buildDb);
+buildDb();
 
 module.exports = {
     buildDb, 

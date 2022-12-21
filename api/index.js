@@ -100,23 +100,8 @@ apiRouter.get('/api/posts/:postId', async (request, response, next) => {
     }
 });
 
-// /api currently returns all the links that have been 'subscribed' to
-apiRouter.get('/api', async (request, response, next) => {
-    // console.log('here we got the request: ', request);
-    try {
-        // console.log('why arent we in here');
-        // await buildDb();
-        const allLinks = await getAllLinks();
-        response.send(allLinks).status(200);
-        // send is sinternally using JSON.Stringify
-    } catch (error) {
-        console.log('there was an error running apiRouter/get/api: ', error);
-        throw error;
-    }
-});
-
 // /today returns every post that was posted on 'todays date'
-apiRouter.get('/today', async (request, response, next) => {
+apiRouter.get('/api/today', async (request, response, next) => {
     try {
         // build the day
         const now = new Date();
@@ -132,7 +117,7 @@ apiRouter.get('/today', async (request, response, next) => {
         // console.log('postsToday: ', postsToday)
         response.send(postsToday);
     } catch (error) {
-        console.log('there was a jjjjjjjjjj');
+        console.log('there was an error in apiRouter/get/today: ', error);
         throw error;
     }
 });
@@ -157,7 +142,8 @@ apiRouter.get('/today', async (request, response, next) => {
 // })
 
 // this function handles our logins
-apiRouter.get('/login', async (request, response, next) => {
+
+apiRouter.get('/api/login', async (request, response, next) => {
     console.log('request body: ', request.body);
     try {
         // assuming our logins are in the form of an object
@@ -178,13 +164,43 @@ apiRouter.get('/login', async (request, response, next) => {
     }
 });
 
-apiRouter.post('/sign-up', async (request, response, next) => {
+apiRouter.post('/api/sign-up', async (request, response, next) => {
     try {
-        
+        const { username, password } = request.body;
+        console.log('new username? ', username);
+        console.log('new password? ', password);
+        // check for dupe usernames
+        const _user = await fetchUser(username);
+        console.log('_user?', _user)
+        if (_user) {
+            // this should be error handling instead
+            response.send({message: "That username is already taken, try again."});
+        } else {
+            const newUser = await createNewUser(username, password);
+            console.log('we got a new user signed up: ', newUser)
+            response.send({message: "You're signed up!", newUser});
+        }
+
     } catch (error) {
-        
+        console.log('there was an error in apiRouter/post/sign-up: ', error);
+        throw (error);
     }
-})
+});
+
+// /api currently returns all the links that have been 'subscribed' to
+apiRouter.get('/api', async (request, response, next) => {
+    // console.log('here we got the request: ', request);
+    try {
+        // console.log('why arent we in here');
+        // await buildDb();
+        const allLinks = await getAllLinks();
+        response.send(allLinks).status(200);
+        // send is sinternally using JSON.Stringify
+    } catch (error) {
+        console.log('there was an error running apiRouter/get/api: ', error);
+        throw error;
+    }
+});
 
 client.connect();
 
