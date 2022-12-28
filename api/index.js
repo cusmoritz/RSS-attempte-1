@@ -1,6 +1,10 @@
 // server file
 //require express
 const express = require('express');
+
+// create an apiRouter
+const apiRouter = express();
+
 // define port
 const PORT = process.env.PORT || 3001;
 // get our client so we can connect
@@ -13,9 +17,6 @@ const SALTY_ROUNDS = 10;
 
 // get the parser
 const { linkParse } = require('../db/parse');
-
-// create an apiRouter
-const apiRouter = express();
 
 apiRouter.use((request, response, next) => {
     console.log('request.method: ', request.method);

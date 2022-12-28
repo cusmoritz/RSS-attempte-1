@@ -1,6 +1,6 @@
 // this is the folder that will make our api calls
 
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = 'http://localhost:3001'; // wherever the db is hosted
 
 export const getAPILinks = async(token) => {
     try {
