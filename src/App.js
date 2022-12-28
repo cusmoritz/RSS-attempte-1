@@ -2,12 +2,12 @@
 
 // import everything
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import Header from './components/Header';
 import Linklist from './components/Linklist';
 
 
-const App = () => {
+export const App = () => {
 
   // use state to check for login status
   const [login, setLogin] = useState(true);
@@ -20,6 +20,3 @@ const App = () => {
     </>
   )
 }
-
-const root = ReactDOM.createRoot(document.getElementById('app'));
-root.render(<App />);
