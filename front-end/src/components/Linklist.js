@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 // import { getAllLinks } from '../../db/create';
+import { getAPILinks } from '../api';
 
 const FEED_LINKS = [
     {name: 'Ars Technica', link: 'https://feeds.arstechnica.com/arstechnica/staff-blogs'}, // works with parseURL
@@ -23,15 +24,16 @@ const FEED_LINKS = [
 
 const Linklist = ({login}) => {
 
-    // get all our links from the api
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
 
-        return (FEED_LINKS.map((link) => {
-        return (
-            <>
-                <p key={link.name}><a href={link.link}>{link.name}</a></p>
-            </>
-            )
-        }))
+    // get all our links from the api
+    const allLinks = async(token) => {
+        const links = getAPILinks(token);
+    }
+    return (
+        <button onClick={() => allLinks(token)}>Click here</button>
+    )
+
 }
 
 

@@ -5,24 +5,24 @@ import ReactDOM from 'react-dom/client';
 const Header = ({login, setLogin}) => {
     // we need to import the login status later
 
-
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleLogin = (event) => {
-        event.preventDefault;
+    const handleLogin = (username, password) => {
 
-        console.log(`${username} is logged in with ${password}`)
+        console.log(`${username} is logged in with ${password}`);
+
     }
 
     return (
         <div id="header-container">
 
             <h1>Welcome</h1>
-            
+
             <div id="login-container">
                 <form onSubmit={(event) => {
-                    handleLogin();
+                    event.preventDefault();
+                    handleLogin(username, password);
                 }}>
                     <label htmlFor='username-input'>Username:</label>
                     <input 

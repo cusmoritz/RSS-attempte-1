@@ -2,9 +2,9 @@
 //require express
 const express = require('express');
 // define port
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 // get our client so we can connect
-const { client } = require('../db/index.js');
+// const { client } = require('../db/index.js');
 // get stuff from db/buildDb
 const { buildDb, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, fetchUser, createNewUser, } = require('../db/create');
 
