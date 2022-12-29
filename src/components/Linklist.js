@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 // import { getAllLinks } from '../../db/create';
 import { getAPILinks} from '../api';
+import EachPost from './EachPost';
 
 const FEED_LINKS = [
     {name: 'Ars Technica', link: 'https://feeds.arstechnica.com/arstechnica/staff-blogs'}, // works with parseURL
@@ -24,14 +25,31 @@ const FEED_LINKS = [
 
 const Linklist = ({login}) => {
 
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+    // // get all our links from the api
+    // const allLinks = async(token) => {
+    //     const links = getAPILinks(token);
+    // }
 
-    // get all our links from the api
-    const allLinks = async(token) => {
-        const links = getAPILinks(token);
+    const allLinks = [];
+    const everyLink = async () => {
+        const allLinks = await getAPILinks();
     }
+
     return (
-        <button onClick={() => allLinks(token)}>Click here</button>
+        <>
+        {!login ? 
+            <div>
+                <p>You must NOT be logged in to see this. Must be you. You must not be logged in.</p>
+            </div>
+            : 
+            <div>
+                {allLinks ? allLinks.forEach((link) => {
+                    <EachPost post={post}/>
+                }) : (<p>There are no posts to show</p>) }
+
+            </div>
+        }
+        </>
     )
 
 }
