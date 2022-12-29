@@ -1,0 +1,29 @@
+* {
+    font-family: sans-serif;
+}
+
+h1 {
+    font-size: 3rem;
+    display: flex;
+    
+}
+
+#footer-container {
+    display: flex;
+    align-items: flex-end;
+    align-content: center;
+    position: absolute;
+    background-color: aqua;
+    justify-content: space-around;
+    width: 100vw;
+}
+
+.footer-item {
+    flex-grow: 1;
+    border: 3px, solid, black;
+    background: red;
+}
+
+button:hover {
+    box-shadow: 3px 3px 1px lightblue;
+}

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 // import { getAllLinks } from '../../db/create';
-import { getAPILinks } from '../api';
+import { getAPILinks} from '../api';
 
 const FEED_LINKS = [
     {name: 'Ars Technica', link: 'https://feeds.arstechnica.com/arstechnica/staff-blogs'}, // works with parseURL

@@ -13,7 +13,7 @@ export const getAPILinks = async(token) => {
           console.log('response in api', response)
         return response;
     } catch (error) {
-        console.log(error);
+        console.log('there was an error fetching all links: ' , error);
         throw error;
     }
 };
