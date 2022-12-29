@@ -333,6 +333,4 @@ module.exports = {
     getPostsByDate,
     fetchUser,
     createNewUser,
-
-
 };

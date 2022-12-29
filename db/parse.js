@@ -12,7 +12,7 @@ const createDateFormat = (isoDate) => {
   const year = oldDate.getFullYear();
   const month = oldDate.getMonth() + 1;
   const day = oldDate.getDate();
-
+  
   return `${year}-${month}-${day}`
 }
 

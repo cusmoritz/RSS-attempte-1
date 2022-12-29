@@ -1,9 +1,14 @@
 // server file
 //require express
 const express = require('express');
+const cors = require('cors')
 
 // create an apiRouter
 const apiRouter = express();
+
+apiRouter.use(express.json());
+
+apiRouter.use(cors());
 
 // define port
 const PORT = process.env.PORT || 3000;
@@ -24,8 +29,6 @@ apiRouter.use((request, response, next) => {
     // response.send('Hello!');
     next();
 });
-
-apiRouter.use(express.json());
 
 // /api/posts returns all the posts, currently
 apiRouter.get('/api/posts', async (request, response, next) => {

@@ -1,9 +1,7 @@
 // import everything
-import React, { useState } from 'react';
+import React, { useEffect, useState, useHistory } from 'react';
 import ReactDOM from 'react-dom/client';
-// import { getAllLinks } from '../../db/create';
-import { getAPILinks} from '../api';
-import EachPost from './EachPost';
+import EachLink from './EachLink';
 
 const FEED_LINKS = [
     {name: 'Ars Technica', link: 'https://feeds.arstechnica.com/arstechnica/staff-blogs'}, // works with parseURL
@@ -23,18 +21,8 @@ const FEED_LINKS = [
 ];
 
 
-const Linklist = ({login}) => {
-
-    // // get all our links from the api
-    // const allLinks = async(token) => {
-    //     const links = getAPILinks(token);
-    // }
-
-    const allLinks = [];
-    const everyLink = async () => {
-        const allLinks = await getAPILinks();
-    }
-
+const Linklist = ({login, links}) => {
+    console.log('links in link list', links)
     return (
         <>
         {!login ? 
@@ -43,10 +31,9 @@ const Linklist = ({login}) => {
             </div>
             : 
             <div>
-                {allLinks ? allLinks.forEach((link) => {
-                    <EachPost post={post}/>
+                {links ? links.map((link) => {
+                    return (<EachLink link={link} key={link.link_id}/>)
                 }) : (<p>There are no posts to show</p>) }
-
             </div>
         }
         </>

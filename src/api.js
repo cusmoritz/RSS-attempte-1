@@ -36,8 +36,9 @@ export const getAPILinks = async(token) => {
 export const callAPIForLinks = async() => {
     try {
         const links = await fetch(`${BASE_URL}/api/links`)
-        paresedLinks = links.json();
-        return parsedLinks;
+        const paresedLinks = await links.json();
+        console.log('we got the links in api')
+        return paresedLinks;
     } catch (error) {
         console.log('there was an error getting all the links from the API: ', error);
         throw error;
