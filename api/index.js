@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3000;
 // get our client so we can connect
 const { client } = require('../db/index.js');
 // get stuff from db/buildDb
-const { buildDb, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, fetchUser, createNewUser, } = require('../db/create');
+const { buildDb, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, fetchUser, createNewUser, updateDb, } = require('../db/create');
 
 const bcrypt = require('bcrypt');
 const SALTY_ROUNDS = 10;
@@ -211,6 +211,15 @@ apiRouter.get('/api', async (request, response, next) => {
         throw error;
     }
 });
+
+apiRouter.get('/api/update', async (request, response, next) => {
+    try {
+        
+    } catch (error) {
+        console.log('there was an error trying to update the posts in /api/update: ', error)
+        throw error;
+    }
+})
 
 client.connect();
 
