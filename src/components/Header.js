@@ -5,7 +5,7 @@ import LoginForm from './LoginForm'
 import { updatePosts } from '../api';
 import { getTodaysPosts } from '../api';
 
-const Header = ({login, setLogin}) => {
+const Header = () => {
     // we need to import the login status later
 
     const handleUpdate = async () => {
@@ -27,8 +27,6 @@ const Header = ({login, setLogin}) => {
         <div id="header-container">
 
             <h1>Welcome to Not Reader</h1>
-
-            <LoginForm login={login} setLogin={setLogin}/>
 
             <button onClick={() => handleUpdate()}>Update posts</button>
 

@@ -71,4 +71,15 @@ export const getTodaysPosts = async() => {
         console.log('there was a problem getting todays posts in src/api: ', error);
         throw error;
     }
+};
+
+export const getPostsForLink = async(linkId) => {
+    try {
+        const response = await fetch(`${BASE_URL}/api/links/${linkId}`);
+        const posts = response.json();
+        return posts;
+    } catch (error) {
+        console.log('there was an error fetching posts for each link: ', error);
+        throw error;
+    }
 }

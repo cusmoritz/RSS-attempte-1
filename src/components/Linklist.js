@@ -21,21 +21,15 @@ const FEED_LINKS = [
 ];
 
 
-const Linklist = ({login, links}) => {
+const Linklist = ({links}) => {
     console.log('links in link list', links)
     return (
         <>
-        {!login ? 
-            <div>
-                <p>You must NOT be logged in to see this. Must be you. You must not be logged in.</p>
-            </div>
-            : 
             <div>
                 {links ? links.map((link) => {
                     return (<EachLink link={link} key={link.link_id}/>)
                 }) : (<p>There are no posts to show</p>) }
             </div>
-        }
         </>
     )
 

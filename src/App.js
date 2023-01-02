@@ -7,12 +7,13 @@ import Header from './components/Header';
 import Linklist from './components/Linklist';
 import Footer from './components/Footer'
 import { callAPIForLinks } from './api';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import LinkPosts from './components/LinkPosts';
 
 export const App = () => {
 
   // use state to check for login status
-  const [login, setLogin] = useState(true);
+  // const [login, setLogin] = useState(true);
   const [links, setLinks] = useState([]);
 
   useEffect(() => {
@@ -27,12 +28,15 @@ export const App = () => {
 
   return(
     <>
-      <Header setLogin={setLogin} login={login}/>
+      <Header/>
       
         <BrowserRouter>
-        
-        <Linklist login={login} links={links}/> 
-        
+
+          <Routes>
+            <Route exact path="/" element={<Linklist links={links}/>}/>
+            <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} />}>
+            </Route>
+          </Routes>
         </BrowserRouter>
 
       <Footer />

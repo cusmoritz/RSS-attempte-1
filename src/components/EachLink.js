@@ -1,5 +1,6 @@
 // import everything
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
 
 const EachLink = ({link}) => {
@@ -24,9 +25,7 @@ const EachLink = ({link}) => {
             <p className='post-url'>
                 <a target="_blank">{link.url}</a>
             </p>
-            <button onClick={((event) => {
-                handleClick(link.link_id);
-            })}>See all posts</button>
+            <button><Link to={`/${link.link_id}/posts`}>See all posts</Link></button>
 
             <button onClick={((event) => {
                 handleDelete(link.link_id)
