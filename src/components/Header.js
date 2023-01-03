@@ -1,9 +1,7 @@
 // import everything
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import LoginForm from './LoginForm'
 import { updatePosts } from '../api';
-import { getTodaysPosts } from '../api';
 
 const Header = () => {
     // we need to import the login status later
@@ -16,21 +14,21 @@ const Header = () => {
         return weGotNewPosts;
     }
 
-    const handleToday = async() => {
-        console.log('getting today posts');
-        const todayPosts = await getTodaysPosts();
-        console.log('today posts might be here: ', todayPosts);
-        return todayPosts;
+    const handleToday = () => {
+        // console.log('getting today posts');
+        // const todayPosts = await getTodaysPosts();
+        // console.log('today posts might be here: ', todayPosts);
+        // return todayPosts;
+        console.log('going to today!')
     }
 
     return (
         <div id="header-container">
-
-            <h1>Welcome to Not Reader</h1>
+            <h1><a href="/">Welcome to your RSS</a></h1>
 
             <button onClick={() => handleUpdate()}>Update posts</button>
 
-            <button onClick={() => {handleToday()}}>Today's Posts</button>
+            <button><a href="/today">Today's Posts</a></button>
             
         </div>
     )

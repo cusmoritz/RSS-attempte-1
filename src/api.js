@@ -64,8 +64,9 @@ export const updatePosts = async() => {
 export const getTodaysPosts = async() => {
     try {
         const response = await fetch(`${BASE_URL}/api/today`);
-        const todaysPosts = JSON.stringify(response);
-        console.log('todays posts in src/api: ', todaysPosts);
+        // console.log('response in api', response)
+        const todaysPosts = await response.json();
+        // console.log('todays posts in src/api: ', todaysPosts);
         return todaysPosts;
     } catch (error) {
         console.log('there was a problem getting todays posts in src/api: ', error);

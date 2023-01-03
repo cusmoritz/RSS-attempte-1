@@ -7,8 +7,9 @@ import Header from './components/Header';
 import Linklist from './components/Linklist';
 import Footer from './components/Footer'
 import { callAPIForLinks } from './api';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Router, Routes } from 'react-router-dom';
 import LinkPosts from './components/LinkPosts';
+import TodaysPosts from './components/TodaysPost';
 
 export const App = () => {
 
@@ -23,7 +24,7 @@ export const App = () => {
       console.log('we got the links in useEffecT')
     }
     getLinks();
-    // also get all the posts on first load
+    // also get all the posts on first load?
   },[])
 
   return(
@@ -33,6 +34,7 @@ export const App = () => {
         <BrowserRouter>
 
           <Routes>
+            <Route path="/today" element={<TodaysPosts />} />
             <Route exact path="/" element={<Linklist links={links}/>}/>
             <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} />}>
             </Route>

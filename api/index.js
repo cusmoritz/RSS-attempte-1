@@ -121,7 +121,7 @@ apiRouter.get('/api/today', async (request, response, next) => {
         const inputDate = `${nowYear}-${nowMonth}-${nowDay}`
         // console.log('our input datE: ', inputDate)
         const postsToday = await getPostsByDate(inputDate);
-        // console.log('postsToday: ', postsToday)
+        console.log('postsToday: ', postsToday)
         response.send(postsToday);
     } catch (error) {
         console.log('there was an error in apiRouter/get/today: ', error);
