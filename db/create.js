@@ -324,8 +324,8 @@ const updateDb = async () => {
         // parse each link through the parser, returning posts
             // send each post into the database, this time tied to the rss_link id
 
-client.connect();
-rebuildDatabase().then(buildDb);
+// client.connect();
+// rebuildDatabase().then(buildDb);
 
 module.exports = {
     buildDb, 
