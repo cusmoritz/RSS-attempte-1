@@ -48,7 +48,9 @@ export const callAPIForLinks = async() => {
 export const updatePosts = async() => {
     try {
         const newPosts = await fetch(`${BASE_URL}/api/update`);
+        console.log('new posts in /api : ', newPosts)
         const letsAddEm = await JSON.stringify(newPosts);
+        console.log('lets add em', letsAddEm)
         console.log('we got some new ones? :', letsAddEm);
         if (letsAddEm.length < 1){
             return;

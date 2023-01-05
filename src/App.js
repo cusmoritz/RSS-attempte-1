@@ -10,6 +10,7 @@ import { callAPIForLinks } from './api';
 import { BrowserRouter, Route, Router, Routes } from 'react-router-dom';
 import LinkPosts from './components/LinkPosts';
 import TodaysPosts from './components/TodaysPost';
+import { updatePosts } from './api';
 
 export const App = () => {
 
@@ -24,7 +25,9 @@ export const App = () => {
       console.log('we got the links in useEffecT')
     }
     getLinks();
-    // also get all the posts on first load?
+    // also get all the posts on first load? <- no, do that on link click
+    // update posts from each link on first load?
+    updatePosts();
   },[])
 
   return(

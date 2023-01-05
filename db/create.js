@@ -53,7 +53,8 @@ const addRssItemDatabase = async (item, link_id) => {
         // console.log('did we get here?: ', item, link_id);
         await client.query(`
         INSERT INTO rss (url, title, date, link_id)
-        VALUES ($1, $2, $3, $4);
+        VALUES ($1, $2, $3, $4)
+        ON CONFLICT (url) DO NOTHING;
         `, [item.link, item.title, item.date, link_id]);
     } catch (error) {
         console.log('there was an error inserting an item to the database: ', error);
@@ -68,20 +69,11 @@ const addLinktoTable = async (link) => {
         const {rows: newLinksInTable} = await client.query(`
         INSERT INTO rss_links (link_title, url)
         VALUES ($1, $2)
+        ON CONFLICT (url) DO NOTHING
         RETURNING *
         ;
         `, [link.name, link.link]);
 
-        // parse and input the posts from the new link
-        // const newPosts = linkParse(newLinksInTable.url);
-        // console.log('new posts: ', newPosts)
-        // newPosts.forEach( async (eachPost) => {
-        //     await addRssItemDatabase(eachPost, newLinksInTable.link_id);
-        // })
-
-        // console.log('newLinksInTable: ', newLinksInTable);
-        // const newLinkPosts = await linkParse(newLinksInTable.url);
-        // console.log('newLinkPosts: ', newLinkPosts);
         return newLinksInTable;
     } catch (error) {
         console.log('there was an error putting a link in the database: ', error);
@@ -107,13 +99,10 @@ const rebuildDatabase = async () => {
         CREATE TABLE IF NOT EXISTS rss_links (
             link_id SERIAL PRIMARY KEY,
             link_title TEXT NOT NULL,
-            url TEXT NOT NULL,
+            url TEXT UNIQUE NOT NULL,
             active BOOLEAN DEFAULT TRUE
             );
         `);
-        // user_id INTEGER
-        // link_name text REFERENCES rss_links(link_title),
-        // link_id INTEGER REFERENCES rss_links(link_id),
 
         console.log('creating tables...')
         // create the tables
@@ -122,10 +111,10 @@ const rebuildDatabase = async () => {
             id SERIAL PRIMARY KEY,
             content TEXT,
             link_id INTEGER REFERENCES rss_links(link_id),
-            url TEXT NOT NULL,
+            url TEXT UNIQUE NOT NULL,
             title TEXT NOT NULL,
             date DATE,
-            saved BOOLEAN DEFAULT TRUE
+            saved BOOLEAN DEFAULT FALSE
             );
         `);
 
@@ -139,11 +128,6 @@ const rebuildDatabase = async () => {
         );
         `);
         console.log('done creating tables...');
-
-        // await client.query(`
-        // INSERT INTO rss (content, url, title, date)
-        // VALUES($1, $2, $3, $4);
-        // `, [`'<img src="https://imgs.xkcd.com/comics/paper_title.png" title="CONFLICT OF INTEREST STATEMENT: The authors hope these results are correct because we all want to be cool people who are good at science." alt="CONFLICT OF INTEREST STATEMENT: The authors hope these results are correct because we all want to be cool people who are good at science." />'`, 'www.google.com', 'XKCD', '2022-11-28']);
 
     } catch (error) {
         console.log('there was an error rebuilding the database: ', error);
@@ -206,7 +190,7 @@ const getPostsByDate = async (date) => { // has to be year-month-day format
         console.log('there was an error in getPostsByDate: ', error);
         throw error;
     }
-}
+};
 
 const getLinkFromIdNumber = async (link_id) => {
     try {
@@ -317,15 +301,14 @@ const updateDb = async () => {
         console.log('there was an error updating the database: ', error);
         throw error;
     }
-}
+};
 
 // put all links in the database
     // fetch all links from the database,
         // parse each link through the parser, returning posts
             // send each post into the database, this time tied to the rss_link id
 
-// client.connect();
-// rebuildDatabase().then(buildDb);
+client.connect();
 
 module.exports = {
     buildDb, 

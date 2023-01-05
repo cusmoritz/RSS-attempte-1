@@ -22,10 +22,10 @@ const TodaysPosts = () => {
         ? 
         (todayPosts.map((post) => {
             return (
-                <>
+                <div key={post.id}>
                 <h4>{post.title}</h4>
                 <p><a href={post.url}>{post.url}</a></p>
-                </>
+                </div>
             )
         })) 
         :
