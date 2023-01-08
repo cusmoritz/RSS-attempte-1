@@ -38,7 +38,7 @@ export const App = () => {
 
           <Routes>
             <Route path="/today" element={<TodaysPosts />} />
-            <Route exact path="/" element={<Linklist links={links}/>}/>
+            <Route exact path="/" element={<Linklist links={links} setLinks={setLinks}/>}/>
             <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} />}>
             </Route>
           </Routes>

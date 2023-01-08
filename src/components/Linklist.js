@@ -21,7 +21,7 @@ const FEED_LINKS = [
     // {name: 'The Intercept', link: 'https://theintercept.com/feed/?lang=en'}
 ];
 
-const Linklist = ({links}) => {
+const Linklist = ({links, setLinks}) => {
     // console.log('links in link list', links)
 
     const [newURL, setNewUrl] = useState("");
@@ -30,7 +30,7 @@ const Linklist = ({links}) => {
     const handleSubmitNewLink = async (url, name) => {
         // console.log(`you are adding ${url} to the list of links`);
         const newLink = await createNewLink(url, name);
-        
+        setLinks((previousList) => [...previousList, newLink]);
         return newLink;
     };
 
