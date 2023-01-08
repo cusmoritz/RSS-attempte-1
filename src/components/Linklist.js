@@ -30,6 +30,7 @@ const Linklist = ({links}) => {
     const handleSubmitNewLink = async (url, name) => {
         // console.log(`you are adding ${url} to the list of links`);
         const newLink = await createNewLink(url, name);
+        
         return newLink;
     };
 
@@ -38,6 +39,8 @@ const Linklist = ({links}) => {
             <form  className="container" onSubmit={(event) => {
                 event.preventDefault();
                 handleSubmitNewLink(newURL, newName);
+                setNewName("");
+                setNewUrl("");
             }}>
                 <label htmlFor='add-rss-link'>Add an RSS link:</label>
                 <input className="add-rss-link" type="text" placeholder="link" value={newURL} onChange={(event) => setNewUrl(event.target.value)}/>

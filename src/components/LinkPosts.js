@@ -16,6 +16,7 @@ const LinkPosts = () => {
 
     const gathering = async(linkSwitch) => {
         const gettingPosts = await getPostsForLink(linkSwitch);
+        console.log('posts? ', gettingPosts)
         setPosts(gettingPosts)
     }
 

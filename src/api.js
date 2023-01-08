@@ -100,7 +100,7 @@ export const createNewLink = async(linkURL, linkName) => {
                 "link": linkURL
             })
         });
-        console.log('we are trying to add a link: ', response);
+        // console.log('we are trying to add a link: ', response);
         const newLink = response.json();
         return newLink;
     } catch (error) {
