@@ -16,7 +16,6 @@ const LinkPosts = () => {
 
     const gathering = async(linkSwitch) => {
         const gettingPosts = await getPostsForLink(linkSwitch);
-        console.log('getting posts: ', gettingPosts)
         setPosts(gettingPosts)
     }
 
@@ -30,8 +29,9 @@ const LinkPosts = () => {
                     return (
                         <div key={post.id}>
                             <h4>{post.title}</h4>
-                            <p><a href={`${post.url}`}>{post.url}</a></p>
                             <p>Posted on: {post.date}</p>
+                            {post.content ? (post.content) : null }
+                            <p><a href={`${post.url}`}>{post.url}</a></p>
                         </div>
                     )
                 })}

@@ -25,12 +25,12 @@ const parseNewLinkPosts = async (link, linkId) => {
 // item should be an object type
 const addRssItemDatabase = async (item, link_id) => {
     try {
-        // console.log('did we get here?: ', item, link_id);
+        console.log('did we get here?: ', item, link_id);
         await client.query(`
-        INSERT INTO rss (url, title, date, link_id)
+        INSERT INTO rss (content, url, title, date, link_id)
         VALUES ($1, $2, $3, $4)
         ON CONFLICT (url) DO NOTHING;
-        `, [item.link, item.title, item.date, link_id]);
+        `, [item.content, item.link, item.title, item.date, link_id]);
     } catch (error) {
         console.log('there was an error inserting an item to the database: ', error);
         throw(error);
@@ -39,7 +39,7 @@ const addRssItemDatabase = async (item, link_id) => {
 
 // add links to database link table
 const addLinktoTable = async (link) => {
-    // console.log('what are we working with again: ', link);
+    console.log('what are we working with again: ', link);
     try {
         const {rows: newLinksInTable} = await client.query(`
         INSERT INTO rss_links (link_title, url)
@@ -48,7 +48,7 @@ const addLinktoTable = async (link) => {
         RETURNING *
         ;
         `, [link.name, link.link]);
-
+        console.log('this is returned in the database function: ', newLinksInTable)
         return newLinksInTable;
     } catch (error) {
         console.log('there was an error putting a link in the database: ', error);
@@ -183,3 +183,4 @@ module.exports = {
     updateDb,
 
 }
+

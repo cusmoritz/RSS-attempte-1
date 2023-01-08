@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useHistory } from 'react';
 import ReactDOM from 'react-dom/client';
 import EachLink from './EachLink';
+import { createNewLink } from '../api';
 
 const FEED_LINKS = [
     {name: 'Ars Technica', link: 'https://feeds.arstechnica.com/arstechnica/staff-blogs'}, // works with parseURL
@@ -20,11 +21,29 @@ const FEED_LINKS = [
     // {name: 'The Intercept', link: 'https://theintercept.com/feed/?lang=en'}
 ];
 
-
 const Linklist = ({links}) => {
-    console.log('links in link list', links)
+    // console.log('links in link list', links)
+
+    const [newURL, setNewUrl] = useState("");
+    const [newName, setNewName] = useState("");
+
+    const handleSubmitNewLink = async (url, name) => {
+        // console.log(`you are adding ${url} to the list of links`);
+        const newLink = await createNewLink(url, name);
+        return newLink;
+    };
+
     return (
         <>
+            <form  className="container" onSubmit={(event) => {
+                event.preventDefault();
+                handleSubmitNewLink(newURL, newName);
+            }}>
+                <label htmlFor='add-rss-link'>Add an RSS link:</label>
+                <input className="add-rss-link" type="text" placeholder="link" value={newURL} onChange={(event) => setNewUrl(event.target.value)}/>
+                <input type="text" placeholder="website name" value={newName} onChange={(event) => setNewName(event.target.value)}/>
+                <button type="submit">Add RSS link</button>
+            </form>
             <div className="container">
                 {links ? links.map((link) => {
                     return (<EachLink link={link} key={link.link_id}/>)

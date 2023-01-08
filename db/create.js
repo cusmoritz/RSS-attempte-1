@@ -50,12 +50,24 @@ const parseNewLinkPosts = async (link, linkId) => {
 // item should be an object type
 const addRssItemDatabase = async (item, link_id) => {
     try {
-        // console.log('did we get here?: ', item, link_id);
-        await client.query(`
-        INSERT INTO rss (url, title, date, link_id)
-        VALUES ($1, $2, $3, $4)
-        ON CONFLICT (url) DO NOTHING;
-        `, [item.link, item.title, item.date, link_id]);
+        console.log('item: ', item, link_id)
+        if(!item.content) {
+            // console.log('did we get here?: ', item, link_id);
+            await client.query(`
+            INSERT INTO rss (url, title, date, link_id)
+            VALUES ($1, $2, $3, $4)
+            ON CONFLICT (url) DO NOTHING
+            RETURNING *;
+            `, [item.link, item.title, item.date, link_id]);
+        } else {
+            await client.query(`
+            INSERT INTO rss (content, url, title, date, link_id)
+            VALUES ($1, $2, $3, $4, $5)
+            ON CONFLICT (url) DO NOTHING
+            RETURNING *;
+            `, [item.content, item.link, item.title, item.date, link_id]);
+        }
+        
     } catch (error) {
         console.log('there was an error inserting an item to the database: ', error);
         throw(error);

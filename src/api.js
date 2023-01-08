@@ -79,10 +79,32 @@ export const getTodaysPosts = async() => {
 export const getPostsForLink = async(linkId) => {
     try {
         const response = await fetch(`${BASE_URL}/api/links/${linkId}`);
-        const posts = response.json();
+        const posts = await response.json();
         return posts;
     } catch (error) {
         console.log('there was an error fetching posts for each link: ', error);
         throw error;
     }
 };
+
+// '/api/links/new'
+export const createNewLink = async(linkURL, linkName) => {
+    try {
+        const response = await fetch(`${BASE_URL}/api/newlink`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "name": linkName,
+                "link": linkURL
+            })
+        });
+        console.log('we are trying to add a link: ', response);
+        const newLink = response.json();
+        return newLink;
+    } catch (error) {
+        console.log('there was an error creating a new link: ', error);
+        throw error;
+    }
+}
