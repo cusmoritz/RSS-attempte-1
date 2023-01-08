@@ -25,7 +25,7 @@ const Linklist = ({links}) => {
     console.log('links in link list', links)
     return (
         <>
-            <div>
+            <div className="container">
                 {links ? links.map((link) => {
                     return (<EachLink link={link} key={link.link_id}/>)
                 }) : (<p>There are no posts to show</p>) }

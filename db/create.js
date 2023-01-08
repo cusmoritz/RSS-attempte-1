@@ -280,29 +280,6 @@ const buildDb = async () => {
     }
 };
 
-const updateDb = async () => {
-    try {
-        // gets all the links from the database
-        const links = await getAllLinks()
-        links.forEach(async (link) => {
-            // parses every link to get posts
-            const newParsedPosts = await parseNewLinkPosts(link.url, link.link_id);
-            if (!newParsedPosts) {
-                return;
-            } else {
-                newParsedPosts.forEach(async (post) => {
-                    // puts new posts into database
-                    const newPosts = await addRssItemDatabase(post);
-                    return newPosts;
-                })
-            }
-        })
-    } catch (error) {
-        console.log('there was an error updating the database: ', error);
-        throw error;
-    }
-};
-
 // put all links in the database
     // fetch all links from the database,
         // parse each link through the parser, returning posts
@@ -324,6 +301,5 @@ module.exports = {
     getPostsByDate,
     fetchUser,
     createNewUser,
-    updateDb,
 
 };

@@ -6,6 +6,8 @@ const CONNECTION_STRING = process.env.DATABASE_URL || "postgres://localhost:5432
 
 const client = new Client(CONNECTION_STRING);
 
+const { linkParse } = require('./parse.js')
+
 const parseNewLinkPosts = async (link, linkId) => {
     try {
 
@@ -142,16 +144,42 @@ const getPostsFromLinkId = async (link_id) => {
     }
 };
 
+const updateDb = async () => {
+    try {
+        // gets all the links from the database
+        const links = await getAllLinks()
+        links.forEach(async (link) => {
+            // parses every link to get posts
+            const newParsedPosts = await parseNewLinkPosts(link.url, link.link_id);
+            if (!newParsedPosts) {
+                return;
+            } else {
+                newParsedPosts.forEach(async (post) => {
+                    // puts new posts into database
+                    const newPosts = await addRssItemDatabase(post);
+                    return newPosts;
+                })
+            }
+        })
+    } catch (error) {
+        console.log('there was an error updating the database: ', error);
+        throw error;
+    }
+};
+
+// client.connect();
+
 module.exports = {
-    client, 
-    getPostsFromLinkId,
-    getPostsByDate,
-    getOnePostById,
-    getAllPosts,
-    getLinkFromIdNumber,
-    getAllLinks,
-    addLinktoTable,
-    addRssItemDatabase,
+    client,
     parseNewLinkPosts,
-    
+    addRssItemDatabase,
+    addLinktoTable,
+    getAllLinks,
+    getLinkFromIdNumber,
+    getAllPosts,
+    getOnePostById,
+    getPostsByDate,
+    getPostsFromLinkId,
+    updateDb,
+
 }

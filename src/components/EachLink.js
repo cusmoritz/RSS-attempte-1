@@ -17,12 +17,12 @@ const EachLink = ({link}) => {
     // they might also have 'content' at some point
     return (
 
-        <div className='post-container'>
+        <div className='link-container'>
             <sup>{link.link_id}</sup>
-            <h4 className='post-title'>
+            <h4 className='link-title'>
                 <a href={link.url} target="_blank">{link.link_title}</a>
             </h4>
-            <p className='post-url'>
+            <p className='link-url'>
                 <a target="_blank">{link.url}</a>
             </p>
             <button><Link to={`/${link.link_id}/posts`}>See all posts</Link></button>

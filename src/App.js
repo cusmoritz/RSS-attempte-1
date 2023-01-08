@@ -27,7 +27,7 @@ export const App = () => {
     getLinks();
     // also get all the posts on first load? <- no, do that on link click
     // update posts from each link on first load?
-    updatePosts();
+    // updatePosts();
   },[])
 
   return(

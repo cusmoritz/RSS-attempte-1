@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 
 const Footer = () => {
     return (
-        <footer id="footer-container">
+        <footer className="container">
             <div className='footer-item'>
                 <p>Github</p>
                 <p>LinkedIn</p>

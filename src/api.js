@@ -85,4 +85,4 @@ export const getPostsForLink = async(linkId) => {
         console.log('there was an error fetching posts for each link: ', error);
         throw error;
     }
-}
+};
