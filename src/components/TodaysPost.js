@@ -17,20 +17,21 @@ const TodaysPosts = () => {
     }, [])
 
     return (
-        <>
-        {todayPosts 
+        <div className='container'>
+        {!todayPosts 
         ? 
-        (todayPosts.map((post) => {
-            return (
-                <div key={post.id}>
-                <h4>{post.title}</h4>
-                <p><a href={post.url}>{post.url}</a></p>
-                </div>
-            )
-        })) 
+            (<p>There are no posts from today</p>)
         :
-        (<p>There are no posts from today</p>)}
-        </>
+            (todayPosts.map((post) => {
+                return (
+                    <div key={post.id}>
+                    <h4>{post.title}</h4>
+                    <p><a href={post.url}>{post.url}</a></p>
+                    </div>
+                )
+            })) 
+        }
+        </div>
     )
 }
 

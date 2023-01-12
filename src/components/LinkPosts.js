@@ -17,11 +17,13 @@ const LinkPosts = () => {
     const gathering = async(linkSwitch) => {
         const gettingPosts = await getPostsForLink(linkSwitch);
         console.log('posts? ', gettingPosts)
+        const date = new Date().getTime();
+        console.log(date, gettingPosts.date)
         setPosts(gettingPosts)
     }
 
     return (
-        <div>
+        <div className="container">
             {!posts ? 
                 (<p>There are no posts for this link.</p>) 
             : 

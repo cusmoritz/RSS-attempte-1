@@ -128,8 +128,10 @@ const getPostsByDate = async (date) => { // has to be year-month-day format
         // const date = new Date(); // this is the instance the function runs
         const {rows: postsByDate} = await client.query(`
         SELECT * FROM rss
-        WHERE date=$1;
-        `, [date]);
+        WHERE date=$1
+        ORDER BY date DESC
+        ;`, [date]);
+        // SORT BY column_name DESC
         return postsByDate;
     } catch (error) {
         console.log('there was an error in getPostsByDate: ', error);
