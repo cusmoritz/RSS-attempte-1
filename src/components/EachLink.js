@@ -5,11 +5,6 @@ import ReactDOM from 'react-dom/client';
 
 const EachLink = ({link}) => {
 
-    const handleClick = async (id) => {
-        console.log(`are you sure you want to see the posts from feed ${id}?`)
-        
-    }
-
     const handleDelete = (id) => {
         console.log(`are you sure you want to delete feed ${id}?`)
     }

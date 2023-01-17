@@ -9,18 +9,10 @@ const Header = () => {
     const handleUpdate = async () => {
         console.log('updating...')
         const weGotNewPosts = await updatePosts();
-        console.log('weGotNewPosts', weGotNewPosts)
+        // console.log('weGotNewPosts', weGotNewPosts)
         console.log('done updating');
         return weGotNewPosts;
     };
-
-    const handleToday = () => {
-        // console.log('getting today posts');
-        // const todayPosts = await getTodaysPosts();
-        // console.log('today posts might be here: ', todayPosts);
-        // return todayPosts;
-        console.log('going to today!')
-    }
 
     return (
         <div className="container">

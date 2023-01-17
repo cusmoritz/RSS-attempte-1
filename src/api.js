@@ -25,7 +25,7 @@ export const getAPILinks = async(token) => {
             'Authorization': `Bearer ${token}`
           }}).then(result => result.json())
 
-          console.log('response in api', response)
+        //   console.log('response in api', response)
         return response;
     } catch (error) {
         console.log('there was an error fetching all links: ' , error);
@@ -37,7 +37,7 @@ export const callAPIForLinks = async() => {
     try {
         const links = await fetch(`${BASE_URL}/api/links`)
         const paresedLinks = await links.json();
-        console.log('we got the links in api')
+        // console.log('we got the links in api')
         return paresedLinks;
     } catch (error) {
         console.log('there was an error getting all the links from the API: ', error);
@@ -48,10 +48,10 @@ export const callAPIForLinks = async() => {
 export const updatePosts = async() => {
     try {
         const newPosts = await fetch(`${BASE_URL}/api/update`);
-        console.log('new posts in /api : ', newPosts)
+        // console.log('new posts in /api : ', newPosts)
         const letsAddEm = await JSON.stringify(newPosts);
-        console.log('lets add em', letsAddEm)
-        console.log('we got some new ones? :', letsAddEm);
+        // console.log('lets add em', letsAddEm)
+        // console.log('we got some new ones? :', letsAddEm);
         if (letsAddEm.length < 1){
             return;
         }else {
