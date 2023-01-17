@@ -18,9 +18,6 @@ const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPos
 const bcrypt = require('bcrypt');
 const SALTY_ROUNDS = 10;
 
-// get the parser
-const { linkParse } = require('../db/parse');
-
 apiRouter.use((request, response, next) => {
     console.log('request.method: ', request.method);
     console.log('request.url: ', request.url);

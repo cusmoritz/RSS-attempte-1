@@ -1,5 +1,5 @@
 // Require the Client constructor from the pg package
-const { Client, Pool } = require('pg');
+const { Client } = require('pg');
 
 const CONNECTION_STRING = process.env.DATABASE_URL || "postgres://localhost:5432/rss-feed";
 // Create the client using new Client(CONNECTION_STRING)
