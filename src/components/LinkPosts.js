@@ -30,11 +30,11 @@ const LinkPosts = () => {
                 (<div>
                 {posts.map((post) => {
                     return (
-                        <div key={post.id}>
+                        <div key={post.id} className="post-container">
                             <h4>{post.title}</h4>
                             <p>Posted on: {post.date}</p>
                             {post.content ? (post.content) : null }
-                            <p><a href={`${post.url}`}>{post.url}</a></p>
+                            <p><a href={`${post.url}`}>See original post.</a></p>
                         </div>
                     )
                 })}

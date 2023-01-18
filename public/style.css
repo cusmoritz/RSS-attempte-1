@@ -7,25 +7,6 @@
 * 12/29/2014
 */
 
-
-/* Table of contents
-â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“
-- Grid
-- Base Styles
-- Typography
-- Links
-- Buttons
-- Forms
-- Lists
-- Code
-- Tables
-- Spacing
-- Utilities
-- Clearing
-- Media Queries
-*/
-
-
 /* Grid
 â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“ */
 .container {
@@ -40,6 +21,17 @@
     width: 100%;
     float: left;
     box-sizing: border-box; }
+
+  .post-container {
+    border-bottom: solid 2px #33C3F0;
+    margin-top: 1em;
+  }
+
+  .link-container{
+    border-bottom: solid 2px #33C3F0;
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
   
   /* For devices larger than 400px */
   @media (min-width: 400px) {
@@ -161,6 +153,9 @@
     color: #1EAEDB; }
   a:hover {
     color: #0FA0CE; }
+  h1 a {
+    text-decoration: none;
+  }
   
   
   /* Buttons

@@ -13,18 +13,16 @@ const EachLink = ({link}) => {
     return (
 
         <div className='link-container'>
-            <sup>{link.link_id}</sup>
             <h4 className='link-title'>
-                <a href={link.url} target="_blank">{link.link_title}</a>
+                {link.link_id}: {link.link_title}
             </h4>
-            <p className='link-url'>
-                <a target="_blank">{link.url}</a>
-            </p>
             <button><Link to={`/${link.link_id}/posts`}>See all posts</Link></button>
-
             <button onClick={((event) => {
                 handleDelete(link.link_id)
             })}>Delete feed</button>
+            <p className='link-url'>
+                <a href={link.url} target="_blank">{link.url}</a>
+            </p>
             {/* <p className='post-content'>{link.content}</p> */}
         </div>
     )
