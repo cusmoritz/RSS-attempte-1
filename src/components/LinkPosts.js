@@ -22,6 +22,9 @@ const LinkPosts = () => {
         setPosts(gettingPosts)
     }
 
+    // return <div dangerouslySetInnerHTML={createMarkup()} />;
+    // dangerouslySetInnerHTML={{__html: data}}
+
     return (
         <div className="container">
             {!posts ? 
@@ -33,7 +36,7 @@ const LinkPosts = () => {
                         <div key={post.id} className="post-container">
                             <h4>{post.title}</h4>
                             <p>Posted on: {post.date}</p>
-                            {post.content ? (post.content) : null }
+                            {post.content ? <p dangerouslySetInnerHTML={{__html: post.content}}></p> : null }
                             <p><a href={`${post.url}`}>See original post.</a></p>
                         </div>
                     )

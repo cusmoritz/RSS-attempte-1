@@ -108,7 +108,7 @@ const getAllPosts = async () => {
     }
 };
 
-const getActivePosts = async() => {
+const getActiveLinks = async() => {
     try {
         const {rows: activeLinks} = await client.query(`
         SELECT * FROM rss_links
@@ -224,7 +224,7 @@ module.exports = {
     getPostsFromLinkId,
     updateDb,
     deactivateLink,
-    getActivePosts,
-    
+    getActiveLinks,
+
 }
 

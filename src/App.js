@@ -30,11 +30,6 @@ export const App = () => {
     // updatePosts();
   },[])
 
-  // TODO: add 'save story' button
-  // TODO: remove rss feed link button
-  // TODO: login?
-  // TODO: sort all stories by date on the 'all stories' page
-
   return(
     <>
       <Header/>

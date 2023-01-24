@@ -47,16 +47,12 @@ export const callAPIForLinks = async() => {
 
 export const updatePosts = async() => {
     try {
-        const newPosts = await fetch(`${BASE_URL}/api/update`);
-        // console.log('new posts in /api : ', newPosts)
-        const letsAddEm = await JSON.stringify(newPosts);
-        // console.log('lets add em', letsAddEm)
-        // console.log('we got some new ones? :', letsAddEm);
-        if (letsAddEm.length < 1){
-            return;
-        }else {
-            return letsAddEm;
-        }
+        const newPosts = await fetch(`${BASE_URL}/api/update`, {
+            method: "POST"
+        });
+        const letsAddEm = await newPosts.json();
+        console.log('lets add em: ', letsAddEm)
+        // return how many posts we updated?
     } catch (error) {
         console.log('there was an error updating the posts in src/api: ', error);
         throw error;

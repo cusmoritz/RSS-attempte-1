@@ -13,7 +13,7 @@ apiRouter.use(cors());
 // define port
 const PORT = process.env.PORT || 3000;
 // get our client so we can connect
-const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, fetchUser, createNewUser, updateDb, deactivateLink, getActivePosts } = require('../db/index.js');
+const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, fetchUser, createNewUser, updateDb, deactivateLink, getActiveLinks } = require('../db/index.js');
 
 const bcrypt = require('bcrypt');
 const SALTY_ROUNDS = 10;
@@ -81,8 +81,8 @@ apiRouter.get('/api/links/:linkId', async (request, response, next) => {
 // /api/links shows every link that has been 'subscsribed' to 
 apiRouter.get('/api/links', async (request, response, next) => {
     try {
-        const allLinks = await getAllLinks();
-        response.send(allLinks);
+        const activeLinks = await getActiveLinks();
+        response.send(activeLinks);
     } catch (error) {
      console.log('there was an error in apiRouter/get/api/links: ', error);
      throw error;   

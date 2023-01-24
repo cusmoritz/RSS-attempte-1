@@ -18,12 +18,12 @@ const EachLink = ({link}) => {
 
         <div className='link-container'>
             <h4 className='link-title'>
-                {link.link_id}: {link.link_title}
+                {link.link_title}
             </h4>
             <button><Link to={`/${link.link_id}/posts`}>See all posts</Link></button>
             <button onClick={((event) => {
                 handleDelete(link.link_id)
-            })}>Delete feed</button>
+            })}>Deactivate feed</button>
             <p className='link-url'>
                 <a href={link.url} target="_blank">{link.url}</a>
             </p>
