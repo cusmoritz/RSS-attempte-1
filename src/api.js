@@ -108,3 +108,20 @@ export const createNewLink = async(linkURL, linkName) => {
         throw error;
     }
 }
+
+// api/deactivate/:linkId
+export const deactivateLink = async(linkId) => {
+    try {
+        // console.log('working in front end: ', linkId)
+        const response = fetch(`${BASE_URL}/api/deactivate/${linkId}`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        return response;
+    } catch (error) {
+        console.log('there was an error deactivating a link in src/api: ', error);
+        throw error;
+    }
+}

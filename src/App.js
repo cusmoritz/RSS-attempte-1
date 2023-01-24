@@ -34,7 +34,6 @@ export const App = () => {
   // TODO: remove rss feed link button
   // TODO: login?
   // TODO: sort all stories by date on the 'all stories' page
-  
 
   return(
     <>

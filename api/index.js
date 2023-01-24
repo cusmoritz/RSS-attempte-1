@@ -13,7 +13,7 @@ apiRouter.use(cors());
 // define port
 const PORT = process.env.PORT || 3000;
 // get our client so we can connect
-const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, fetchUser, createNewUser, updateDb } = require('../db/index.js');
+const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, fetchUser, createNewUser, updateDb, deactivateLink, getActivePosts } = require('../db/index.js');
 
 const bcrypt = require('bcrypt');
 const SALTY_ROUNDS = 10;
@@ -218,6 +218,19 @@ apiRouter.get('/api/update', async (request, response, next) => {
         throw error;
     }
 });
+
+// deactive link route
+apiRouter.post('/api/deactivate/:linkId', async (request, response, next) => {
+    try {
+        // console.log('working in back end: ', request)
+        const {linkId} = request.params;
+        const deactivated = await deactivateLink(linkId);
+        response.send(deactivated);
+    } catch (error) {
+        console.log('there was an error deactivating a link');
+        throw error;
+    }
+})
 
 client.connect();
 

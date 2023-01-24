@@ -108,6 +108,20 @@ const getAllPosts = async () => {
     }
 };
 
+const getActivePosts = async() => {
+    try {
+        const {rows: activeLinks} = await client.query(`
+        SELECT * FROM rss_links
+        WHERE active = TRUE
+        ;
+        `);
+        return activeLinks;
+    } catch (error) {
+        console.log('there was an error getting active links: ', error);
+        throw error;
+    }
+}
+
 const getOnePostById = async(postId) => {
     try {
         const onePost = await client.query(`
@@ -178,6 +192,23 @@ const updateDb = async () => {
     }
 };
 
+const deactivateLink = async(linkId) => {
+    try {
+        // console.log('working in database: ', linkId)
+        const {rows: link} = client.query(`
+        UPDATE rss_links
+        SET active = FALSE
+        WHERE link_id = $1
+        RETURNING *
+        ;
+        `, [linkId]);
+        return link;
+    } catch (error) {
+        console.log('there was an error deactivating a link in the database: ', error);
+        throw error;
+    }
+}
+
 // client.connect();
 
 module.exports = {
@@ -192,6 +223,8 @@ module.exports = {
     getPostsByDate,
     getPostsFromLinkId,
     updateDb,
-
+    deactivateLink,
+    getActivePosts,
+    
 }
 
