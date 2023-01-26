@@ -21,12 +21,12 @@ const EachLink = ({link}) => {
                 {link.link_title}
             </h4>
             <button><Link to={`/${link.link_id}/posts`}>See all posts</Link></button>
-            <button onClick={((event) => {
+            {/* <button onClick={((event) => {
                 handleDelete(link.link_id)
-            })}>Deactivate feed</button>
-            <p className='link-url'>
+            })}>Deactivate feed</button> */}
+            {/* <p className='link-url'>
                 <a href={link.url} target="_blank">{link.url}</a>
-            </p>
+            </p> */}
             {/* <p className='post-content'>{link.content}</p> */}
         </div>
     )

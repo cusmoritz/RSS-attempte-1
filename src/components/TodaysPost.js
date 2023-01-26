@@ -15,12 +15,12 @@ const TodaysPosts = () => {
         }
         gettingPosts();
     }, [])
-
+    console.log('today posts', todayPosts)
     return (
         <div className='container'>
-        {!todayPosts 
+        {todayPosts.length < 1 
         ? 
-            (<p>There are no posts from today</p>)
+            (<div><h5>There are no posts from today.</h5></div>)
         :
             (todayPosts.map((post) => {
                 return (

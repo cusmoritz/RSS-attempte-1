@@ -16,12 +16,16 @@ const Header = () => {
 
     return (
         <div className="container">
-            <h1><a href="/">Welcome to your RSS</a></h1>
+            <div className="header-container">
+                <h1><a href="/">Welcome to your RSS</a></h1>
 
-            <button onClick={() => handleUpdate()}>Update posts</button>
+                <button onClick={() => handleUpdate()}>Update posts</button>
 
-            <button><a href="/today">Today's Posts</a></button>
-            
+                <button><a href="/today">Today's Posts</a></button>
+
+                <button>Manage links</button>
+                
+            </div>
         </div>
     )
 }
