@@ -1,6 +1,9 @@
 // Require the Client constructor from the pg package
 const { Client } = require('pg');
 
+//nabs the parser from the other file
+const { linkParse } = require('./parse.js');
+
 const CONNECTION_STRING = process.env.DATABASE_URL || "postgres://localhost:5432/rss-feed";
 // Create the client using new Client(CONNECTION_STRING)
 

@@ -186,7 +186,6 @@ apiRouter.post('/api/sign-up', async (request, response, next) => {
             console.log('we got a new user signed up: ', newUser)
             response.send({message: "You're signed up!", newUser});
         }
-
     } catch (error) {
         console.log('there was an error in apiRouter/post/sign-up: ', error);
         throw (error);

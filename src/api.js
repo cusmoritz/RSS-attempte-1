@@ -121,3 +121,20 @@ export const deactivateLink = async(linkId) => {
         throw error;
     }
 }
+
+export const userRegister = async(username, password) => {
+    try {
+        const result = await fetch(`${BASE_URL}/api/sign-up`, {
+            method: "POST",
+            body: {
+                username: username,
+                password: password,
+            }
+        })
+        const newUser = result.json();
+        return newUser;
+    } catch (error) {
+        console.log('there was an error registering a new user in src/api: ', error);
+        throw error;
+    }
+}

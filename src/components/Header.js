@@ -27,7 +27,8 @@ const Header = ({token}) => {
 
                 {!token ?
                 <button>Register</button>
-                : <button>Login</button>
+                : 
+                <button>Login</button>
                 }
                 
             </div>

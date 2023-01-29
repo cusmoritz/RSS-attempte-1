@@ -39,6 +39,7 @@ export const App = () => {
             <Route path="/today" element={<TodaysPosts />} />
             <Route exact path="/" element={<Linklist links={links} setLinks={setLinks}/>}/>
             <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} />}>
+
             {/* we need a user route */}
             {/* <Route path="/:user/manage"></Route> */}
             </Route>
