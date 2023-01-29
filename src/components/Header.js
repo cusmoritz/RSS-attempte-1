@@ -9,7 +9,6 @@ const Header = () => {
     const handleUpdate = async () => {
         console.log('updating...')
         const weGotNewPosts = await updatePosts();
-        // console.log('weGotNewPosts', weGotNewPosts)
         console.log('done updating');
         return weGotNewPosts;
     };

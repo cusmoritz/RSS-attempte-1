@@ -7,13 +7,12 @@ import { deactivateLink } from '../api';
 const EachLink = ({link}) => {
 
     const handleDelete = async (id) => {
-        // console.log(`are you sure you want to delete feed ${id}?`)
         const linkNoMore = await deactivateLink(id);
         alert(`${link.link_title} has been deactivated.`)
         return linkNoMore;
     }
-    // posts have an id, a link_id, a url (links away from site), a title, a date, and a SAVED boolean
-    // they might also have 'content' at some point
+    // posts have an id, a link_id, a url (links away from site), content, a title, a date, and a SAVED boolean
+
     return (
 
         <div className='link-container'>

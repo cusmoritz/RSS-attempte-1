@@ -8,9 +8,7 @@ const TodaysPosts = () => {
 
     useEffect(() => {
         const gettingPosts = async() => {
-            // console.log('getting today posts');
             const fetchingPosts = await getTodaysPosts();
-            // console.log('today posts might be here: ', fetchingPosts);
             setTodayPosts(fetchingPosts);
         }
         gettingPosts();

@@ -19,10 +19,8 @@ export const App = () => {
   const [links, setLinks] = useState([]);
 
   useEffect(() => {
-    //get all the links on first load
     async function getLinks(){
       setLinks(await callAPIForLinks());
-      // console.log('we got the links in useEffecT')
     }
     getLinks();
     // also get all the posts on first load? <- no, do that on link click
