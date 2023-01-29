@@ -17,6 +17,7 @@ export const App = () => {
   // use state to check for login status
   // const [login, setLogin] = useState(true);
   const [links, setLinks] = useState([]);
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     async function getLinks(){
@@ -30,7 +31,7 @@ export const App = () => {
 
   return(
     <>
-      <Header/>
+      <Header token={token}/>
       
         <BrowserRouter>
 
