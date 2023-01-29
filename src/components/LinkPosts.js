@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getPostsForLink } from "../api";
 
@@ -17,8 +16,11 @@ const LinkPosts = () => {
     const gathering = async(linkSwitch) => {
         const gettingPosts = await getPostsForLink(linkSwitch);
         // console.log('posts? ', gettingPosts)
-        const date = new Date().getTime();
-        // console.log(date, gettingPosts.date)
+        // const date = new Date().getTime();
+        // const sortedPosts = gettingPosts.sort(function(date, b){return b > date});
+        // // get today's date, sort by posts that are less than todays date?
+
+        // console.log(date, sortedPosts)
         setPosts(gettingPosts)
     }
 

@@ -157,8 +157,9 @@ const getPostsByDate = async (date) => { // has to be year-month-day format
 const getPostsFromLinkId = async (link_id) => {
     try {
         const {rows: postsFromId} = await client.query(`
-        SELECT * FROM rss
+        SELECT * from rss
         WHERE link_id=$1
+        ORDER BY date DESC
         ;
         `, [link_id]);
         // console.log('should be 4 posts: ', postsFromId);
