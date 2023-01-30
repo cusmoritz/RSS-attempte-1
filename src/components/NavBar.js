@@ -1,12 +1,9 @@
-// import everything
-import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
-import { updatePosts } from '../api';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { NavLink } from "react-router-dom";
 
-const Header = ({token}) => {
-    // we need to import the login status later
+const NavBar = ({token}) => {
 
+    // updates post on button press
     const handleUpdate = async () => {
         console.log('updating...');
         await updatePosts();
@@ -16,16 +13,15 @@ const Header = ({token}) => {
     return (
         <div className="container">
             <div className="header-container">
-                <h1><a href="/">Welcome to your RSS</a></h1>
 
                 <button onClick={() => handleUpdate()}>Update posts</button>
 
-                <button><a href="/today">Today's Posts</a></button>
+                <NavLink to="/today"><button>Today's Posts</button></NavLink>
 
                 <button>Manage links</button>
 
                 {!token ?
-                <button><Link to="/register">Register</Link></button>
+                <NavLink to="/register"><button>Register</button></NavLink>
                 : 
                 <button>Login</button>
                 }
@@ -35,4 +31,4 @@ const Header = ({token}) => {
     )
 }
 
-export default Header;
+export default NavBar;

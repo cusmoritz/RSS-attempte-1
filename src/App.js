@@ -6,11 +6,12 @@ import ReactDOM from 'react-dom';
 import Header from './components/Header';
 import Linklist from './components/Linklist';
 import Footer from './components/Footer'
+import Register from './components/Register';
 import { callAPIForLinks } from './api';
-import { BrowserRouter, Route, Router, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Router, Routes, Link } from 'react-router-dom';
 import LinkPosts from './components/LinkPosts';
 import TodaysPosts from './components/TodaysPost';
-import { updatePosts } from './api';
+import NavBar from './components/NavBar';
 
 export const App = () => {
 
@@ -31,20 +32,20 @@ export const App = () => {
 
   return(
     <>
-      <Header token={token}/>
-      
-        <BrowserRouter>
+      <h1><Link>STREAMER</Link></h1>
+        <NavBar token={token}/>
+
 
           <Routes>
+
             <Route path="/today" element={<TodaysPosts />} />
             <Route exact path="/" element={<Linklist links={links} setLinks={setLinks}/>}/>
-            <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} />}>
-
+            <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} />} />
+            <Route path="/register" element={<Register />} />
             {/* we need a user route */}
             {/* <Route path="/:user/manage"></Route> */}
-            </Route>
           </Routes>
-        </BrowserRouter>
+
 
       <Footer />
     </>

@@ -50,7 +50,7 @@ const Linklist = ({links, setLinks}) => {
             <div className="container">
                 {links ? links.map((link) => {
                     return (<EachLink link={link} key={link.link_id}/>)
-                }) : (<p>There are no posts to show</p>) }
+                }) : (<p>You haven't added any feeds yet!</p>) }
             </div>
         </>
     )

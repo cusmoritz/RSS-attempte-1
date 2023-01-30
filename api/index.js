@@ -207,7 +207,7 @@ apiRouter.get('/api', async (request, response, next) => {
     }
 });
 
-apiRouter.get('/api/update', async (request, response, next) => {
+apiRouter.post('/api/update', async (request, response, next) => {
     try {
         const newPosts = await updateDb();
         console.log('this is new posts: ', newPosts)
