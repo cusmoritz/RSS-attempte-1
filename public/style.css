@@ -155,7 +155,43 @@
 
   .header-container button {
     width: 50%;
+  }
 
+  .register-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+  }
+
+  .register-form {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .register-form input {
+    width: 50%;
+  }
+
+  .register-form button {
+    width: 50%;
+  }
+
+  @media (min-width: 400px) {}
+  @media (max-width: 500px) {
+    .register-form {
+      flex-direction: column;
+      width: 100%;
+
+    }
+  }
+
+  .register-form label {
+    width: 50%;
+    align-self:flex-start;
   }
   
   p {

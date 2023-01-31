@@ -13,10 +13,12 @@ apiRouter.use(cors());
 // define port
 const PORT = process.env.PORT || 3000;
 // get our client so we can connect
-const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, fetchUser, createNewUser, updateDb, deactivateLink, getActiveLinks } = require('../db/index.js');
+const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks } = require('../db/index.js');
+
+const { createNewUser, fetchUser } = require('../db/users')
 
 const bcrypt = require('bcrypt');
-const SALTY_ROUNDS = 10;
+const SALT_ROUNDS = 10;
 
 apiRouter.use((request, response, next) => {
     console.log('request.method: ', request.method);
@@ -171,7 +173,8 @@ apiRouter.get('/api/login', async (request, response, next) => {
 
 apiRouter.post('/api/sign-up', async (request, response, next) => {
     try {
-        const { username, password } = request.body;
+        console.log('req body', request.body)
+        const { username, password, email, firstName, lastName } = request.body;
         console.log('new username? ', username);
         console.log('new password? ', password);
         // check for dupe usernames
@@ -180,9 +183,9 @@ apiRouter.post('/api/sign-up', async (request, response, next) => {
             // this should be error handling instead
             response.send({message: "That username is already taken, try again."});
         } else {
-            const hashedPass = await bcrypt.hashSync(password, SALTY_ROUNDS);
+            const hashedPass = await bcrypt.hash(password, SALT_ROUNDS);
             // console.log('hashed pass?', hashedPass)
-            const newUser = await createNewUser(username, hashedPass);
+            const newUser = await createNewUser(username, hashedPass, email, firstName, lastName);
             console.log('we got a new user signed up: ', newUser)
             response.send({message: "You're signed up!", newUser});
         }

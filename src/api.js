@@ -2,21 +2,6 @@
 
 const BASE_URL = 'http://localhost:3000'; // wherever the db is hosted
 
-// export const getNotLoggedInLinks = async => {
-//     try {
-//         const response = await fetch(`${BASE_URL}/api/today`);
-
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': `Bearer ${token}`
-//           }.then(result => result.json())
-          
-//     } catch (error) {
-//         console.log('there was an error in getting notLoggedInLinks: ', error);
-//         throw error;
-//     }
-// }
-
 export const getAPILinks = async(token) => {
     try {
         const response = await fetch(`${BASE_URL}/api/links`, {
@@ -122,15 +107,22 @@ export const deactivateLink = async(linkId) => {
     }
 }
 
-export const userRegister = async(username, password) => {
+export const userRegister = async(username, password, email, firstName, lastName) => {
     try {
+        console.log('in register api: ', username, password, email, firstName, lastName)
         const result = await fetch(`${BASE_URL}/api/sign-up`, {
             method: "POST",
-            body: {
-                username: username,
-                password: password,
-            }
-        })
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username:username,
+                password:password,
+                email:email,
+                firstName:firstName,
+                lastName:lastName
+            })
+        });
         const newUser = result.json();
         return newUser;
     } catch (error) {
