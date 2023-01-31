@@ -3,3 +3,4 @@ goal.md
 .postgratorrc.json
 .DS_Store
 src/.DS_Store
+.env

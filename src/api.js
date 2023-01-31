@@ -109,7 +109,6 @@ export const deactivateLink = async(linkId) => {
 
 export const userRegister = async(username, password, email, firstName, lastName) => {
     try {
-        console.log('in register api: ', username, password, email, firstName, lastName)
         const result = await fetch(`${BASE_URL}/api/sign-up`, {
             method: "POST",
             headers: {
@@ -124,6 +123,7 @@ export const userRegister = async(username, password, email, firstName, lastName
             })
         });
         const newUser = result.json();
+        console.log('new user in front end', newUser)
         return newUser;
     } catch (error) {
         console.log('there was an error registering a new user in src/api: ', error);

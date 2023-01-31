@@ -32,16 +32,15 @@ export const App = () => {
 
   return(
     <>
-      <h1><Link>STREAMER</Link></h1>
+      <h1><Link to="/">STREAMER</Link></h1>
         <NavBar token={token}/>
-
 
           <Routes>
 
             <Route path="/today" element={<TodaysPosts />} />
             <Route exact path="/" element={<Linklist links={links} setLinks={setLinks}/>}/>
             <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/register" element={<Register token={token} setToken={setToken}/>} />
             {/* we need a user route */}
             {/* <Route path="/:user/manage"></Route> */}
           </Routes>
