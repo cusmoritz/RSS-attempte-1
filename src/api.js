@@ -38,6 +38,7 @@ export const updatePosts = async() => {
         const letsAddEm = await newPosts.json();
         console.log('lets add em: ', letsAddEm)
         // return how many posts we updated?
+        alert('Posts updated!')
     } catch (error) {
         console.log('there was an error updating the posts in src/api: ', error);
         throw error;
@@ -107,6 +108,14 @@ export const deactivateLink = async(linkId) => {
     }
 }
 
+export const checkUserName = async(username) => {
+    try {
+        const result = await fetch(`${BASE_URL}/api`)
+    } catch (error) {
+        throw new Error('That username is already taken, try again.');
+    }
+}
+
 export const userRegister = async(username, password, email, firstName, lastName) => {
     try {
         const result = await fetch(`${BASE_URL}/api/sign-up`, {
@@ -122,9 +131,13 @@ export const userRegister = async(username, password, email, firstName, lastName
                 lastName:lastName
             })
         });
-        const newUser = result.json();
-        console.log('new user in front end', newUser)
-        return newUser;
+        if (result.error) {
+            return error;
+        } else {
+            const newUser = await result.json();
+            console.log('new user in front end', newUser)
+            return newUser;
+        }
     } catch (error) {
         console.log('there was an error registering a new user in src/api: ', error);
         throw error;

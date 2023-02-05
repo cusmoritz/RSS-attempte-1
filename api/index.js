@@ -6,7 +6,7 @@ const cors = require('cors')
 // create an apiRouter
 const apiRouter = express();
 
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 apiRouter.use(express.json());
 
@@ -177,20 +177,25 @@ apiRouter.post('/api/sign-up', async (request, response, next) => {
     try {
         console.log('req body', request.body)
         const { username, password, email, firstName, lastName } = request.body;
-        console.log('new username? ', username);
-        console.log('new password? ', password);
+        // console.log('new username? ', username);
+        // console.log('new password? ', password);
         // check for dupe usernames
         const _user = await fetchUser(username);
         if (_user) {
             // this should be error handling instead
-            response.status(400).send({message: "That username is already taken, try again."});
+            response.status(400).send({
+                error: "UserNameTaken",
+                message: "That username is already taken, try again."
+            });
         } else {
             const hashedPass = await bcrypt.hash(password, SALT_ROUNDS);
             // console.log('hashed pass?', hashedPass)
             const newUser = await createNewUser(username, hashedPass, email, firstName, lastName);
+            // const returnUser = newUser.json();
+            console.log('new user in api for real, ', newUser)
             const token = jwt.sign(newUser, process.env.JWT_SECRET);
-            console.log('we got a new user signed up: ', token)
-            response.status(200).send({message: "You're signed up!"}, token);
+            console.log('we got a new user signed up: ', token);
+            response.send({message: "You're signed up!", token});
         }
     } catch (error) {
         console.log('there was an error in apiRouter/post/sign-up: ', error);

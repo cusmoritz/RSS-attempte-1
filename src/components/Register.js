@@ -3,7 +3,7 @@ import { useState } from "react";
 import { userRegister } from "../api";
 import { useNavigate } from "react-router-dom";
 
-const Register = () => {
+const Register = ({token, setToken}) => {
 
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
@@ -21,8 +21,8 @@ const Register = () => {
             setConfirm("");
         } else {
             const newUser = await userRegister(username, password, email, firstName, lastName);
-            alert('Thanks for signing up!');
-            navigate('/')
+            // alert('Thanks for signing up!');
+            // navigate('/')
             return newUser;
         }
     }
