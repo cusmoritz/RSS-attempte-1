@@ -1,8 +1,10 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { updatePosts } from "../api";
 
 const NavBar = ({token, setToken}) => {
+
+    const navigate = useNavigate();
 
     // updates post on button press
     const handleUpdate = async () => {
@@ -11,8 +13,11 @@ const NavBar = ({token, setToken}) => {
         console.log('done updating');
     };
 
+    // log us out and set tokens
     const handleLogout = () => {
-        
+        setToken("");
+        window.localStorage.removeItem("token")
+        navigate('/');
     }
 
     return (
@@ -28,7 +33,7 @@ const NavBar = ({token, setToken}) => {
                 {!token ?
                 <NavLink to="/register"><button>Register</button></NavLink>
                 : 
-                <button>Logout</button>
+                <button onClick={handleLogout} >Logout</button>
                 }
                 
             </div>

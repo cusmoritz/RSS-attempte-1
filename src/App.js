@@ -27,7 +27,7 @@ export const App = () => {
     // update posts from each link on first load?
     // updatePosts();
 
-  },[])
+  },[token])
 
   return(
     <>
