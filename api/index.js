@@ -1,12 +1,14 @@
 // server file
 //require express
 const express = require('express');
-const cors = require('cors')
+const cors = require('cors');
+const jwt = require("jsonwebtoken");
+require('dotenv').config();
+const { JWT_SECRET } = process.env;
+console.log('secret', process.env.JWT_SECRET)
 
 // create an apiRouter
 const apiRouter = express();
-
-const jwt = require("jsonwebtoken");
 
 apiRouter.use(express.json());
 
@@ -175,7 +177,7 @@ apiRouter.get('/api/login', async (request, response, next) => {
 
 apiRouter.post('/api/sign-up', async (request, response, next) => {
     try {
-        console.log('req body', request.body)
+        // console.log('req body', request.body)
         const { username, password, email, firstName, lastName } = request.body;
         // console.log('new username? ', username);
         // console.log('new password? ', password);
@@ -192,9 +194,9 @@ apiRouter.post('/api/sign-up', async (request, response, next) => {
             // console.log('hashed pass?', hashedPass)
             const newUser = await createNewUser(username, hashedPass, email, firstName, lastName);
             // const returnUser = newUser.json();
-            console.log('new user in api for real, ', newUser)
-            const token = jwt.sign(newUser, process.env.JWT_SECRET);
-            console.log('we got a new user signed up: ', token);
+            // console.log('new user in api for real, ', newUser)
+            const token = jwt.sign(newUser, JWT_SECRET);
+            // console.log('we got a new user signed up: ', token);
             response.send({message: "You're signed up!", token});
         }
     } catch (error) {

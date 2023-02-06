@@ -2,8 +2,6 @@
 
 // import everything
 import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import Header from './components/Header';
 import Linklist from './components/Linklist';
 import Footer from './components/Footer'
 import Register from './components/Register';
@@ -18,7 +16,7 @@ export const App = () => {
   // use state to check for login status
   // const [login, setLogin] = useState(true);
   const [links, setLinks] = useState([]);
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(window.localStorage.token || null);
 
   useEffect(() => {
     async function getLinks(){
@@ -28,12 +26,13 @@ export const App = () => {
     // also get all the posts on first load? <- no, do that on link click
     // update posts from each link on first load?
     // updatePosts();
+
   },[])
 
   return(
     <>
       <h1><Link to="/">STREAMER</Link></h1>
-        <NavBar token={token}/>
+        <NavBar token={token} setToken={setToken}/>
 
           <Routes>
 

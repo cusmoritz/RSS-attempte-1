@@ -121,7 +121,7 @@ export const userRegister = async(username, password, email, firstName, lastName
         const result = await fetch(`${BASE_URL}/api/sign-up`, {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 username:username,
@@ -131,11 +131,13 @@ export const userRegister = async(username, password, email, firstName, lastName
                 lastName:lastName
             })
         });
+        // console.log('result in user api', process.env);
         if (result.error) {
             return error;
         } else {
             const newUser = await result.json();
-            console.log('new user in front end', newUser)
+            // console.log('new user in front end', newUser)
+            localStorage.setItem("token", newUser.token);
             return newUser;
         }
     } catch (error) {

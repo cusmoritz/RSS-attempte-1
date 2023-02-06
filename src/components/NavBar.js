@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { updatePosts } from "../api";
 
-const NavBar = ({token}) => {
+const NavBar = ({token, setToken}) => {
 
     // updates post on button press
     const handleUpdate = async () => {
@@ -10,6 +10,10 @@ const NavBar = ({token}) => {
         await updatePosts();
         console.log('done updating');
     };
+
+    const handleLogout = () => {
+        
+    }
 
     return (
         <div className="container">
@@ -24,7 +28,7 @@ const NavBar = ({token}) => {
                 {!token ?
                 <NavLink to="/register"><button>Register</button></NavLink>
                 : 
-                <button>Login</button>
+                <button>Logout</button>
                 }
                 
             </div>
