@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import Linklist from './components/Linklist';
 import Footer from './components/Footer'
 import Register from './components/Register';
-import { callAPIForLinks } from './api';
+import { getLinksByUserId } from './api';
 import { BrowserRouter, Route, Router, Routes, Link } from 'react-router-dom';
 import LinkPosts from './components/LinkPosts';
 import TodaysPosts from './components/TodaysPost';
@@ -24,7 +24,7 @@ export const App = () => {
 
   useEffect(() => {
     async function getLinks(){
-      setLinks(await callAPIForLinks());
+      setLinks(await getLinksByUserId(user));
     }
     getLinks();
     // also get all the posts on first load? <- no, do that on link click
@@ -44,7 +44,7 @@ export const App = () => {
             <Route exact path="/" element={<Linklist links={links} setLinks={setLinks}/>}/>
             <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} />} />
             <Route path="/register" element={<Register token={token} setToken={setToken} setUserId={setUser}/>} />
-            <Route path="/manage/:idSwitch" element={<LinkManager />} />
+            <Route path="/manage/:idSwitch" element={<LinkManager setLinks={setLinks} links={links}/>} />
             {/* we need a user route */}
             {/* <Route path="/:user/manage"></Route> */}
           </Routes>

@@ -109,13 +109,13 @@ const getAllPosts = async () => {
     }
 };
 
-const getActiveLinks = async() => {
+const getActiveLinks = async(userId) => {
     try {
         const {rows: activeLinks} = await client.query(`
         SELECT * FROM rss_links
-        WHERE active = TRUE
+        WHERE active = TRUE AND user_id = $1
         ;
-        `);
+        `, [userId]);
         return activeLinks;
     } catch (error) {
         console.log('there was an error getting active links: ', error);

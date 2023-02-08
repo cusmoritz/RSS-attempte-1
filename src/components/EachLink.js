@@ -11,7 +11,7 @@ const EachLink = ({link}) => {
         alert(`${link.link_title} has been deactivated.`)
         return linkNoMore;
     }
-    // posts have an id, a link_id, a url (links away from site), content, a title, a date, and a SAVED boolean
+    // posts have an id, a link_id, a url (links away from site), content, a title, a userId, a date, and a SAVED boolean
 
     return (
 

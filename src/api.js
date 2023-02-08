@@ -32,7 +32,9 @@ export const callAPIForLinks = async() => {
 
 export const getLinksByUserId = async(userId) => {
     try {
-        const links = await fetch(`${BASE_URL}/${userId}/links` )
+        const links = await fetch(`${BASE_URL}/api/links/${userId}`);
+        console.log('links in user api', links);
+        
     } catch (error) {
         throw new Error (error);
     }
