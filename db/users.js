@@ -1,4 +1,5 @@
 const {client} = require('./index');
+const bcrypt = require('bcrypt');
 
 // puts a new user into the database
 const createNewUser = async (username, password, email, firstName, lastName) => {
@@ -33,22 +34,42 @@ const fetchUser = async (username) => {
     }
 };
 
-const fetchUserByEmail = async(email) => {
+const verifyUser = async(username, password) => {
     try {
         const {rows: [user]} = await client.query(`
-        SELECT email FROM users
-        WHERE email = $1
+        SELECT * FROM users
+        WHERE username = $1
         ;    
-        `, [email]);
-        return user;
+        `, [username]);
+        console.log('user in Verify user', user);
+        const passCheck = await bcrypt.compare(password, user.password);
+        console.log('passCheck', passCheck)
+        if (passCheck === true){
+            return user;
+        } else {
+            return null;
+        }
     } catch (error) {
         throw new Error (error);
     }
 }
 
+// const fetchUserWithPassword = async(username, password) => {
+//     try {
+//         const {rows: [user]} = await client.query(`
+//         SELECT username, password from users
+//         WHERE username = $1
+//         ;
+//         `, [username]);
+
+//     } catch (error) {
+//         throw new Error (error)
+//     }
+// }
+
 module.exports={
     createNewUser,
     fetchUser,
-    fetchUserByEmail,
+    verifyUser,
 
 }

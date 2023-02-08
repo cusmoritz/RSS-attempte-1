@@ -46,7 +46,7 @@ export const App = () => {
             <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} />} />
             <Route path="/register" element={<Register token={token} setToken={setToken} setUserId={setUser}/>} />
             <Route path="/manage/:idSwitch" element={<LinkManager setLinks={setLinks} links={links}/>} />
-            <Route path="/login" element={<LoginForm />} />
+            <Route path="/login" element={<LoginForm setToken={setToken} setUser={setUser}/>} />
             {/* we need a user route */}
             {/* <Route path="/:user/manage"></Route> */}
           </Routes>

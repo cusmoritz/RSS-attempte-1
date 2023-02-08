@@ -1,18 +1,34 @@
 // import everything
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
+import { userLogin } from '../api';
+import { useNavigate } from 'react-router-dom';
 
-const LoginForm = ({login, setLogin}) => { 
+const LoginForm = ({setToken, setUser}) => { 
+
+    const navigate = useNavigate();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleLogin = (username, password) => {
-        console.log(`${username} is logged in with ${password}`);
+    const handleLogin = async (username, password) => {
+        if (!username || !password) {
+            alert('You must type a username and password!')
+            setUsername("");
+            setPassword("");
+        } else {
+            const result = await userLogin(username, password);
+            if (result) {
+                alert(result.message)
+                setToken(result.token)
+                setUser(result.userVerify.id)
+                navigate('/');
+            }
     }
+}
+
+
     return (
         <div id="login-container">
-            {!login ? 
                 <form onSubmit={(event) => {
                     event.preventDefault();
                     handleLogin(username, password);
@@ -38,11 +54,6 @@ const LoginForm = ({login, setLogin}) => {
                     />
                     <button type="submit">Log in</button>
                 </form> 
-                :         
-                <>
-                    <h4>Thanks for being logged in</h4>
-                </>
-            }
         </div>
     )
 };

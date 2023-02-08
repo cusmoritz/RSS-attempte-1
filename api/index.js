@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 3000;
 // get our client so we can connect
 const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks } = require('../db/index.js');
 
-const { createNewUser, fetchUser, fetchUserByEmail } = require('../db/users')
+const { createNewUser, fetchUser, verifyUser } = require('../db/users')
 
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
@@ -152,26 +152,26 @@ apiRouter.get('/api/today', async (request, response, next) => {
 
 // this function handles our logins
 
-apiRouter.get('/api/login', async (request, response, next) => {
-    // console.log('request body: ', request.body);
+apiRouter.post('/api/login', async (request, response, next) => {
     try {
-        // assuming our logins are in the form of an object
         const { username, password } = request.body;
 
-        const user = await fetchUser(username);
+        const userVerify = await verifyUser(username, password);
+        console.log('user in api: ', userVerify);
+        const id = userVerify.id;
 
-        // check the typed password against the stored (db) hashed password
-        const passwordCheck = await bcrypt.compareSync(password, user.password)
-        // console.log('password check here: ', passwordCheck)
-
-        if (passwordCheck) {
-            response.send({message: 'login successful!', user}).status(200);
+        if (userVerify) {
+            const token = jwt.sign(userVerify, JWT_SECRET);
+            response.status(200).send({message: "You're logged in!", token, id})
         } else {
-            response.send('You must type the right password').status(401);
+            response.status(400).send({
+                error: "AuthenticationError",
+                message: "You did not log in right. Please try again."
+            });
         }
     } catch (error) {
         console.log('there was an error in router.get/login: ', error);
-        throw error;
+        throw new Error (error);
     }
 });
 

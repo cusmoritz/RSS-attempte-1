@@ -147,3 +147,23 @@ export const userRegister = async(username, password, email, firstName, lastName
         throw error;
     }
 }
+
+export const userLogin = async (username, password) => {
+    try {
+        const result = await fetch(`${BASE_URL}/api/login`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+            })
+        });
+        const userLoggedIn = await result.json();
+        console.log('result in user api: ', userLoggedIn);
+        return userLoggedIn;
+    } catch (error) {
+        throw new Error (error);
+    }
+}
