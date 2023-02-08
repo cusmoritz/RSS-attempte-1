@@ -1,1 +1,1 @@
-ALTER TABLE "public"."rss_links" DROP "users_id"
+ALTER TABLE "public"."rss_links" DROP "users_id";

@@ -13,8 +13,7 @@ const createNewUser = async (username, password, email, firstName, lastName) => 
         console.log('new user here: ', user);
         return (user);
     } catch (error) {
-        console.log('there was an error creating a new user: ', error);
-        throw error;
+        throw new Error (error);
     } 
 };
 
@@ -34,8 +33,22 @@ const fetchUser = async (username) => {
     }
 };
 
+const fetchUserByEmail = async(email) => {
+    try {
+        const {rows: [user]} = await client.query(`
+        SELECT email FROM users
+        WHERE email = $1
+        ;    
+        `, [email]);
+        return user;
+    } catch (error) {
+        throw new Error (error);
+    }
+}
+
 module.exports={
     createNewUser,
     fetchUser,
-    
+    fetchUserByEmail,
+
 }

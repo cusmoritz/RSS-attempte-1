@@ -5,7 +5,6 @@ const cors = require('cors');
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const { JWT_SECRET } = process.env;
-console.log('secret', process.env.JWT_SECRET)
 
 // create an apiRouter
 const apiRouter = express();
@@ -19,7 +18,7 @@ const PORT = process.env.PORT || 3000;
 // get our client so we can connect
 const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks } = require('../db/index.js');
 
-const { createNewUser, fetchUser } = require('../db/users')
+const { createNewUser, fetchUser, fetchUserByEmail } = require('../db/users')
 
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
@@ -183,21 +182,28 @@ apiRouter.post('/api/sign-up', async (request, response, next) => {
         // console.log('new password? ', password);
         // check for dupe usernames
         const _user = await fetchUser(username);
+        const _email = await fetchUserByEmail(email)
         if (_user) {
             // this should be error handling instead
             response.status(400).send({
                 error: "UserNameTaken",
                 message: "That username is already taken, try again."
             });
-        } else {
+        } else if (_email) {
+            response.status(400).send({
+                error: "EmailTaken",
+                message: "That email is already associated with a user. Please try a different email."
+            });
+        }
+         else {
             const hashedPass = await bcrypt.hash(password, SALT_ROUNDS);
             // console.log('hashed pass?', hashedPass)
             const newUser = await createNewUser(username, hashedPass, email, firstName, lastName);
             // const returnUser = newUser.json();
-            // console.log('new user in api for real, ', newUser)
+            console.log('new user in api for real, ', newUser)
             const token = jwt.sign(newUser, JWT_SECRET);
             // console.log('we got a new user signed up: ', token);
-            response.send({message: "You're signed up!", token});
+            response.send({message: "You're signed up!", token, newUser});
         }
     } catch (error) {
         console.log('there was an error in apiRouter/post/sign-up: ', error);

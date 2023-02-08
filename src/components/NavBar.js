@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { updatePosts } from "../api";
 
-const NavBar = ({token, setToken}) => {
+const NavBar = ({token, setToken, userId}) => {
 
     const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ const NavBar = ({token, setToken}) => {
 
                 <NavLink to="/today"><button>Today's Posts</button></NavLink>
 
-                <button>Manage links</button>
+                <button><NavLink to={`/manage/${userId}`} >Manage links</NavLink></button>
 
                 {!token ?
                 <NavLink to="/register"><button>Register</button></NavLink>

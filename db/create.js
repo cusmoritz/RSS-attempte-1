@@ -9,7 +9,6 @@ const client = new Client(DATABASE_URL);
 // this is where we will run the links through the parser
 // then after we parse them, send each 'item' to the database
 const FEED_LINKS = [
-    {name: 'Ars Technica', link: 'https://feeds.arstechnica.com/arstechnica/staff-blogs'}, // works with parseURL
     {name: 'StoneMountain64', link: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCN-v-Xn9S7oYk0X2v1jx1Qg'}, // works with parseURL
     {name: 'The Verge', link: 'https://www.theverge.com/rss/index.xml'}, // works with parseURL
     {name: 'Corey Doctrow', link: 'https://pluralistic.net/feed/'}, // works with parseURL
@@ -22,6 +21,7 @@ const FEED_LINKS = [
     {name: 'JackFrags', link: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCw7FkXsC00lH2v2yB5LQoYA'},
     {name: 'xkcd', link: 'https://xkcd.com/rss.xml'},    
     {name: 'New Means', link: 'https://newmeans.substack.com/feed'},
+    {name: 'Citations Needed', link: 'https://feeds.libsyn.com/102225/rss'}
     // {name: 'The Intercept', link: 'https://theintercept.com/feed/?lang=en'}
 ];
 

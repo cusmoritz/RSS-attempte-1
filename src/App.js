@@ -10,6 +10,7 @@ import { BrowserRouter, Route, Router, Routes, Link } from 'react-router-dom';
 import LinkPosts from './components/LinkPosts';
 import TodaysPosts from './components/TodaysPost';
 import NavBar from './components/NavBar';
+import LinkManager from './components/LinkManager';
 
 export const App = () => {
 
@@ -17,6 +18,9 @@ export const App = () => {
   // const [login, setLogin] = useState(true);
   const [links, setLinks] = useState([]);
   const [token, setToken] = useState(window.localStorage.token || null);
+  const [user, setUser] = useState(null);
+  console.log('token app level', token)
+  console.log('user app level', user);
 
   useEffect(() => {
     async function getLinks(){
@@ -32,14 +36,15 @@ export const App = () => {
   return(
     <>
       <h1><Link to="/">STREAMER</Link></h1>
-        <NavBar token={token} setToken={setToken}/>
+        <NavBar token={token} setToken={setToken} userId={user} setUserId={setUser}/>
 
           <Routes>
 
             <Route path="/today" element={<TodaysPosts />} />
             <Route exact path="/" element={<Linklist links={links} setLinks={setLinks}/>}/>
             <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} />} />
-            <Route path="/register" element={<Register token={token} setToken={setToken}/>} />
+            <Route path="/register" element={<Register token={token} setToken={setToken} setUserId={setUser}/>} />
+            <Route path="/manage/:idSwitch" element={<LinkManager />} />
             {/* we need a user route */}
             {/* <Route path="/:user/manage"></Route> */}
           </Routes>

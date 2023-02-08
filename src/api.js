@@ -30,6 +30,14 @@ export const callAPIForLinks = async() => {
     }
 }
 
+export const getLinksByUserId = async(userId) => {
+    try {
+        const links = await fetch(`${BASE_URL}/${userId}/links` )
+    } catch (error) {
+        throw new Error (error);
+    }
+}
+
 export const updatePosts = async() => {
     try {
         const newPosts = await fetch(`${BASE_URL}/api/update`, {
@@ -105,14 +113,6 @@ export const deactivateLink = async(linkId) => {
     } catch (error) {
         console.log('there was an error deactivating a link in src/api: ', error);
         throw error;
-    }
-}
-
-export const checkUserName = async(username) => {
-    try {
-        const result = await fetch(`${BASE_URL}/api`)
-    } catch (error) {
-        throw new Error('That username is already taken, try again.');
     }
 }
 
