@@ -36,13 +36,7 @@ const LoginForm = ({login, setLogin}) => {
                             setPassword(event.target.value);
                         }}
                     />
-                    <button type="submit">
-                        {!login ? (
-                            "Sign up"
-                        ) : (
-                            "Log in"
-                        )}
-                    </button>
+                    <button type="submit">Log in</button>
                 </form> 
                 :         
                 <>

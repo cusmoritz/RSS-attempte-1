@@ -11,6 +11,7 @@ import LinkPosts from './components/LinkPosts';
 import TodaysPosts from './components/TodaysPost';
 import NavBar from './components/NavBar';
 import LinkManager from './components/LinkManager';
+import LoginForm from './components/LoginForm';
 
 export const App = () => {
 
@@ -45,6 +46,7 @@ export const App = () => {
             <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} />} />
             <Route path="/register" element={<Register token={token} setToken={setToken} setUserId={setUser}/>} />
             <Route path="/manage/:idSwitch" element={<LinkManager setLinks={setLinks} links={links}/>} />
+            <Route path="/login" element={<LoginForm />} />
             {/* we need a user route */}
             {/* <Route path="/:user/manage"></Route> */}
           </Routes>

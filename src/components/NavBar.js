@@ -26,14 +26,17 @@ const NavBar = ({token, setToken, userId}) => {
 
                 <button onClick={() => handleUpdate()}>Update posts</button>
 
-                <NavLink to="/today"><button>Today's Posts</button></NavLink>
-
-                <button><NavLink to={`/manage/${userId}`} >Manage links</NavLink></button>
-
                 {!token ?
-                <NavLink to="/register"><button>Register</button></NavLink>
+                <div>
+                    <NavLink to="/register"><button>Register</button></NavLink>
+                    <NavLink to="/login"><button>Login</button></NavLink>
+                </div>
                 : 
-                <button onClick={handleLogout} >Logout</button>
+                <div>
+                    <button><NavLink to={`/manage/${userId}`} >Manage links</NavLink></button>
+                    <button onClick={handleLogout} >Logout</button>
+                    <NavLink to="/today"><button>Today's Posts</button></NavLink>
+                </div>
                 }
                 
             </div>
