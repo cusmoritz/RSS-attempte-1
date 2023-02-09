@@ -1,6 +1,5 @@
 // import everything
 import React, { useEffect, useState, useHistory } from 'react';
-import ReactDOM from 'react-dom/client';
 import EachLink from './EachLink';
 import { createNewLink } from '../api';
 
@@ -22,7 +21,7 @@ const FEED_LINKS = [
 ];
 
 const Linklist = ({links, setLinks}) => {
-    // console.log('links in link list', links)
+    console.log('links in link list', links)
 
     return (
         <>

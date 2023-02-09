@@ -85,13 +85,16 @@ apiRouter.get('/api/links/:linkId', async (request, response, next) => {
 
 // /api/links shows every link that has been 'subscsribed' to 
 apiRouter.get('/api/links/:userId', async (request, response, next) => {
+    console.log('here')
     try {
+        console.log('backend api', request.params());
         const {userId} = request.params();
         const activeLinks = await getActiveLinks(userId);
+        console.log('active links backend api', activeLinks)
         response.send(activeLinks);
     } catch (error) {
      console.log('there was an error in apiRouter/get/api/links: ', error);
-     throw error;   
+     throw error;
     }
 
 });

@@ -18,21 +18,23 @@ export const App = () => {
   // use state to check for login status
   // const [login, setLogin] = useState(true);
   const [links, setLinks] = useState([]);
-  const [token, setToken] = useState(window.localStorage.token || null);
+  const [token, setToken] = useState(window.localStorage.getItem('token') || null);
   const [user, setUser] = useState(null);
   console.log('token app level', token)
   console.log('user app level', user);
 
   useEffect(() => {
-    async function getLinks(){
-      setLinks(await getLinksByUserId(user));
+    if (user){
+      async function getLinks(){
+        setLinks(await getLinksByUserId(user, token));
+      }
+      getLinks();
     }
-    getLinks();
     // also get all the posts on first load? <- no, do that on link click
     // update posts from each link on first load?
     // updatePosts();
 
-  },[token])
+  },[])
 
   return(
     <>
@@ -46,7 +48,7 @@ export const App = () => {
             <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} />} />
             <Route path="/register" element={<Register token={token} setToken={setToken} setUserId={setUser}/>} />
             <Route path="/manage/:idSwitch" element={<LinkManager setLinks={setLinks} links={links}/>} />
-            <Route path="/login" element={<LoginForm setToken={setToken} setUser={setUser}/>} />
+            <Route path="/login" element={<LoginForm setToken={setToken} setUser={setUser} setLinks={setLinks}/>} />
             {/* we need a user route */}
             {/* <Route path="/:user/manage"></Route> */}
           </Routes>

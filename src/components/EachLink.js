@@ -12,7 +12,7 @@ const EachLink = ({link}) => {
         return linkNoMore;
     }
     // posts have an id, a link_id, a url (links away from site), content, a title, a userId, a date, and a SAVED boolean
-
+    console.log('link in EachLink', link)
     return (
 
         <div className='link-container'>

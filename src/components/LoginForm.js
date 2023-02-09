@@ -2,8 +2,9 @@
 import React, { useState } from 'react';
 import { userLogin } from '../api';
 import { useNavigate } from 'react-router-dom';
+import { getLinksByUserId } from '../api';
 
-const LoginForm = ({setToken, setUser}) => { 
+const LoginForm = ({setToken, setUser, setLinks}) => { 
 
     const navigate = useNavigate();
 
@@ -17,14 +18,16 @@ const LoginForm = ({setToken, setUser}) => {
             setPassword("");
         } else {
             const result = await userLogin(username, password);
+            console.log('result front end', result);
             if (result) {
-                alert(result.message)
                 setToken(result.token)
-                setUser(result.userVerify.id)
+                localStorage.setItem('token', result.token);
+                setUser(result.id)
                 navigate('/');
+                setLinks(await getLinksByUserId(result.id, result.token));
             }
+        }
     }
-}
 
 
     return (
