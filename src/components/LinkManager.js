@@ -2,18 +2,20 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { getLinksByUserId } from "../api";
+import { deactivateLink } from "../api";
 
 const LinkManager = ({links, setLinks}) => {
     const {idSwitch} = useParams();
-    console.log('userId params', idSwitch)
+    // console.log('userId params', idSwitch)
 
-    // useEffect(() => {
-    //     const getLinks = async () => {
-    //         const allLinks = await getLinksByUserId(idSwitch)
-    //         setLinks(allLinks)
-    //     }
-    //     getLinks();
-    // }, []);
+    useEffect(() => {
+        const getLinks = async () => {
+            const allLinks = await getLinksByUserId(idSwitch)
+            setLinks(allLinks)
+            // console.log('links in front end', links)
+        }
+        getLinks();
+    }, []);
 
     const [newURL, setNewUrl] = useState("");
     const [newName, setNewName] = useState("");
@@ -28,6 +30,11 @@ const LinkManager = ({links, setLinks}) => {
         setCreateNew(!createNew)
         return newLink;
     };
+
+    const handleDelete = async (id) => {
+        const linkNoMore = await deactivateLink(id);
+        return linkNoMore;
+    }
 
     return (
         <div>
@@ -50,9 +57,15 @@ const LinkManager = ({links, setLinks}) => {
             ? (<p>You don't have any links yet! Why don't you add some?</p>)
             :
             (links.map((eachLink) => {
-                <div>
-                    {eachLink}
-                </div>
+                return(
+                    <div className="link-container"
+                    draggable="true">
+                        <h4 className="link-title">{eachLink.link_title}</h4>
+                        {eachLink.url}
+                        <p>{eachLink.active}</p>
+                        <button onClick={() => handleDelete(eachLink.link_id)}>Deactivate</button>
+                    </div>
+                )
             }))}
         </div>
     )

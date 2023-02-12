@@ -24,6 +24,7 @@ const LinkPosts = () => {
             : 
                 (<div>
                 {posts.map((post) => {
+
                     return (
                         <div key={post.id} className="post-container">
                             <h4>{post.title}</h4>

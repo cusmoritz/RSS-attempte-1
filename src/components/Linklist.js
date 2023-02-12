@@ -21,7 +21,7 @@ const FEED_LINKS = [
 ];
 
 const Linklist = ({links, setLinks}) => {
-    console.log('links in link list', links)
+    // console.log('links in link list', links)
 
     return (
         <>

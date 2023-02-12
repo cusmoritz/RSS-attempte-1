@@ -13,7 +13,7 @@ const TodaysPosts = () => {
         }
         gettingPosts();
     }, [])
-    console.log('today posts', todayPosts)
+
     return (
         <div className='container'>
         {todayPosts.length < 1 

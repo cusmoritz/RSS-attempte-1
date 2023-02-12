@@ -32,15 +32,14 @@ export const callAPIForLinks = async() => {
 
 export const getLinksByUserId = async(userId, token) => {
     try {
-        const links = await fetch(`${BASE_URL}/api/links/${userId}`, {
+        const links = await fetch(`${BASE_URL}/api/manage/${userId}`, {
             method: "GET",
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Content-Type': 'application/json'
             }
         });
-        console.log('links in user api', links);
+        // console.log('links in user api', links);
         const userLinks = await links.json();
-        console.log('userLinks in user api', userLinks)
         return userLinks;
     } catch (error) {
         throw new Error (error);
@@ -168,7 +167,6 @@ export const userLogin = async (username, password) => {
             })
         });
         const userLoggedIn = await result.json();
-        console.log('result in user api: ', userLoggedIn);
         return userLoggedIn;
     } catch (error) {
         throw new Error (error);

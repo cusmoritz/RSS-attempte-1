@@ -63,6 +63,22 @@ apiRouter.post('/api/newlink', async (request, response, next) => {
     }
 });
 
+// /api/links shows every link that has been 'subscsribed' to 
+apiRouter.get('/api/manage/:userId', async (request, response, next) => {
+    // console.log('here')
+    try {
+        // console.log('backend api', request.params);
+        const {userId} = request.params;
+        const activeLinks = await getActiveLinks(userId);
+        // console.log('active links backend api', activeLinks)
+        response.send(activeLinks);
+    } catch (error) {
+     console.log('there was an error in apiRouter/get/api/links: ', error);
+     throw error;
+    }
+
+});
+
 // /links/:linkId returns posts from that specific link
 apiRouter.get('/api/links/:linkId', async (request, response, next) => {
     try {
@@ -82,22 +98,6 @@ apiRouter.get('/api/links/:linkId', async (request, response, next) => {
         throw error;
     }
 })
-
-// /api/links shows every link that has been 'subscsribed' to 
-apiRouter.get('/api/links/:userId', async (request, response, next) => {
-    console.log('here')
-    try {
-        console.log('backend api', request.params());
-        const {userId} = request.params();
-        const activeLinks = await getActiveLinks(userId);
-        console.log('active links backend api', activeLinks)
-        response.send(activeLinks);
-    } catch (error) {
-     console.log('there was an error in apiRouter/get/api/links: ', error);
-     throw error;
-    }
-
-});
 
 // get one post from its ID
 apiRouter.get('/api/posts/:postId', async (request, response, next) => {
@@ -126,7 +126,6 @@ apiRouter.get('/api/today', async (request, response, next) => {
         const inputDate = `${nowYear}-${nowMonth}-${nowDay}`
         // console.log('our input datE: ', inputDate)
         const postsToday = await getPostsByDate(inputDate);
-        console.log('postsToday: ', postsToday)
         response.send(postsToday);
     } catch (error) {
         console.log('there was an error in apiRouter/get/today: ', error);
