@@ -125,12 +125,12 @@ const getActiveLinks = async(userId) => {
 
 const getOnePostById = async(postId) => {
     try {
-        const onePost = await client.query(`
+        const {rows: [onePost]} = await client.query(`
         SELECT * from rss
         WHERE id=$1;
         `, [postId]);
         // console.log('here we got one post: ', onePost);
-        return onePost.rows;
+        return onePost;
     } catch (error) {
         console.log('there was an error in getOnePostById: ', error);
         throw error;
@@ -213,14 +213,12 @@ const deactivateLink = async(linkId) => {
 
 const savePost = async(postId, userId) => {
     try {
-        console.log('postId in db', postId)
     const {rows: [savedPost]} = await client.query(`
-        UPDATE rss
-        SET saved = TRUE
-        WHERE id = $1
+        INSERT INTO user_saved (post_id, user_id)
+        VALUES ($1, $2)
         RETURNING *
         ;
-        `, [postId.postId]);
+        `, [postId.postId, userId]);
     return savedPost;
     } catch (error) {
         throw error;
@@ -230,9 +228,12 @@ const savePost = async(postId, userId) => {
 const fetchSavedPosts = async (userId) => {
     try {
         const {rows: savedPosts} = await client.query(`
-        SELECT * FROM rss
-        WHERE saved = TRUE AND 
-        `)
+        SELECT * FROM user_saved
+        WHERE user_id = $1
+        ;
+        `, [userId]);
+        // const allSavedPosts = await Promise.all(getOnePostById(savedPosts.post_id));
+        return savedPosts;
     } catch (error) {
         throw error;
     }
@@ -255,5 +256,7 @@ module.exports = {
     deactivateLink,
     getActiveLinks,
     savePost,
+    fetchSavedPosts,
+
 }
 

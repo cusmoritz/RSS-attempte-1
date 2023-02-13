@@ -79,7 +79,7 @@ export const saveAPost = async(postId, userId) => {
         const result = await fetch(`${BASE_URL}/api/posts/saved/${postId}`, {
             method: "POST",
             headers: {
-                'Contente-Type': 'application/json'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 userId: userId,
@@ -89,6 +89,39 @@ export const saveAPost = async(postId, userId) => {
         return savedPost;
     } catch (error) {
         console.log('there was an error in user api trying to save a post');
+        throw error;
+    }
+}
+
+export const fetchOnePost = async(postId) => {
+    try {
+        const result = await fetch(`${BASE_URL}/api/posts/${postId}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        // console.log('result user side', result)
+        const saved = await result.json();
+        // console.log('saved user side', saved);
+        return saved;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const fetchSaved = async(userId) => {
+    try {
+        const response = await fetch(`${BASE_URL}/api/saved/${userId}`,{
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const savedPosts = response.json();
+        return savedPosts;
+    } catch (error) {
+        console.log('there was an error fetching saved posts user side');
         throw error;
     }
 }

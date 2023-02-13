@@ -13,6 +13,7 @@ import NavBar from './components/NavBar';
 import LinkManager from './components/LinkManager';
 import LoginForm from './components/LoginForm';
 import Explainer from './components/Explainer';
+import SavedPosts from './components/SavedPosts';
 
 export const App = () => {
 
@@ -31,12 +32,6 @@ export const App = () => {
       }
       getLinks();
     }
-
-    
-    // also get all the posts on first load? <- no, do that on link click
-    // update posts from each link on first load?
-    // updatePosts();
-
   },[])
 
   return(
@@ -48,10 +43,11 @@ export const App = () => {
 
             <Route path="/today" element={<TodaysPosts />} />
             <Route exact path="/" element={<Linklist links={links} setLinks={setLinks}/>}/>
-            <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} />} />
+            <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} user={user}/>} />
             <Route path="/register" element={<Register token={token} setToken={setToken} setUserId={setUser}/>} />
             <Route path="/manage/:idSwitch" element={<LinkManager setLinks={setLinks} links={links}/>} />
             <Route path="/login" element={<LoginForm setToken={setToken} setUser={setUser} setLinks={setLinks}/>} />
+            <Route path="/:userId/saved" element={<SavedPosts />}/>
             {/* we need a user route */}
             {/* <Route path="/:user/manage"></Route> */}
           </Routes>

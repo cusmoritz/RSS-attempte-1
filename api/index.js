@@ -16,7 +16,7 @@ apiRouter.use(cors());
 // define port
 const PORT = process.env.PORT || 3000;
 // get our client so we can connect
-const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks, savePost } = require('../db/index.js');
+const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks, savePost, fetchSavedPosts } = require('../db/index.js');
 
 const { createNewUser, fetchUser, verifyUser } = require('../db/users')
 
@@ -103,9 +103,10 @@ apiRouter.get('/api/links/:linkId', async (request, response, next) => {
 // get one post from its ID
 apiRouter.get('/api/posts/:postId', async (request, response, next) => {
     const { postId } = request.params;
-    console.log('postId: ', postId);
+    // console.log('postId: ', postId);
     try {
         const onePost = await getOnePostById(postId);
+        // console.log('one post api side', onePost)
         response.send(onePost);
     } catch (error) {
         console.log('there was an error in apiRouter/get/api/posts/:postId: ', error);
@@ -113,6 +114,7 @@ apiRouter.get('/api/posts/:postId', async (request, response, next) => {
     }
 });
 
+// POST call to save one blog post
 apiRouter.post('/api/posts/saved/:postId', async (request, response, next) => {
     try {
         const postId = request.params;
@@ -121,6 +123,18 @@ apiRouter.post('/api/posts/saved/:postId', async (request, response, next) => {
         response.send(savedPost);
     } catch (error) {
         console.log('there was an error trying to save a post');
+        throw error;
+    }
+});
+
+// this call gets all the users saved posts
+apiRouter.get('/api/saved/:userId', async (request, response, next) => {
+    try {
+        const {userId} = request.params;
+        const savedPosts = await fetchSavedPosts(userId);
+        response.send(savedPosts);
+    } catch (error) {
+        console.log('there was an error fetching all the users saved posts')
         throw error;
     }
 })
@@ -166,7 +180,6 @@ apiRouter.get('/api/today', async (request, response, next) => {
 // })
 
 // this function handles our logins
-
 apiRouter.post('/api/login', async (request, response, next) => {
     try {
         const { username, password } = request.body;
@@ -190,6 +203,7 @@ apiRouter.post('/api/login', async (request, response, next) => {
     }
 });
 
+//this function handles signing up and/or registering
 apiRouter.post('/api/sign-up', async (request, response, next) => {
     try {
         // console.log('req body', request.body)

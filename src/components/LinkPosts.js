@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getPostsForLink, saveAPost } from "../api";
 
-const LinkPosts = () => {
+const LinkPosts = ({user}) => {
     
     const {linkSwitch} = useParams();
 
@@ -18,8 +18,7 @@ const LinkPosts = () => {
     }
 
     const handleSave = async (postId) => {
-        console.log('this is post Id', postId);
-        const post = await saveAPost(postId);
+        const post = await saveAPost(postId, user);
         return post;
     }
 
