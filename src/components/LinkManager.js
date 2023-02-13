@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { getLinksByUserId } from "../api";
 import { deactivateLink } from "../api";
+import { createNewLink } from "../api";
 
 const LinkManager = ({links, setLinks}) => {
     const {idSwitch} = useParams();
@@ -23,10 +24,10 @@ const LinkManager = ({links, setLinks}) => {
 
     const handleSubmitNewLink = async () => {
         // console.log(`you are adding ${url} to the list of links`);
-        // const newLink = await createNewLink(newURL, newName);
-        // setLinks((previousList) => [...previousList, newLink]);
-        // setNewName("");
-        // setNewUrl("");
+        const newLink = await createNewLink(newURL, newName, idSwitch);
+        setLinks((previousList) => [...previousList, newLink]);
+        setNewName("");
+        setNewUrl("");
         setCreateNew(!createNew)
         return newLink;
     };

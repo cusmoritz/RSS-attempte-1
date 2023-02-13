@@ -25,11 +25,13 @@ export const App = () => {
   console.log('user app level', user);
 
   useEffect(() => {
-
+    if(user !== null){
       async function getLinks(){
         setLinks(await getLinksByUserId(user, token));
       }
       getLinks();
+    }
+
     
     // also get all the posts on first load? <- no, do that on link click
     // update posts from each link on first load?

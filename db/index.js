@@ -48,16 +48,16 @@ const addRssItemDatabase = async (item, link_id) => {
 };
 
 // add links to database link table
-const addLinktoTable = async (link) => {
+const addLinktoTable = async (link, userId) => {
     // console.log('what are we working with again: ', link);
     try {
         const {rows: newLinksInTable} = await client.query(`
-        INSERT INTO rss_links (link_title, url)
-        VALUES ($1, $2)
+        INSERT INTO rss_links (link_title, url, user_id)
+        VALUES ($1, $2, $3)
         ON CONFLICT (url) DO NOTHING
         RETURNING *
         ;
-        `, [link.name, link.link]);
+        `, [link.name, link.link, userId]);
         // console.log('this is returned in the database function: ', newLinksInTable)
         return newLinksInTable;
     } catch (error) {
