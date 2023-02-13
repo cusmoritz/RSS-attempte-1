@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getPostsForLink } from "../api";
+import { getPostsForLink, saveAPost } from "../api";
 
 const LinkPosts = () => {
     
@@ -17,6 +17,12 @@ const LinkPosts = () => {
         setPosts(gettingPosts)
     }
 
+    const handleSave = async (postId) => {
+        console.log('this is post Id', postId);
+        const post = await saveAPost(postId);
+        return post;
+    }
+
     return (
         <div className="container">
             {!posts ? 
@@ -30,7 +36,8 @@ const LinkPosts = () => {
                             <h4>{post.title}</h4>
                             <p>Posted on: {post.date}</p>
                             {post.content ? <p dangerouslySetInnerHTML={{__html: post.content}}></p> : null }
-                            <button><a href={`${post.url}`}>See original post.</a></button>
+                            <button><a href={`${post.url}`} target="_blank">See original post.</a></button>
+                            <button onClick={() => handleSave(post.id)}>Save Post</button>
                         </div>
                     )
                 })}

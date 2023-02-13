@@ -16,7 +16,7 @@ apiRouter.use(cors());
 // define port
 const PORT = process.env.PORT || 3000;
 // get our client so we can connect
-const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks } = require('../db/index.js');
+const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks, savePost } = require('../db/index.js');
 
 const { createNewUser, fetchUser, verifyUser } = require('../db/users')
 
@@ -112,6 +112,18 @@ apiRouter.get('/api/posts/:postId', async (request, response, next) => {
         throw error;
     }
 });
+
+apiRouter.post('/api/posts/saved/:postId', async (request, response, next) => {
+    try {
+        const postId = request.params;
+        const {userId} = request.body;
+        const savedPost = await savePost(postId, userId);
+        response.send(savedPost);
+    } catch (error) {
+        console.log('there was an error trying to save a post');
+        throw error;
+    }
+})
 
 // /today returns every post that was posted on 'todays date'
 apiRouter.get('/api/today', async (request, response, next) => {

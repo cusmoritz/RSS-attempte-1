@@ -24,7 +24,7 @@ const TodaysPosts = () => {
                 return (
                     <div key={post.id}>
                     <h4>{post.title}</h4>
-                    <p><a href={post.url}>{post.url}</a></p>
+                    <p><a href={post.url} target="_blank">{post.url}</a></p>
                     </div>
                 )
             })) 

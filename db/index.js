@@ -211,6 +211,33 @@ const deactivateLink = async(linkId) => {
     }
 }
 
+const savePost = async(postId, userId) => {
+    try {
+        console.log('postId in db', postId)
+    const {rows: [savedPost]} = await client.query(`
+        UPDATE rss
+        SET saved = TRUE
+        WHERE id = $1
+        RETURNING *
+        ;
+        `, [postId.postId]);
+    return savedPost;
+    } catch (error) {
+        throw error;
+    }
+}
+
+const fetchSavedPosts = async (userId) => {
+    try {
+        const {rows: savedPosts} = await client.query(`
+        SELECT * FROM rss
+        WHERE saved = TRUE AND 
+        `)
+    } catch (error) {
+        throw error;
+    }
+}
+
 // client.connect();
 
 module.exports = {
@@ -227,6 +254,6 @@ module.exports = {
     updateDb,
     deactivateLink,
     getActiveLinks,
-
+    savePost,
 }
 

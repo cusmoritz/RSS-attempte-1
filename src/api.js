@@ -74,6 +74,25 @@ export const getTodaysPosts = async() => {
     }
 };
 
+export const saveAPost = async(postId, userId) => {
+    try {
+        const result = await fetch(`${BASE_URL}/api/posts/saved/${postId}`, {
+            method: "POST",
+            headers: {
+                'Contente-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: userId,
+            })
+        });
+        const savedPost = result.json();
+        return savedPost;
+    } catch (error) {
+        console.log('there was an error in user api trying to save a post');
+        throw error;
+    }
+}
+
 export const getPostsForLink = async(linkId) => {
     try {
         const response = await fetch(`${BASE_URL}/api/links/${linkId}`);
