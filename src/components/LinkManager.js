@@ -60,7 +60,7 @@ const LinkManager = ({links, setLinks}) => {
             (links.map((eachLink) => {
                 return(
                     <div className="link-container"
-                    draggable="true">
+                    >
                         <h4 className="link-title">{eachLink.link_title}</h4>
                         {eachLink.url}
                         <p>{eachLink.active}</p>
