@@ -127,6 +127,9 @@ apiRouter.post('/api/posts/saved/:postId', async (request, response, next) => {
     }
 });
 
+//POST call to remove one blog post
+apiRouter.post('api/posts/unsave/:postId')
+
 // this call gets all the users saved posts
 apiRouter.get('/api/saved/:userId', async (request, response, next) => {
     try {

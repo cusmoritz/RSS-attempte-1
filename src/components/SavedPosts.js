@@ -6,12 +6,14 @@ const SavedPosts = () => {
     const {userId} = useParams();
     const [savedPosts, setSavedPosts] = useState([])
 
-    let postArray = [];
-
     const getSavedPosts = async () => {
         const gettingPosts = await fetchSaved(userId)
         setSavedPosts(gettingPosts)
         return;
+    }
+
+    const handleUnsave = () => {
+        console.log('you are unsaving a post.')
     }
 
     useEffect(() => {
@@ -26,11 +28,11 @@ const SavedPosts = () => {
             ? savedPosts.map((post) => {
                 return(
                     <div className="post-container">
-                    <p>Saved post #{savedPosts.length} {post.id}</p>
+                    <p>Saved post #{savedPosts.indexOf(post) + 1}</p>
                     <h4>{post.title}</h4>
-                    {post.content ? <p>{post.content}</p> : null}
+                    {post.content ? <p dangerouslySetInnerHTML={{__html: post.content}}></p> : null }
                     <p><a>{post.url}</a></p>
-                    <button>Unsave this post.</button>
+                    <button onClick={() => {handleUnsave}}>Unsave post {savedPosts.indexOf(post) + 1}.</button>
                     </div>
 
                 )

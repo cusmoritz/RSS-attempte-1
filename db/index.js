@@ -225,6 +225,20 @@ const savePost = async(postId, userId) => {
     }
 }
 
+const unsavePost = async (postId, userId) => {
+    try {
+        const {rows: [result]} = await client.query(`
+        DELETE FROM user_saved
+        WHERE post_id = $1 AND user_id = $2
+        RETURNING *
+        ;  
+        `, [postId, userId]);
+        return result;
+    } catch (error) {
+        throw error;
+    }
+})
+
 const fetchSavedPosts = async (userId) => {
     try {
         const {rows: savedPosts} = await client.query(`
