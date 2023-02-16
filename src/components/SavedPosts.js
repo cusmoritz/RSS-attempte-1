@@ -20,19 +20,17 @@ const SavedPosts = () => {
         getSavedPosts();
     },[])
 
-    console.log('saved posts? ', savedPosts)
-
     return (
         <div className="container">
             {savedPosts 
             ? savedPosts.map((post) => {
                 return(
-                    <div className="post-container">
+                    <div className="post-container" key={savedPosts.indexOf(post) + 1}>
                     <p>Saved post #{savedPosts.indexOf(post) + 1}</p>
                     <h4>{post.title}</h4>
                     {post.content ? <p dangerouslySetInnerHTML={{__html: post.content}}></p> : null }
                     <p><a>{post.url}</a></p>
-                    <button onClick={() => {handleUnsave}}>Unsave post {savedPosts.indexOf(post) + 1}.</button>
+                    <button onClick={() => {handleUnsave()}}>Unsave post {savedPosts.indexOf(post) + 1}</button>
                     </div>
 
                 )

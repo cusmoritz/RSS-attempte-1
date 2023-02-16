@@ -237,7 +237,7 @@ const unsavePost = async (postId, userId) => {
     } catch (error) {
         throw error;
     }
-})
+}
 
 const fetchSavedPosts = async (userId) => {
     try {

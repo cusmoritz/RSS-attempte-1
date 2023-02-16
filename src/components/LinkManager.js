@@ -8,15 +8,16 @@ import { createNewLink } from "../api";
 const LinkManager = ({links, setLinks}) => {
     const {idSwitch} = useParams();
     // console.log('userId params', idSwitch)
+    
 
-    useEffect(() => {
-        const getLinks = async () => {
-            const allLinks = await getLinksByUserId(idSwitch)
-            setLinks(allLinks)
-            // console.log('links in front end', links)
-        }
-        getLinks();
-    }, []);
+    // useEffect(() => {
+    //     const getLinks = async () => {
+    //         const allLinks = await getLinksByUserId(idSwitch)
+    //         setLinks(allLinks)
+    //         // console.log('links in front end', links)
+    //     }
+    //     getLinks();
+    // }, []);
 
     const [newURL, setNewUrl] = useState("");
     const [newName, setNewName] = useState("");
@@ -38,7 +39,7 @@ const LinkManager = ({links, setLinks}) => {
     }
 
     return (
-        <div>
+        <div className="container">
             {createNew
             ? (
                 <form  className="container" onSubmit={(event) => {
@@ -59,8 +60,7 @@ const LinkManager = ({links, setLinks}) => {
             :
             (links.map((eachLink) => {
                 return(
-                    <div className="link-container"
-                    >
+                    <div className="link-container" key={eachLink.id}>
                         <h4 className="link-title">{eachLink.link_title}</h4>
                         {eachLink.url}
                         <p>{eachLink.active}</p>
