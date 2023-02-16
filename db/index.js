@@ -228,11 +228,11 @@ const savePost = async(postId, userId) => {
 const fetchSavedPosts = async (userId) => {
     try {
         const {rows: savedPosts} = await client.query(`
-        SELECT * FROM user_saved
+        SELECT user_saved.*, rss.content, rss.url, rss.title, rss.date FROM user_saved
+        JOIN rss ON rss.id = user_saved.post_id
         WHERE user_id = $1
         ;
         `, [userId]);
-        // const allSavedPosts = await Promise.all(getOnePostById(savedPosts.post_id));
         return savedPosts;
     } catch (error) {
         throw error;

@@ -6,41 +6,37 @@ const SavedPosts = () => {
     const {userId} = useParams();
     const [savedPosts, setSavedPosts] = useState([])
 
+    let postArray = [];
+
     const getSavedPosts = async () => {
         const gettingPosts = await fetchSaved(userId)
-        // console.log('gettingposts', gettingPosts)
-        let postArray = [];
-        gettingPosts.forEach(async (element) => {
-            const onePost = await fetchOnePost(element.post_id);
-            // console.log('onePost', onePost)
-            postArray.push(onePost);
-            // console.log('post array', postArray);
-        });
-        setSavedPosts(postArray);
+        setSavedPosts(gettingPosts)
         return;
     }
 
     useEffect(() => {
         getSavedPosts();
-    },[userId])
+    },[])
 
     console.log('saved posts? ', savedPosts)
 
     return (
-        
-        <div>
+        <div className="container">
             {savedPosts 
             ? savedPosts.map((post) => {
-                return (
-                    <div>
-                        <h4>{post.title}</h4>
-                        <p>{post.url}</p>
+                return(
+                    <div className="post-container">
+                    <p>Saved post #{savedPosts.length} {post.id}</p>
+                    <h4>{post.title}</h4>
+                    {post.content ? <p>{post.content}</p> : null}
+                    <p><a>{post.url}</a></p>
+                    <button>Unsave this post.</button>
                     </div>
 
                 )
             }) 
             : 
-            (<p>You haven't added any feeds yet!</p>) }
+            <p>You haven't added any feeds yet!</p> }
         </div>
     )
 }
