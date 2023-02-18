@@ -41,7 +41,7 @@ export const App = () => {
 
           <Routes>
 
-            <Route path="/today" element={<TodaysPosts />} />
+            <Route path="/today" element={<TodaysPosts user={user}/>} />
             <Route exact path="/" element={<Linklist links={links} setLinks={setLinks}/>}/>
             <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} user={user}/>} />
             <Route path="/register" element={<Register token={token} setToken={setToken} setUserId={setUser}/>} />

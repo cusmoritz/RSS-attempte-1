@@ -1,9 +1,9 @@
 // import everything
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import { getTodaysPosts } from '../api';
+import { getTodaysPosts, saveAPost } from '../api';
 
-const TodaysPosts = () => {
+const TodaysPosts = ({user}) => {
     const [todayPosts, setTodayPosts] = useState([]);
 
     useEffect(() => {
@@ -12,7 +12,12 @@ const TodaysPosts = () => {
             setTodayPosts(fetchingPosts);
         }
         gettingPosts();
-    }, [])
+    }, []);
+
+    const handleSave = async (postId) => {
+        const post = await saveAPost(postId, user);
+        return post;
+    }
 
     return (
         <div className='container'>
@@ -22,9 +27,10 @@ const TodaysPosts = () => {
         :
             (todayPosts.map((post) => {
                 return (
-                    <div key={post.id}>
+                    <div key={post.id} className="todays-container">
                     <h4>{post.title}</h4>
                     <p><a href={post.url} target="_blank">{post.url}</a></p>
+                    <button onClick={() => handleSave(post.id)}>Save Post</button>
                     </div>
                 )
             })) 

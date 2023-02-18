@@ -93,6 +93,27 @@ export const saveAPost = async(postId, userId) => {
     }
 }
 
+export const unsavePost = async (postId, userId) => {
+    // 'api/posts/unsave/:postId'
+    try {
+        const result = await fetch(`${BASE_URL}/api/posts/unsave/${postId}`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userId: userId,
+            }),
+        });
+        const unsavedPost = await result.json();
+        console.log('we got here', unsavedPost)
+        return unsavedPost;
+    } catch (error) {
+        console.log('error in user api');
+        throw error;
+    }
+}
+
 export const fetchOnePost = async(postId) => {
     try {
         const result = await fetch(`${BASE_URL}/api/posts/${postId}`, {

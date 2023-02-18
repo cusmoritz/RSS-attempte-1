@@ -227,12 +227,14 @@ const savePost = async(postId, userId) => {
 
 const unsavePost = async (postId, userId) => {
     try {
+        console.log(postId, userId, "in db")
         const {rows: [result]} = await client.query(`
         DELETE FROM user_saved
         WHERE post_id = $1 AND user_id = $2
         RETURNING *
         ;  
         `, [postId, userId]);
+        console.log('result', result)
         return result;
     } catch (error) {
         throw error;
@@ -271,6 +273,7 @@ module.exports = {
     getActiveLinks,
     savePost,
     fetchSavedPosts,
+    unsavePost,
 
 }
 

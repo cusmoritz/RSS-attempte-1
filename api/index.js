@@ -16,7 +16,7 @@ apiRouter.use(cors());
 // define port
 const PORT = process.env.PORT || 3000;
 // get our client so we can connect
-const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks, savePost, fetchSavedPosts } = require('../db/index.js');
+const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks, savePost, fetchSavedPosts, unsavePost } = require('../db/index.js');
 
 const { createNewUser, fetchUser, verifyUser } = require('../db/users')
 
@@ -128,7 +128,20 @@ apiRouter.post('/api/posts/saved/:postId', async (request, response, next) => {
 });
 
 //POST call to remove one blog post
-apiRouter.post('api/posts/unsave/:postId')
+apiRouter.post('/api/posts/unsave/:postId', async (request, response, next) => {
+    try {
+        console.log('request body', request.body)
+        const { postId } = request.params;
+        const { userId } = request.body;
+        console.log('user and post', userId, postId)
+        const unSave = await unsavePost(postId, userId);
+        console.log('this is unsaved post in api', unSave);
+        response.send(unSave);
+    } catch (error) {
+        console.log('error unsaving a post in API');
+        throw error;
+    }
+})
 
 // this call gets all the users saved posts
 apiRouter.get('/api/saved/:userId', async (request, response, next) => {
