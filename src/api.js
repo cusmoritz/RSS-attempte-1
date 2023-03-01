@@ -230,6 +230,7 @@ export const userRegister = async(username, password, email, firstName, lastName
     }
 }
 
+// /api/login
 export const userLogin = async (username, password) => {
     try {
         const result = await fetch(`${BASE_URL}/api/login`, {
@@ -242,8 +243,13 @@ export const userLogin = async (username, password) => {
                 password: password,
             })
         });
-        const userLoggedIn = await result.json();
-        return userLoggedIn;
+
+        if (result.message) {
+            throw result.error;
+        } else {
+            const userLoggedIn = await result.json();
+            return userLoggedIn;
+        }
     } catch (error) {
         throw new Error (error);
     }

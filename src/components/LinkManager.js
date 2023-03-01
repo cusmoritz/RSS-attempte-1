@@ -35,6 +35,8 @@ const LinkManager = ({links, setLinks}) => {
 
     const handleDelete = async (id) => {
         const linkNoMore = await deactivateLink(id);
+        const rechecking = await getLinksByUserId(idSwitch);
+        setLinks(rechecking)
         return linkNoMore;
     }
 

@@ -47,7 +47,7 @@ const verifyUser = async(username, password) => {
         if (passCheck === true){
             return user;
         } else {
-            return null;
+            throw new Error ("Incorrect password");
         }
     } catch (error) {
         throw new Error (error);
