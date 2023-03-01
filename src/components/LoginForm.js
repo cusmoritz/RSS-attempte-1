@@ -28,7 +28,7 @@ const LoginForm = ({setToken, setUser, setLinks}) => {
     }
 
     return (
-        <div id="login-container">
+        <div className="login-container">
                 <form onSubmit={(event) => {
                     event.preventDefault();
                     handleLogin(username, password);
@@ -52,7 +52,8 @@ const LoginForm = ({setToken, setUser, setLinks}) => {
                             setPassword(event.target.value);
                         }}
                     />
-                    <button type="submit">Log in</button>
+                    <label htmlFor="login-submit"></label>
+                    <button type="login-submit">Log in</button>
                 </form> 
         </div>
     )

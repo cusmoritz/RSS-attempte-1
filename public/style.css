@@ -34,7 +34,7 @@
     display: flex;
     justify-items: right;
     justify-content: space-between;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
   }
   
   /* For devices larger than 400px */
@@ -191,6 +191,12 @@
   .register-form label {
     width: 50%;
     align-self:flex-start;
+  }
+
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   p {
