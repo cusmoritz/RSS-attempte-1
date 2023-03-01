@@ -14,6 +14,8 @@ const Explainer = () => {
             <p>... and on and on.</p>
             <p>The links for these XML files look like this: <a href="https://xkcd.com/rss.xml">https://xkcd.com/rss.xml</a></p>
             <p>This website is an RSS reader, meaning you can find links that look like the one above, and create your own news feed of sorts. </p>
+            <p>They generally either end in .xml or .feed or something similar.</p>
+            <p>YouTube links (YouTube still uses RSS in 2023!) look like this: </p>
             <p>RSS feeds have to be supported from the website, so a lot of websites as of 2023 do not support RSS!</p>
             <p>Which is sad, but sort of makes sense. It's old tech! </p>
             <p>However don't let that deter you from googling something!</p>

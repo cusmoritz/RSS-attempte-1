@@ -276,7 +276,7 @@ apiRouter.post('/api/update', async (request, response, next) => {
     try {
         const newPosts = await updateDb();
         console.log('this is new posts: ', newPosts)
-        response.send(newPosts).status(200);
+        response.send().status(200);
     } catch (error) {
         console.log('there was an error trying to update the posts in /api/update: ', error)
         throw error;

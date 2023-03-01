@@ -51,8 +51,9 @@ export const updatePosts = async() => {
         const newPosts = await fetch(`${BASE_URL}/api/update`, {
             method: "POST"
         });
-        const letsAddEm = await newPosts.json();
-        console.log('lets add em: ', letsAddEm)
+        console.log(newPosts);
+        // const letsAddEm = await newPosts.json();
+        // console.log('lets add em: ', letsAddEm)
         // return how many posts we updated?
         alert('Posts updated!')
     } catch (error) {
