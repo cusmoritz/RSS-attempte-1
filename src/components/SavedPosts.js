@@ -9,6 +9,7 @@ const SavedPosts = () => {
     const getSavedPosts = async () => {
         const gettingPosts = await fetchSaved(userId)
         setSavedPosts(gettingPosts)
+        console.log('saved posts', savedPosts)
         return;
     }
 
@@ -21,25 +22,29 @@ const SavedPosts = () => {
     useEffect(() => {
         getSavedPosts();
     },[])
-
+    
     return (
         <div className="container">
-            {savedPosts 
-            ? savedPosts.map((post) => {
+            {!savedPosts 
+            ? 
+            (<div>
+                <p>You haven't saved any posts yet!</p>
+            </div>)
+            : 
+            savedPosts.map((post) => {
                 console.log('each post', post)
                 return(
                     <div className="post-container" key={savedPosts.indexOf(post) + 1}>
-                    <p>Saved post #{savedPosts.indexOf(post) + 1}</p>
-                    <h4>{post.title}</h4>
-                    {post.content ? <p dangerouslySetInnerHTML={{__html: post.content}}></p> : null }
-                    <p><a>{post.url}</a></p>
-                    <button onClick={() => {handleUnsave(post.post_id)}}>Unsave post {savedPosts.indexOf(post) + 1}</button>
+                        <p>Saved post #{savedPosts.indexOf(post) + 1}</p>
+                        <h4>{post.title}</h4>
+                        {post.content ? <p dangerouslySetInnerHTML={{__html: post.content}}></p> : null }
+                        <p><a>{post.url}</a></p>
+                        <button onClick={() => {handleUnsave(post.post_id)}}>Unsave post {savedPosts.indexOf(post) + 1}</button>
                     </div>
 
                 )
-            }) 
-            : 
-            (<p>You haven't added any feeds yet!</p>) }
+            })
+            }
         </div>
     )
 }

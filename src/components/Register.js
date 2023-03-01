@@ -35,6 +35,7 @@ const Register = ({token, setToken, setUserId}) => {
     return (
         <div className="register-container">
             <h5>Register a new user with the following form:</h5>
+            <p>(Your email address is only used to keep track of links you have saved! Nothing else.)</p>
             <form className="register-form" onSubmit={(event) => event.preventDefault()}>
                 <label htmlFor="first-name"> First name: </label>
                     <input type="text" required className="first-name" 
