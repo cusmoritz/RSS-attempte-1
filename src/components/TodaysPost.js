@@ -16,9 +16,10 @@ const TodaysPosts = ({user}) => {
 
     const handleSave = async (postId) => {
         const post = await saveAPost(postId, user);
+        alert(`Post saved!`)
         return post;
     }
-
+    console.log('todays posts', todayPosts)
     return (
         <div className='container'>
         {todayPosts.length < 1 

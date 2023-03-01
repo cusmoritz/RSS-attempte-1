@@ -33,7 +33,7 @@ const LinkPosts = ({user}) => {
                     return (
                         <div key={post.id} className="post-container">
                             <h4>{post.title}</h4>
-                            <p>Posted on: {post.date}</p>
+                            <p>Posted on: {post.date.slice(0, -14)}</p>
                             {post.content ? <p dangerouslySetInnerHTML={{__html: post.content}}></p> : null }
                             <button><a href={`${post.url}`} target="_blank">See original post.</a></button>
                             <button onClick={() => handleSave(post.id)}>Save Post</button>

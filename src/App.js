@@ -42,19 +42,20 @@ export const App = () => {
           <Routes>
 
             <Route path="/today" element={<TodaysPosts user={user}/>} />
-            <Route exact path="/" element={<Linklist links={links} setLinks={setLinks}/>}/>
+            <Route path="/links" element={<Linklist links={links} setLinks={setLinks}/>}/>
             <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} user={user}/>} />
             <Route path="/register" element={<Register token={token} setToken={setToken} setUserId={setUser}/>} />
             <Route path="/manage/:idSwitch" element={<LinkManager setLinks={setLinks} links={links}/>} />
             <Route path="/login" element={<LoginForm setToken={setToken} setUser={setUser} setLinks={setLinks}/>} />
             <Route path="/:userId/saved" element={<SavedPosts />}/>
+            <Route exact path="/" element={<Explainer />} />
             {/* we need a user route */}
             {/* <Route path="/:user/manage"></Route> */}
           </Routes>
-
+{/* 
       {!user 
       ? <Explainer />
-      : null}
+      : null} */}
 
       <Footer />
     </>

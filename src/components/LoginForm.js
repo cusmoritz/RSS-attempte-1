@@ -22,7 +22,7 @@ const LoginForm = ({setToken, setUser, setLinks}) => {
             setToken(result.token)
             localStorage.setItem('token', result.token);
             setUser(result.id)
-            navigate('/');
+            navigate('/links');
             setLinks(await getLinksByUserId(result.id, result.token));
         }
     }
