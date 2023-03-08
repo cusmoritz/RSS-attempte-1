@@ -6,16 +6,41 @@ const LinkPosts = ({user}) => {
     
     const {linkSwitch} = useParams();
 
-    const [posts, setPosts] = useState([]);
+    const [allPosts, setAllPosts] = useState([]);
+    const [pagePosts, setPagePosts] = useState([])
+    const [page, setPage] = useState(0);
 
     useEffect(() => {
-        gathering(linkSwitch);
-    },[])
+        console.log('one...', allPosts)
 
-    const gathering = async(linkSwitch) => {
-        const gettingPosts = await getPostsForLink(linkSwitch);
-        setPosts(gettingPosts)
-    }
+        // fetch all the posts 
+        const gathering = async(linkSwitch) => {
+            console.log('two....', allPosts)
+            // const gettingPosts = await getPostsForLink(linkSwitch);
+            // console.log('three...', allPosts);
+            setAllPosts(await getPostsForLink(linkSwitch));
+            console.log('four...', allPosts);
+
+        };
+
+        console.log('five...', allPosts);
+        // this sets our pagination from all the posts
+        const setPostsOnPage = (page) => {
+            console.log('six...', allPosts)
+            const pageBegin = page*10;
+            const pageEnd = (page*10)+10;
+            console.log('seven...', allPosts)
+            const otherPagePosts = allPosts.slice(pageBegin, pageEnd);
+            console.log('eight...', allPosts)
+            setPagePosts(otherPagePosts);
+        }
+
+        console.log('nine...', allPosts);
+        gathering(linkSwitch);
+
+        setPostsOnPage(page);
+
+    },[])
 
     const handleSave = async (postId) => {
         const post = await saveAPost(postId, user);
@@ -23,12 +48,13 @@ const LinkPosts = ({user}) => {
     }
 
     return (
+
         <div className="container">
-            {!posts ? 
+            {!pagePosts ? 
                 (<p>There are no posts for this link.</p>) 
             : 
                 (<div>
-                {posts.map((post) => {
+                {pagePosts.map((post) => {
 
                     return (
                         <div key={post.id} className="post-container">
@@ -40,7 +66,8 @@ const LinkPosts = ({user}) => {
                         </div>
                     )
                 })}
-                </div>)}
+            </div>)}
+                {/* <button onClick={() => setPage(page +1)}>Next Page</button> */}
         </div>
     )
 }

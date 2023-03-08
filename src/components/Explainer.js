@@ -6,6 +6,7 @@ const Explainer = () => {
     return (
         <div className="container">
             <h4>What is this website?</h4>
+            <p>It's an RSS reader!</p>
             <p>RSS is short for Really Simple Syndication, you can read more about it <a href="https://rss.com/blog/how-do-rss-feeds-work/" target="_blank">here</a>.</p>
             <p>In short, they are links that are automatically populated and updated with information that a computer can read. These files are in the format called XML.</p>
             <p>RSS feeds, when they are populated from website masters, are automatically rendered in chronological order. Meaning the newest posts, blogs, or whatever else is in the RSS feed are always the first things you see.</p>

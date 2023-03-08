@@ -100,6 +100,16 @@ apiRouter.get('/api/links/:linkId', async (request, response, next) => {
     }
 })
 
+// apiRouter.get(`/api/ten/${linkId}`, async (request, response, next) => {
+//     try {
+//         const {linkId} = request.params()
+//         const tenPosts = await fetchTenPosts(linkId);
+//         response.send(tenPosts);
+//     } catch (error) {
+//         throw error;
+//     }
+// })
+
 // get one post from its ID
 apiRouter.get('/api/posts/:postId', async (request, response, next) => {
     const { postId } = request.params;

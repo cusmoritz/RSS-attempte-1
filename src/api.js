@@ -132,6 +132,21 @@ export const fetchOnePost = async(postId) => {
     }
 }
 
+// export const fetchTenPosts = async(pageNum, linkId) => {
+//     try {
+//         const result = await fetch(`${BASE_URL}/api/ten/${linkId}`, {
+//             method: "GET", 
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             }
+//         });
+//         const tenPosts = result.json();
+//         return tenPosts;
+//     } catch (error) {
+//         throw error;
+//     }
+// }
+
 export const fetchSaved = async(userId) => {
     try {
         const response = await fetch(`${BASE_URL}/api/saved/${userId}`,{

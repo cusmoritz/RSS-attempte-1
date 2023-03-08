@@ -253,7 +253,22 @@ const fetchSavedPosts = async (userId) => {
     } catch (error) {
         throw error;
     }
-}
+};
+
+// const fetchTenPosts = async (linkId) => {
+//     try {
+//         const posts = await client.query(`
+//         SELECT * FROM rss
+//         WHERE link_id = $1
+//         LIMIT 10
+//         ;
+//         `, [linkId]);
+//         console.log('ten posts in db?', posts)
+//         return posts;
+//     } catch (error) {
+//         throw error;
+//     }
+// }
 
 // client.connect();
 
@@ -274,6 +289,7 @@ module.exports = {
     savePost,
     fetchSavedPosts,
     unsavePost,
+    
 
 }
 
