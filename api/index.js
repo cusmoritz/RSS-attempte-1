@@ -229,6 +229,22 @@ apiRouter.post('/api/login', async (request, response, next) => {
     }
 });
 
+apiRouter.get('/api/me', async (request, response, next) => {
+    try {
+        const auth = request.header('Authorization');
+        const [, token] = auth.split(" ")
+        const userCheck = jwt.verify(token, JWT_SECRET);
+        response.send(userCheck);
+        // send the token to /api/me in request
+        // if there's a token
+        // verify the token
+        // token should include user id and stuff
+        // send back the id to set state
+    } catch (error) {
+        
+    }
+})
+
 //this function handles signing up and/or registering
 apiRouter.post('/api/sign-up', async (request, response, next) => {
     try {

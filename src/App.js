@@ -14,6 +14,7 @@ import LinkManager from './components/LinkManager';
 import LoginForm from './components/LoginForm';
 import Explainer from './components/Explainer';
 import SavedPosts from './components/SavedPosts';
+import { userCheck } from './api';
 
 export const App = () => {
 
@@ -26,13 +27,24 @@ export const App = () => {
   console.log('user app level', user);
 
   useEffect(() => {
+    if (token) {
+      const checkingUser = async() => {
+        const checking = await userCheck(token);
+        setUser(checking.id);
+      }
+      checkingUser();
+    }
+
+  }, [token]);
+
+  useEffect(() => {
     if(user !== null){
       async function getLinks(){
         setLinks(await getLinksByUserId(user, token));
       }
       getLinks();
     }
-  },[])
+  },[user])
 
   return(
     <>

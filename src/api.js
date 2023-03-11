@@ -270,3 +270,19 @@ export const userLogin = async (username, password) => {
         throw new Error (error);
     }
 }
+
+export const userCheck = async (token) => {
+    try {
+        const isThereUser = await fetch(`${BASE_URL}/api/me`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const user = isThereUser.json();
+        return user;
+    } catch (error) {
+        throw error;
+    }
+}
