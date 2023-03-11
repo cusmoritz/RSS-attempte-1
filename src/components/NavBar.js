@@ -38,7 +38,7 @@ const NavBar = ({token, setToken, userId, setLinks, setUserId}) => {
                     <button><NavLink to={`/manage/${userId}`} >Manage links</NavLink></button>
                     <button onClick={handleLogout} >Logout</button>
                     <NavLink to="/today"><button>Today's Posts</button></NavLink>
-                    <NavLink to="/links"><button>Your Links</button></NavLink>
+                    {/* <NavLink to="/links"><button>Your Links</button></NavLink> */}
                     <NavLink to={`/${userId}/saved`}><button>Saved Posts</button></NavLink>
                 </div>
                 }

@@ -48,7 +48,7 @@ export const App = () => {
 
   return(
     <>
-      <h1><Link to="/">STREAMER</Link></h1>
+    {user ? (<h1><Link to="/links">STREAMER</Link></h1>) : <h1><Link to="/">STREAMER</Link></h1>}
         <NavBar token={token} setToken={setToken} userId={user} setUserId={setUser} setLinks={setLinks}/>
 
           <Routes>

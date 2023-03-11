@@ -38,7 +38,7 @@ const SavedPosts = () => {
                         <p>Saved post #{savedPosts.indexOf(post) + 1}</p>
                         <h4>{post.title}</h4>
                         {post.content ? <p dangerouslySetInnerHTML={{__html: post.content}}></p> : null }
-                        <p><a>{post.url}</a></p>
+                        <p><a href={post.url} target="_blank">See original post.</a></p>
                         <button onClick={() => {handleUnsave(post.post_id)}}>Unsave post</button>
                     </div>
 

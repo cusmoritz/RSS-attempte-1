@@ -7,29 +7,34 @@ const LinkPosts = ({user}) => {
     const {linkSwitch} = useParams();
 
     const [allPosts, setAllPosts] = useState([]);
-    const [pagePosts, setPagePosts] = useState([])
+    const [pagePosts, setPagePosts] = useState(null)
     const [page, setPage] = useState(0);
 
     useEffect(() => {
-        console.log('one...', allPosts)
 
         // fetch all the posts 
         const gathering = async(linkSwitch) => {
             setAllPosts(await getPostsForLink(linkSwitch));
         };
+        console.log('page', page)
 
+        gathering(linkSwitch);
+        console.log('one...', allPosts)
+    }, [])
+
+    useEffect(() => {
         // // this sets our pagination from all the posts
         const setPostsOnPage = (page) => {
+            console.log('three...', allPosts)
+
             const pageBegin = page*10;
             const pageEnd = (page*10)+10;
             const otherPagePosts = allPosts.slice(pageBegin, pageEnd);
             setPagePosts(otherPagePosts);
-            console.log('other page posts', otherPagePosts)
-        }
-
-        gathering(linkSwitch).then(setPostsOnPage(page));
-
-    },[page])
+            console.log('other page posts', otherPagePosts);
+        };
+        setPostsOnPage(page);
+    }, [page, allPosts])
 
     const handleSave = async (postId) => {
         const post = await saveAPost(postId, user);
@@ -56,8 +61,9 @@ const LinkPosts = ({user}) => {
                     )
                 })}
             </div>)}
-                {page != 0 ? null : (<button onClick={() => setPage(page - 1)}>Previous Page</button>)}
-                <button onClick={() => setPage(page +1)}>Page {page + 2}</button>
+            {(page==0) ? null : (<button onClick={() => setPage(page - 1)}>Page {page}</button>)}
+                
+                <button onClick={() => setPage(page + 1)}>Page {page + 2}</button>
         </div>
     )
 }
