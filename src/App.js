@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import Linklist from './components/Linklist';
 import Footer from './components/Footer'
 import Register from './components/Register';
-import { getLinksByUserId } from './api';
+import { getLinksByUserId, getActiveLinksByUserId } from './api';
 import { BrowserRouter, Route, Router, Routes, Link } from 'react-router-dom';
 import LinkPosts from './components/LinkPosts';
 import TodaysPosts from './components/TodaysPost';
@@ -14,7 +14,6 @@ import LinkManager from './components/LinkManager';
 import LoginForm from './components/LoginForm';
 import Explainer from './components/Explainer';
 import SavedPosts from './components/SavedPosts';
-import { userCheck } from './api';
 
 export const App = () => {
 
@@ -40,12 +39,12 @@ export const App = () => {
   useEffect(() => {
     if(user != null){
       async function getLinks(){
-        setLinks(await getLinksByUserId(user, token));
+        setLinks(await getActiveLinksByUserId(user, token));
       }
       getLinks();
     }
   },[user])
-
+  console.log('links app level', links);
   return(
     <>
     {user ? (<h1><Link to="/links">STREAMER</Link></h1>) : <h1><Link to="/">STREAMER</Link></h1>}
@@ -54,10 +53,10 @@ export const App = () => {
           <Routes>
 
             <Route path="/today" element={<TodaysPosts user={user}/>} />
-            <Route path="/links" element={<Linklist links={links} setLinks={setLinks}/>}/>
+            <Route path="/links" element={<Linklist setLinks={setLinks} links={links}/>}/>
             <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} user={user}/>} />
             <Route path="/register" element={<Register token={token} setToken={setToken} setUserId={setUser}/>} />
-            <Route path="/manage/:idSwitch" element={<LinkManager setLinks={setLinks} links={links}/>} />
+            <Route path="/manage/:idSwitch" element={<LinkManager setLinks={setLinks} />} />
             <Route path="/login" element={<LoginForm setToken={setToken} setUser={setUser} setLinks={setLinks}/>} />
             <Route path="/:userId/saved" element={<SavedPosts />}/>
             <Route exact path="/" element={<Explainer />} />

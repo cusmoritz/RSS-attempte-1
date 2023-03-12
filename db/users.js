@@ -62,25 +62,49 @@ const verifyUser = async(username, password) => {
         if (passCheck === true){
             return user;
         } else {
-            throw new Error ("Incorrect password");
+            throw Error ("Incorrect password");
         }
     } catch (error) {
         throw new Error (error);
     }
 }
 
-// const fetchUserWithPassword = async(username, password) => {
-//     try {
-//         const {rows: [user]} = await client.query(`
-//         SELECT username, password from users
-//         WHERE username = $1
-//         ;
-//         `, [username]);
+// db login
+// const verifyUser = async ({ emailAddress, password }) => {
+//   try {
+//     const {
+//       rows: [userPassword],
+//     } = await client.query(
+//       `
+//             SELECT password
+//             FROM users
+//             WHERE "emailAddress" = $1
+//             ;
+//         `,
+//       [emailAddress]
+//     );
+//     return await bcrypt.compare(password, userPassword.password);
 
-//     } catch (error) {
-//         throw new Error (error)
+
+// api login
+// try {
+//     const user = await getUserByEmail(req.body);
+//     if (user) {
+//       if (await verifyUser(req.body)) {
+//         const token = jwt.sign(user, process.env.JWT_SECRET, {
+//           expiresIn: "1w",
+//         });
+//         res.send({
+//           token,
+//           message: "Thank you for logging in!",
+//         });
+//       } else {
+//         res.status(401).send(errorMessage);
+//       }
+//     } else {
+//       res.status(401).send(errorMessage);
 //     }
-// }
+//   } catch (error) {
 
 module.exports={
     createNewUser,

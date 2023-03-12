@@ -1,45 +1,64 @@
 // this is the folder that will make our api calls
 
+// import { client } from "../db";
+
 const BASE_URL = 'http://localhost:3000'; // wherever the db is hosted
 
-export const getAPILinks = async(token) => {
-    try {
-        const response = await fetch(`${BASE_URL}/api/links`, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          }}).then(result => result.json())
+// export const getAPILinks = async(token) => {
+//     try {
+//         const response = await fetch(`${BASE_URL}/api/links`, {
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': `Bearer ${token}`
+//           }}).then(result => result.json())
 
-        //   console.log('response in api', response)
-        return response;
-    } catch (error) {
-        console.log('there was an error fetching all links: ' , error);
-        throw error;
-    }
-};
+//         //   console.log('response in api', response)
+//         return response;
+//     } catch (error) {
+//         console.log('there was an error fetching all links: ' , error);
+//         throw error;
+//     }
+// };
 
-export const callAPIForLinks = async() => {
-    try {
-        const links = await fetch(`${BASE_URL}/api/links`)
-        const paresedLinks = await links.json();
-        // console.log('we got the links in api')
-        return paresedLinks;
-    } catch (error) {
-        console.log('there was an error getting all the links from the API: ', error);
-        throw error;
-    }
-}
+// export const callAPIForLinks = async() => {
+//     try {
+//         const links = await fetch(`${BASE_URL}/api/links`)
+//         const paresedLinks = await links.json();
+//         // console.log('we got the links in api')
+//         return paresedLinks;
+//     } catch (error) {
+//         console.log('there was an error getting all the links from the API: ', error);
+//         throw error;
+//     }
+// }
 
-export const getLinksByUserId = async(userId, token) => {
+export const getAllLinksByUserId = async(userId) => {
     try {
-        const links = await fetch(`${BASE_URL}/api/manage/${userId}`, {
+        const response = await fetch(`${BASE_URL}/api/manage/${userId}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-        // console.log('links in user api', links);
+        const everyUserLink = await response.json();
+        return everyUserLink;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const getActiveLinksByUserId = async(userId, token) => {
+    try {
+        const links = await fetch(`${BASE_URL}/api/${userId}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        console.log('links in user api', links);
         const userLinks = await links.json();
+        console.log('userlinks in user api', userLinks);
         return userLinks;
     } catch (error) {
         throw new Error (error);
@@ -212,6 +231,20 @@ export const deactivateLink = async(linkId) => {
         return response;
     } catch (error) {
         console.log('there was an error deactivating a link in src/api: ', error);
+        throw error;
+    }
+}
+
+export const reactivateLink = async(linkId) => {
+    try {
+        const response = fetch(`${BASE_URL}/api/reactivate/${linkId}`, {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            }
+        });
+        return response;
+    } catch (error) {
         throw error;
     }
 }

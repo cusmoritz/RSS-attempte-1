@@ -1,16 +1,22 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { getLinksByUserId } from "../api";
-import { deactivateLink } from "../api";
-import { createNewLink } from "../api";
+import { getAllLinksByUserId, getActiveLinksByUserId, createNewLink, deactivateLink, reactivateLink } from "../api";
 
-const LinkManager = ({links, setLinks}) => {
+const LinkManager = ({setLinks}) => {
     const {idSwitch} = useParams();
 
     const [newURL, setNewUrl] = useState("");
     const [newName, setNewName] = useState("");
     const [createNew, setCreateNew] = useState(false);
+    const [allLinks, setAllLinks] = useState([]);
+
+    useEffect(() => {
+        const fetchAllLinks = async(idSwitch) => {
+            setAllLinks( await getAllLinksByUserId(idSwitch))
+        };
+        fetchAllLinks(idSwitch);
+    }, [])
 
     const handleSubmitNewLink = async () => {
         // console.log(`you are adding ${url} to the list of links`);
@@ -23,9 +29,15 @@ const LinkManager = ({links, setLinks}) => {
         return newLink;
     };
 
+    const handleActivate = async (id) => {
+        const reactivating = await reactivateLink(id); 
+        getAllLinksByUserId(idSwitch);
+        return reactivating;
+    }
+
     const handleDelete = async (id) => {
         const linkNoMore = await deactivateLink(id);
-        const rechecking = await getLinksByUserId(idSwitch);
+        const rechecking = await getActiveLinksByUserId(idSwitch);
         setLinks(rechecking)
         return linkNoMore;
     }
@@ -47,15 +59,20 @@ const LinkManager = ({links, setLinks}) => {
             : null}
             {!createNew ? <button onClick={() => setCreateNew(!createNew)}>Add a link</button> : null}
 
-            {(links.length < 1) 
+            {(allLinks.length < 1) 
             ? (<p>You don't have any links yet! Why don't you add some?</p>)
             :
-            (links.map((eachLink) => {
+            (allLinks.map((eachLink) => {
+                console.log('each link', eachLink)
                 return(
                     <div className="link-container" key={eachLink.id}>
                         <h4 className="link-title">{eachLink.link_title}</h4>
                         <p>{eachLink.url}</p>
-                        <button id="deactivate-button" onClick={() => handleDelete(eachLink.link_id)}>Deactivate</button>
+                        {eachLink.active === false 
+                        ? 
+                        (<button id="activate-button" onClick={() => handleActivate(eachLink.link_id)}>Re-activate</button>) 
+                        : 
+                        (<button id="deactivate-button" onClick={() => handleDelete(eachLink.link_id)}>Deactivate</button>)}
                     </div>
                 )
             }))}

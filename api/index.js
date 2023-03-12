@@ -16,7 +16,7 @@ apiRouter.use(cors());
 // define port
 const PORT = process.env.PORT || 3000;
 // get our client so we can connect
-const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks, savePost, fetchSavedPosts, unsavePost } = require('../db/index.js');
+const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks, savePost, fetchSavedPosts, unsavePost, fetchAllUserLinks, reactivateLink } = require('../db/index.js');
 
 const { createNewUser, fetchUserByUsername, verifyUser, fetchUserByEmail, } = require('../db/users')
 
@@ -29,6 +29,29 @@ apiRouter.use((request, response, next) => {
     // response.send('Hello!');
     next();
 });
+
+// fetch all active links for the user
+apiRouter.get('/api/:userId', async(request, response, next) => {
+    try {
+        // console.log('backend api', request.params);
+        const {userId} = request.params;
+        const allUserLinks = await getActiveLinks(userId);
+        response.send(allUserLinks);
+    } catch (error) {
+        throw error;
+    }
+})
+
+//fetch all links by user id, even inactive
+// `${BASE_URL}/api/active/${userId}
+// apiRouter.get('/api/active/:userId', async(request, response, next) => {
+//     try {
+//         const {userId} = request.params;
+//         const 
+//     } catch (error) {
+//         throw error;
+//     }
+// })
 
 // /api/posts returns all the posts, currently
 apiRouter.get('/api/posts', async (request, response, next) => {
@@ -64,15 +87,15 @@ apiRouter.post('/api/newlink', async (request, response, next) => {
     }
 });
 
-// /api/links shows every link that has been 'subscsribed' to 
+// /api/manage shows every link that has been 'subscsribed' to 
 apiRouter.get('/api/manage/:userId', async (request, response, next) => {
     // console.log('here')
     try {
         // console.log('backend api', request.params);
         const {userId} = request.params;
-        const activeLinks = await getActiveLinks(userId);
+        const allUserLinks = await fetchAllUserLinks(userId);
         // console.log('active links backend api', activeLinks)
-        response.send(activeLinks);
+        response.send(allUserLinks);
     } catch (error) {
      console.log('there was an error in apiRouter/get/api/links: ', error);
      throw error;
@@ -99,16 +122,6 @@ apiRouter.get('/api/links/:linkId', async (request, response, next) => {
         throw error;
     }
 })
-
-// apiRouter.get(`/api/ten/${linkId}`, async (request, response, next) => {
-//     try {
-//         const {linkId} = request.params()
-//         const tenPosts = await fetchTenPosts(linkId);
-//         response.send(tenPosts);
-//     } catch (error) {
-//         throw error;
-//     }
-// })
 
 // get one post from its ID
 apiRouter.get('/api/posts/:postId', async (request, response, next) => {
@@ -302,6 +315,18 @@ apiRouter.post('/api/deactivate/:linkId', async (request, response, next) => {
         response.send(deactivated);
     } catch (error) {
         console.log('there was an error deactivating a link');
+        throw error;
+    }
+});
+
+// reactivate a link
+// `${BASE_URL}/api/reactivate/${linkId}`
+apiRouter.post('/api/reactivate/:linkId', async (request, response, next) => {
+    try {
+        const {linkId} = request.params;
+        const reactivated = await reactivateLink(linkId);
+        response.send(reactivated);
+    } catch (error) {
         throw error;
     }
 })

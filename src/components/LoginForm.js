@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { userLogin } from '../api';
 import { useNavigate } from 'react-router-dom';
-import { getLinksByUserId } from '../api';
+import { getActiveLinksByUserId } from '../api';
 
 const LoginForm = ({setToken, setUser, setLinks}) => { 
 
@@ -24,7 +24,7 @@ const LoginForm = ({setToken, setUser, setLinks}) => {
             console.log('user in login', result);
             setUser(result.id)
             navigate('/links');
-            setLinks(await getLinksByUserId(result.id, result.token));
+            setLinks(await getActiveLinksByUserId(result.id, result.token));
         }
     }
 

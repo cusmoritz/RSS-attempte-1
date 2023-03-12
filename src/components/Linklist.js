@@ -21,7 +21,7 @@ const FEED_LINKS = [
 ];
 
 const Linklist = ({links, setLinks}) => {
-    // console.log('links in link list', links)
+    console.log('links in link list', links)
 
     return (
         <>
@@ -39,9 +39,9 @@ const Linklist = ({links, setLinks}) => {
             ) 
             : 
             (<div className="container">
-                {links ? links.map((link) => {
+                {links.map((link) => {
                     return (<EachLink link={link} key={link.link_id}/>)
-                }) : (<p>You haven't added any feeds yet!</p>) }
+                })}
             </div>)}
             
         </>
