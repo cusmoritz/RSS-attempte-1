@@ -7,17 +7,6 @@ import { createNewLink } from "../api";
 
 const LinkManager = ({links, setLinks}) => {
     const {idSwitch} = useParams();
-    // console.log('userId params', idSwitch)
-    
-
-    // useEffect(() => {
-    //     const getLinks = async () => {
-    //         const allLinks = await getLinksByUserId(idSwitch)
-    //         setLinks(allLinks)
-    //         // console.log('links in front end', links)
-    //     }
-    //     getLinks();
-    // }, []);
 
     const [newURL, setNewUrl] = useState("");
     const [newName, setNewName] = useState("");
@@ -30,6 +19,7 @@ const LinkManager = ({links, setLinks}) => {
         setNewName("");
         setNewUrl("");
         setCreateNew(!createNew)
+        alert('Link added!')
         return newLink;
     };
 
@@ -49,8 +39,8 @@ const LinkManager = ({links, setLinks}) => {
                     handleSubmitNewLink(newURL, newName);
                 }}>
                     <label htmlFor='add-rss-link'>Add an RSS link:</label>
-                    <input className="add-rss-link" type="text" placeholder="link" value={newURL} onChange={(event) => setNewUrl(event.target.value)}/>
-                    <input type="text" placeholder="website name" value={newName} onChange={(event) => setNewName(event.target.value)}/>
+                    <input className="add-rss-link" type="text" required placeholder="link" value={newURL} onChange={(event) => setNewUrl(event.target.value)}/>
+                    <input type="text" placeholder="website name" required value={newName} onChange={(event) => setNewName(event.target.value)}/>
                     <button type="submit">Add RSS link</button>
                 </form>
             )
@@ -64,14 +54,16 @@ const LinkManager = ({links, setLinks}) => {
                 return(
                     <div className="link-container" key={eachLink.id}>
                         <h4 className="link-title">{eachLink.link_title}</h4>
-                        {eachLink.url}
-                        <p>{eachLink.active}</p>
-                        <button onClick={() => handleDelete(eachLink.link_id)}>Deactivate</button>
+                        <p>{eachLink.url}</p>
+                        <button id="deactivate-button" onClick={() => handleDelete(eachLink.link_id)}>Deactivate</button>
                     </div>
                 )
             }))}
         </div>
     )
 }
+
+// UCXjvsikVclbNRGRlzr8jTEg
+
 
 export default LinkManager;

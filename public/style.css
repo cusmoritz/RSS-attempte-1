@@ -31,10 +31,6 @@
     border-bottom: solid 2px #33C3F0;
     margin-top: 1em;
     margin-bottom: 1em;
-    display: flex;
-    justify-items: right;
-    justify-content: space-between;
-    /* flex-wrap: wrap; */
   }
   
   /* For devices larger than 400px */
