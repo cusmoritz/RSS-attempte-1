@@ -47,7 +47,7 @@ const LinkManager = ({links, setLinks}) => {
             : null}
             {!createNew ? <button onClick={() => setCreateNew(!createNew)}>Add a link</button> : null}
 
-            {!links 
+            {(links.length < 1) 
             ? (<p>You don't have any links yet! Why don't you add some?</p>)
             :
             (links.map((eachLink) => {

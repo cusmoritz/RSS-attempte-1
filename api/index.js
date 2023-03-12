@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 3000;
 // get our client so we can connect
 const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks, savePost, fetchSavedPosts, unsavePost } = require('../db/index.js');
 
-const { createNewUser, fetchUser, verifyUser } = require('../db/users')
+const { createNewUser, fetchUserByUsername, verifyUser, fetchUserByEmail, } = require('../db/users')
 
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
@@ -186,33 +186,16 @@ apiRouter.get('/api/today', async (request, response, next) => {
     }
 });
 
-// apiRouter.get('/jjjj', async (request, response, next) => {
-//     try {
-//         const now = new Date();
-//         const nowYear = now.getFullYear();
-//         // console.log('year: ', todayYear);
-//         const nowMonth = now.getMonth() + 1;
-//         // console.log('month: ', todayMonth);
-//         const nowDay = now.getDate();
-//         const inputDate = `${nowYear}-${nowMonth}-${nowDay}`
-//         console.log('our input datE: ', inputDate)
-//         const postsToday = await getPostsByDate(inputDate);
-//         console.log('postsToday: ', postsToday)
-//         response.send(postsToday);
-//     } catch (error) {
-//         console.log('there was a jjjjjjjjjj');
-//         throw error;
-//     }
-// })
-
 // this function handles our logins
 apiRouter.post('/api/login', async (request, response, next) => {
     try {
+        // console.log('request body', request.body);
         const { username, password } = request.body;
+        // console.log('username, password', username, password);
 
         const userVerify = await verifyUser(username, password);
         console.log('user in api: ', userVerify);
-        const id = userVerify.id;
+        const id = userVerify.user_id;
 
         if (userVerify) {
             const token = jwt.sign(userVerify, JWT_SECRET);
@@ -253,7 +236,7 @@ apiRouter.post('/api/sign-up', async (request, response, next) => {
         // console.log('new username? ', username);
         // console.log('new password? ', password);
         // check for dupe usernames
-        const _user = await fetchUser(username);
+        const _user = await fetchUserByUsername(username);
         const _email = await fetchUserByEmail(email)
         if (_user) {
             // this should be error handling instead
@@ -269,8 +252,9 @@ apiRouter.post('/api/sign-up', async (request, response, next) => {
         }
          else {
             const hashedPass = await bcrypt.hash(password, SALT_ROUNDS);
+            const hashedEmail = await bcrypt.hash(email, SALT_ROUNDS);
             // console.log('hashed pass?', hashedPass)
-            const newUser = await createNewUser(username, hashedPass, email, firstName, lastName);
+            const newUser = await createNewUser(username, hashedPass, hashedEmail, firstName, lastName);
             // const returnUser = newUser.json();
             console.log('new user in api for real, ', newUser)
             const token = jwt.sign(newUser, JWT_SECRET);

@@ -20,7 +20,7 @@ export const App = () => {
 
   // use state to check for login status
   // const [login, setLogin] = useState(true);
-  const [links, setLinks] = useState([]);
+  const [links, setLinks] = useState(null);
   const [token, setToken] = useState(window.localStorage.getItem('token') || null);
   const [user, setUser] = useState(null);
 
@@ -30,7 +30,7 @@ export const App = () => {
     if (token) {
       const checkingUser = async() => {
         const checking = await userCheck(token);
-        setUser(checking.id);
+        setUser(checking.user_id);
       }
       checkingUser();
     }
@@ -38,7 +38,7 @@ export const App = () => {
   }, [token]);
 
   useEffect(() => {
-    if(user !== null){
+    if(user != null){
       async function getLinks(){
         setLinks(await getLinksByUserId(user, token));
       }

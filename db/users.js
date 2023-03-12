@@ -18,7 +18,7 @@ const createNewUser = async (username, password, email, firstName, lastName) => 
     } 
 };
 
-const fetchUser = async (username) => {
+const fetchUserByUsername = async (username) => {
     try {
         // console.log('username? :', username)
         const {rows: [user]} = await client.query(`
@@ -34,8 +34,23 @@ const fetchUser = async (username) => {
     }
 };
 
+const fetchUserByEmail = async(email) => {
+    try {
+        const {rows: [user]} = await client.query(`
+        SELECT email FROM users
+        WHERE email=$1
+        ;
+        `, [email]);
+        // console.log('user in fetchUser', user)
+        return user;
+    } catch (error) {
+        throw error;
+    }
+}
+
 const verifyUser = async(username, password) => {
     try {
+        console.log('username, password', username, password);
         const {rows: [user]} = await client.query(`
         SELECT * FROM users
         WHERE username = $1
@@ -69,7 +84,8 @@ const verifyUser = async(username, password) => {
 
 module.exports={
     createNewUser,
-    fetchUser,
+    fetchUserByUsername,
     verifyUser,
+    fetchUserByEmail,
 
 }

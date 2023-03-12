@@ -21,6 +21,7 @@ const LoginForm = ({setToken, setUser, setLinks}) => {
             // console.log('result front end', result);
             setToken(result.token)
             localStorage.setItem('token', result.token);
+            console.log('user in login', result);
             setUser(result.id)
             navigate('/links');
             setLinks(await getLinksByUserId(result.id, result.token));
@@ -38,6 +39,7 @@ const LoginForm = ({setToken, setUser, setLinks}) => {
                         id='username-input'
                         type="text"
                         autoFocus
+                        required
                         value={username}
                         onChange={(event) => {
                             setUsername(event.target.value)
@@ -47,6 +49,7 @@ const LoginForm = ({setToken, setUser, setLinks}) => {
                     <input 
                         id='password-input'
                         type="password"
+                        required
                         value={password}
                         onChange={(event) => {
                             setPassword(event.target.value);

@@ -25,10 +25,10 @@ const SavedPosts = () => {
     
     return (
         <div className="container">
-            {!savedPosts 
+            {(savedPosts.length < 1 ) 
             ? 
             (<div>
-                <p>You haven't saved any posts yet!</p>
+                <h5>You haven't saved any posts yet!</h5>
             </div>)
             : 
             savedPosts.map((post) => {

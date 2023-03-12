@@ -158,7 +158,7 @@ export const fetchSaved = async(userId) => {
         const savedPosts = response.json();
         return savedPosts;
     } catch (error) {
-        console.log('there was an error fetching saved posts user side');
+        console.log('there was an error fetching saved posts user side', error);
         throw error;
     }
 }
@@ -264,6 +264,7 @@ export const userLogin = async (username, password) => {
             throw result.error;
         } else {
             const userLoggedIn = await result.json();
+            console.log('user logged in ', userLoggedIn);
             return userLoggedIn;
         }
     } catch (error) {

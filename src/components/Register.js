@@ -15,7 +15,7 @@ const Register = ({token, setToken, setUserId}) => {
     const navigate = useNavigate();
 
     const handleRegister = async () => {
-        if (password != confirm) {
+        if (password !== confirm) {
             alert('You must confirm your password!');
             setPassword("");
             setConfirm("");

@@ -15,13 +15,12 @@ const Explainer = () => {
             <p>... and on and on.</p>
             <p>The links for these XML files look like this: <a href="https://xkcd.com/rss.xml">https://xkcd.com/rss.xml</a></p>
             <p>This website is an RSS reader, meaning you can find links that look like the one above, and create your own news feed of sorts. </p>
-            <p>They generally either end in .xml or .feed or something similar.</p>
+            <p>They generally either end in <i>.xml</i> or <i>.feed</i> or something similar.</p>
             <p>YouTube links (YouTube still uses RSS in 2023!) look like this: </p>
-            <p>https://www.youtube.com/feeds/videos.xml?channel_id= [a series of letters and numbers here]</p>
-            <p>Channel ids for YouTube are easily findable with a website such as <a href="https://validator.w3.org/feed/" target="_blank">validator.w3.org/feed/.</a> Go to your favorite channel, copy and paste the URL into that website, and you have the channel id. It will look something like this: <i>UCXjvsikVclbNRGRlzr8jTEg</i></p>
+            <p><i>https://www.youtube.com/feeds/videos.xml?channel_id= [a series of letters and numbers here]</i></p>
+            <p>Channel ids for YouTube are easily findable with a website such as <a href="https://commentpicker.com/youtube-channel-id.php" target="_blank">commentpicker.com.</a> Go to your favorite channel, copy and paste the URL into that website, and you have the channel id. It will look something like this: <i>UCXjvsikVclbNRGRlzr8jTEg</i></p>
             <p>Then you have the whole YouTube RSS link: <a href="https://www.youtube.com/feeds/videos.xml?channel_id=UCXjvsikVclbNRGRlzr8jTEg">https://www.youtube.com/feeds/videos.xml?channel_id=UCXjvsikVclbNRGRlzr8jTEg.</a></p>
-            <p>RSS feeds have to be supported from the website, so a lot of websites as of 2023 do not support RSS!</p>
-            <p>Which is sad, but sort of makes sense. It's old tech. </p>
+            <p>RSS feeds have to be supported from the website, so a lot of websites as of 2023 do not support RSS! Which is sad, but sort of makes sense. It's old tech. </p>
             <p>However don't let that deter you from googling something!</p>
             <p><Link to="/register">Register</Link> to try it out!</p>
         </div>

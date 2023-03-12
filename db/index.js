@@ -31,13 +31,11 @@ const addRssItemDatabase = async (item, link_id) => {
             await client.query(`
             INSERT INTO rss (content, url, title, date, link_id)
             VALUES ($1, $2, $3, $4, $5)
-            ON CONFLICT (url) DO NOTHING;
             `, [item.content, item.link, item.title, item.date, link_id]);
         } else {
             await client.query(`
             INSERT INTO rss (url, title, date, link_id)
             VALUES ($1, $2, $3, $4)
-            ON CONFLICT (url) DO NOTHING
             RETURNING *;
             `, [item.link, item.title, item.date, link_id]);
         }
@@ -54,7 +52,6 @@ const addLinktoTable = async (link, userId) => {
         const {rows: newLinksInTable} = await client.query(`
         INSERT INTO rss_links (link_title, url, user_id)
         VALUES ($1, $2, $3)
-        ON CONFLICT (url) DO NOTHING
         RETURNING *
         ;
         `, [link.name, link.link, userId]);
@@ -254,21 +251,6 @@ const fetchSavedPosts = async (userId) => {
         throw error;
     }
 };
-
-// const fetchTenPosts = async (linkId) => {
-//     try {
-//         const posts = await client.query(`
-//         SELECT * FROM rss
-//         WHERE link_id = $1
-//         LIMIT 10
-//         ;
-//         `, [linkId]);
-//         console.log('ten posts in db?', posts)
-//         return posts;
-//     } catch (error) {
-//         throw error;
-//     }
-// }
 
 // client.connect();
 

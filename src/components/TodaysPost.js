@@ -19,7 +19,6 @@ const TodaysPosts = ({user}) => {
         alert(`Post saved!`)
         return post;
     }
-    console.log('todays posts', todayPosts)
     return (
         <div className='container'>
         {todayPosts.length < 1 

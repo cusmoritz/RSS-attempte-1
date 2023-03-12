@@ -1,5 +1,6 @@
 const { Client } = require('pg');
-const { linkParse } = require('./parse.js')
+const { linkParse } = require('./parse.js');
+const { createNewUser } = require('./users');
 // const {FEED_LINKS, fakeUsers } = require('../scr/seed');
 
 const DATABASE_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/rss-feed';
@@ -21,17 +22,18 @@ const FEED_LINKS = [
     {name: 'JackFrags', link: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCw7FkXsC00lH2v2yB5LQoYA'},
     {name: 'xkcd', link: 'https://xkcd.com/rss.xml'},    
     {name: 'New Means', link: 'https://newmeans.substack.com/feed'},
-    {name: 'Citations Needed', link: 'https://feeds.libsyn.com/102225/rss'}
+    {name: 'Citations Needed', link: 'https://feeds.libsyn.com/102225/rss'},
+    {name: 'Baseball Doesnt Exist', link: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCXjvsikVclbNRGRlzr8jTEg'},
     // {name: 'The Intercept', link: 'https://theintercept.com/feed/?lang=en'}
 ];
 
-const fakeUsers = [
-    {username: 'johnCReilley', password: 'StepBrothers'},
-    {username: 'FamousAmos', password: 'ItsC00kieTime'},
-    {username: 'Andrew', password: 'AndrewTime!!'},
-    {username: 'Noah', password: 'Ark,TheHarald'},
-    {username: 'Seamore', password: 'UnderTheBleachers'}
-]
+// const fakeUsers = [
+//     {username: 'johnCReilley', password: 'StepBrothers'},
+//     {username: 'FamousAmos', password: 'ItsC00kieTime'},
+//     {username: 'Andrew', password: 'AndrewTime!!'},
+//     {username: 'Noah', password: 'Ark,TheHarald'},
+//     {username: 'Seamore', password: 'UnderTheBleachers'}
+// ]
 
 const parseNewLinkPosts = async (link, linkId) => {
     try {
@@ -100,50 +102,62 @@ const rebuildDatabase = async () => {
         console.log('dropping tables...')
         // drop the tables
         await client.query(`
+
+
+        DROP TABLE IF EXISTS user_saved;
+
         DROP TABLE IF EXISTS rss;
+
         DROP TABLE IF EXISTS rss_links;
         DROP TABLE IF EXISTS users;
+
+        `);
+        console.log('done dropping tables...')
+
+
+        console.log('creating users...')
+        await client.query(`
+        CREATE TABLE IF NOT EXISTS users (
+            user_id SERIAL PRIMARY KEY,
+            username TEXT UNIQUE NOT NULL,
+            password VARCHAR(255),
+            email VARCHAR(255) NOT NULL,
+            first_name VARCHAR(255) NOT NULL,
+            last_name VARCHAR(255) NOT NULL,
+            active BOOLEAN DEFAULT TRUE
+        );
         `);
 
-        // table for links
-        console.log('creating links table...')
+        // create the tables
+        console.log('creating rss_links...')
         await client.query(`
         CREATE TABLE IF NOT EXISTS rss_links (
             link_id SERIAL PRIMARY KEY,
             link_title TEXT NOT NULL,
-            url TEXT UNIQUE NOT NULL,
+            user_id INTEGER REFERENCES users(user_id),
+            url TEXT NOT NULL,
             active BOOLEAN DEFAULT TRUE
             );
         `);
 
-        console.log('creating tables...')
-        // create the tables
+        console.log('creating rss...')
         await client.query(`
         CREATE TABLE IF NOT EXISTS rss (
             id SERIAL PRIMARY KEY,
             content TEXT,
             link_id INTEGER REFERENCES rss_links(link_id),
-            url TEXT UNIQUE NOT NULL,
+            url TEXT NOT NULL,
             title TEXT NOT NULL,
             date DATE,
             saved BOOLEAN DEFAULT FALSE
             );
         `);
 
-        console.log('creating users table...')
-        await client.query(`
-        CREATE TABLE IF NOT EXISTS users (
-            user_id SERIAL PRIMARY KEY,
-            username TEXT UNIQUE NOT NULL,
-            password VARCHAR(255),
-            active BOOLEAN DEFAULT TRUE
-        );
-        `);
-
+        console.log('creating users_saved...')
         await client.query(`
         CREATE TABLE IF NOT EXISTS user_saved (
             id SERIAL PRIMARY KEY,
-            user_id INTEGER REFERENCES "users"(id) NOT NULL,
+            user_id INTEGER REFERENCES "users"(user_id) NOT NULL,
             post_id INTEGER REFERENCES "rss"(id) NOT NULL
         );
         `)
@@ -290,9 +304,9 @@ const buildDb = async () => {
                 await parseNewLinkPosts(link.url, link.link_id);
             })
             });
-        fakeUsers.forEach( async (user) => {
-            await createNewUser(user.username, user.password);
-        })
+        // fakeUsers.forEach( async (user) => {
+        //     await createNewUser(user.username, user.password);
+        // })
         
     } catch (error) {
         console.log('there was an error building the database: ', error);
@@ -305,7 +319,7 @@ const buildDb = async () => {
         // parse each link through the parser, returning posts
             // send each post into the database, this time tied to the rss_link id
 
-client.connect();
+client.connect().then(rebuildDatabase());
 
 module.exports = {
     buildDb, 
