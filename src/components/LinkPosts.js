@@ -55,15 +55,15 @@ const LinkPosts = ({user}) => {
                             <h4>{post.title}</h4>
                             <p>Posted on: {post.date.slice(0, -14)}</p>
                             {post.content ? <p dangerouslySetInnerHTML={{__html: post.content}}></p> : null }
-                            <button><a href={`${post.url}`} target="_blank">See original post.</a></button>
+                            <button><a href={`${post.url}`} target="_blank">See original post</a></button>
                             <button onClick={() => handleSave(post.id)}>Save Post</button>
                         </div>
                     )
                 })}
             </div>)}
-            {(page==0) ? null : (<button onClick={() => setPage(page - 1)}>Page {page}</button>)}
+                {(page==0) ? null : (<button id="previous_button" onClick={() => setPage(page - 1)}>Page {page}</button>)}
                 
-                <button onClick={() => setPage(page + 1)}>Page {page + 2}</button>
+                <button id="next-button" onClick={() => setPage(page + 1)}>Page {page + 2}</button>
         </div>
     )
 }

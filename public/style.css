@@ -188,6 +188,10 @@
     }
   }
 
+  #next-button {
+    float: right;
+  }
+
   .register-form label {
     width: 50%;
     align-self:flex-start;
@@ -302,6 +306,10 @@
     background-color: #1EAEDB;
     border-color: #1EAEDB; }
   
+    button a {
+      text-decoration: none;
+      color: #333;
+    }
   
   /* Forms
   â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“â€“ */
