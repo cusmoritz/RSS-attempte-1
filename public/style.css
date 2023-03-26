@@ -33,6 +33,14 @@
     margin-bottom: 1em;
   }
   
+#activate-button {
+  background-color: #33C3F0;
+}
+
+#deactivate-button {
+  background-color: rgb(255, 114, 114);
+}
+
   /* For devices larger than 400px */
   @media (min-width: 400px) {
     .container {

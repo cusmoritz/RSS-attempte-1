@@ -14,12 +14,13 @@ import LinkManager from './components/LinkManager';
 import LoginForm from './components/LoginForm';
 import Explainer from './components/Explainer';
 import SavedPosts from './components/SavedPosts';
+import { userCheck } from './api';
 
 export const App = () => {
 
   // use state to check for login status
   // const [login, setLogin] = useState(true);
-  const [links, setLinks] = useState(null);
+  const [links, setLinks] = useState([]);
   const [token, setToken] = useState(window.localStorage.getItem('token') || null);
   const [user, setUser] = useState(null);
 
@@ -43,7 +44,7 @@ export const App = () => {
       }
       getLinks();
     }
-  },[user])
+  }, [user])
   console.log('links app level', links);
   return(
     <>

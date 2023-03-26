@@ -102,18 +102,12 @@ const rebuildDatabase = async () => {
         console.log('dropping tables...')
         // drop the tables
         await client.query(`
-
-
         DROP TABLE IF EXISTS user_saved;
-
         DROP TABLE IF EXISTS rss;
-
         DROP TABLE IF EXISTS rss_links;
         DROP TABLE IF EXISTS users;
-
         `);
         console.log('done dropping tables...')
-
 
         console.log('creating users...')
         await client.query(`
@@ -146,7 +140,7 @@ const rebuildDatabase = async () => {
             id SERIAL PRIMARY KEY,
             content TEXT,
             link_id INTEGER REFERENCES rss_links(link_id),
-            url TEXT NOT NULL,
+            url TEXT NOT NULL UNIQUE,
             title TEXT NOT NULL,
             date DATE,
             saved BOOLEAN DEFAULT FALSE

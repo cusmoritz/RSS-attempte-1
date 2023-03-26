@@ -307,6 +307,7 @@ export const userLogin = async (username, password) => {
 
 export const userCheck = async (token) => {
     try {
+        console.log('token in user api', token);
         const isThereUser = await fetch(`${BASE_URL}/api/me`, {
             method: "GET",
             headers: {

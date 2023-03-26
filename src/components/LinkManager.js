@@ -31,7 +31,8 @@ const LinkManager = ({setLinks}) => {
 
     const handleActivate = async (id) => {
         const reactivating = await reactivateLink(id); 
-        getAllLinksByUserId(idSwitch);
+        const rechecking = await getActiveLinksByUserId(idSwitch);
+        setLinks(rechecking);
         return reactivating;
     }
 
@@ -63,7 +64,6 @@ const LinkManager = ({setLinks}) => {
             ? (<p>You don't have any links yet! Why don't you add some?</p>)
             :
             (allLinks.map((eachLink) => {
-                console.log('each link', eachLink)
                 return(
                     <div className="link-container" key={eachLink.id}>
                         <h4 className="link-title">{eachLink.link_title}</h4>

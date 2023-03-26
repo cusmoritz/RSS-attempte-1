@@ -30,18 +30,6 @@ apiRouter.use((request, response, next) => {
     next();
 });
 
-// fetch all active links for the user
-apiRouter.get('/api/:userId', async(request, response, next) => {
-    try {
-        // console.log('backend api', request.params);
-        const {userId} = request.params;
-        const allUserLinks = await getActiveLinks(userId);
-        response.send(allUserLinks);
-    } catch (error) {
-        throw error;
-    }
-})
-
 //fetch all links by user id, even inactive
 // `${BASE_URL}/api/active/${userId}
 // apiRouter.get('/api/active/:userId', async(request, response, next) => {
@@ -230,6 +218,7 @@ apiRouter.get('/api/me', async (request, response, next) => {
         const auth = request.header('Authorization');
         const [, token] = auth.split(" ")
         const userCheck = jwt.verify(token, JWT_SECRET);
+        console.log('usercheck', userCheck)
         response.send(userCheck);
         // send the token to /api/me in request
         // if there's a token
@@ -237,7 +226,19 @@ apiRouter.get('/api/me', async (request, response, next) => {
         // token should include user id and stuff
         // send back the id to set state
     } catch (error) {
-        
+        throw error;
+    }
+})
+
+// fetch all active links for the user
+apiRouter.get('/api/:userId', async(request, response, next) => {
+    try {
+        // console.log('backend api', request.params);
+        const {userId} = request.params;
+        const allUserLinks = await getActiveLinks(userId);
+        response.send(allUserLinks);
+    } catch (error) {
+        throw error;
     }
 })
 

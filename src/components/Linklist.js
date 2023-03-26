@@ -1,7 +1,6 @@
 // import everything
 import React, { useEffect, useState, useHistory } from 'react';
 import EachLink from './EachLink';
-import { createNewLink } from '../api';
 
 const FEED_LINKS = [
     {name: 'Ars Technica', link: 'https://feeds.arstechnica.com/arstechnica/staff-blogs'}, // works with parseURL

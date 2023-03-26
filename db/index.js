@@ -31,11 +31,13 @@ const addRssItemDatabase = async (item, link_id) => {
             await client.query(`
             INSERT INTO rss (content, url, title, date, link_id)
             VALUES ($1, $2, $3, $4, $5)
+            ON CONFLICT (url) DO NOTHING
             `, [item.content, item.link, item.title, item.date, link_id]);
         } else {
             await client.query(`
             INSERT INTO rss (url, title, date, link_id)
             VALUES ($1, $2, $3, $4)
+            ON CONFLICT (url) DO NOTHING
             RETURNING *;
             `, [item.link, item.title, item.date, link_id]);
         }
