@@ -37,6 +37,13 @@
   background-color: #33C3F0;
 }
 
+.search-container {
+  position: relative;
+  width: 200%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
 #deactivate-button {
   background-color: rgb(255, 114, 114);
 }

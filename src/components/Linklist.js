@@ -1,6 +1,7 @@
 // import everything
 import React, { useEffect, useState, useHistory } from 'react';
 import EachLink from './EachLink';
+import SearchBar from './SearchBar';
 
 const FEED_LINKS = [
     {name: 'Ars Technica', link: 'https://feeds.arstechnica.com/arstechnica/staff-blogs'}, // works with parseURL
@@ -19,11 +20,12 @@ const FEED_LINKS = [
     // {name: 'The Intercept', link: 'https://theintercept.com/feed/?lang=en'}
 ];
 
-const Linklist = ({links, setLinks}) => {
+const Linklist = ({links, setLinks, user}) => {
     console.log('links in link list', links)
 
     return (
         <>
+        <SearchBar links={links} user={user}/>
             {(links.length < 1) 
             ? 
             (

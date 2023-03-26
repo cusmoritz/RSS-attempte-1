@@ -54,7 +54,7 @@ export const App = () => {
           <Routes>
 
             <Route path="/today" element={<TodaysPosts user={user}/>} />
-            <Route path="/links" element={<Linklist setLinks={setLinks} links={links}/>}/>
+            <Route path="/links" element={<Linklist setLinks={setLinks} links={links} user={user}/>}/>
             <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} user={user}/>} />
             <Route path="/register" element={<Register token={token} setToken={setToken} setUserId={setUser}/>} />
             <Route path="/manage/:idSwitch" element={<LinkManager setLinks={setLinks} />} />
