@@ -16,7 +16,7 @@ apiRouter.use(cors());
 // define port
 const PORT = process.env.PORT || 3000;
 // get our client so we can connect
-const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks, savePost, fetchSavedPosts, unsavePost, fetchAllUserLinks, reactivateLink } = require('../db/index.js');
+const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks, savePost, fetchSavedPosts, unsavePost, fetchAllUserLinks, reactivateLink, searchPosts } = require('../db/index.js');
 
 const { createNewUser, fetchUserByUsername, verifyUser, fetchUserByEmail, } = require('../db/users')
 
@@ -237,6 +237,19 @@ apiRouter.get('/api/:userId', async(request, response, next) => {
         const {userId} = request.params;
         const allUserLinks = await getActiveLinks(userId);
         response.send(allUserLinks);
+    } catch (error) {
+        throw error;
+    }
+});
+
+apiRouter.get('/api/search/:term', async (request, response, next) => {
+    try {
+        const {term} = request.params;
+        const {user} = request.headers;
+        console.log('api search term: ', term)
+        const findingPosts = await searchPosts(term, user);
+        console.log('api results: ', findingPosts)
+        response.send(findingPosts);
     } catch (error) {
         throw error;
     }

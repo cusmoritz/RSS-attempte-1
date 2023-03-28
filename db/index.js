@@ -281,6 +281,42 @@ const fetchSavedPosts = async (userId) => {
     }
 };
 
+const searchPosts = async (term, user) => {
+    try {
+
+        console.log('database term: ', term, user)
+
+        // will be an array of links [{}, {}, {}, {} ...]
+        const userLinks = await getActiveLinks(user);
+        console.log('userLinks db: ', userLinks);
+        let setString = '';
+        userLinks.map(
+            (link) => setString = setString + link.link_id + ' ')
+        // .map(
+        //     (key) => `${ key }`
+        //     ).join(`, `);
+        console.log('setString, ', setString);
+        // 1, 3, 4, 2
+
+        const {rows: databaseResults} = await client.query(`
+            SELECT * FROM rss
+            WHERE title LIKE ('%${term}%') AND link_id = ${setString}
+        ;
+        `);
+        // %term% is how SQL uses LIKE to search within something
+        // 
+        console.log('database results: ', databaseResults);
+        return databaseResults;
+    } catch (error) {
+        throw error;
+    }
+}
+
+// SELECT column_name(s)
+// FROM table1
+// RIGHT JOIN table2
+// ON table1.column_name = table2.column_name;
+
 // client.connect();
 
 module.exports = {
@@ -302,6 +338,7 @@ module.exports = {
     unsavePost,
     fetchAllUserLinks,
     reactivateLink,
-    
+    searchPosts,
+
 }
 

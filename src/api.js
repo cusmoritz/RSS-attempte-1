@@ -321,3 +321,21 @@ export const userCheck = async (token) => {
         throw error;
     }
 }
+
+export const searchPosts = async (term, user) => {
+    try {
+        console.log('this is search term: ', term);
+        const result = await fetch(`${BASE_URL}/api/search/${term}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'user': `${user}`
+            }
+        });
+        console.log('returned from api fetch: ', result);
+        const searchResults = await result.json();
+        return searchResults;
+    } catch (error) {
+        throw error;
+    }
+}
