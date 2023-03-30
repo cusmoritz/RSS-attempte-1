@@ -20,7 +20,9 @@ const SearchBar = ({links, user}) => {
 
     const handleSearch = (searchTerm) => {
         setSearch(searchTerm);
-        userSearchPosts();
+        if (search != "") {
+            userSearchPosts();
+        }
     }
 
     return (

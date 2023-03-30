@@ -289,25 +289,66 @@ const searchPosts = async (term, user) => {
         // will be an array of links [{}, {}, {}, {} ...]
         const userLinks = await getActiveLinks(user);
         console.log('userLinks db: ', userLinks);
-        let setString = '';
-        userLinks.map(
-            (link) => setString = setString + link.link_id + ' ')
+        // let setString = Object.keys(userLinks).map((key, index) => 
+        //     `${ index+1}`).join(' OR ');
+        
+        
+        // let linkArray = []
+        // userLinks.map((link) => {
+        //     linkArray.push(link.link_id)
+        // });
+        // userLinks.map(
+        //     (key, link) => `"${ key }"=$${ index + 1}`
+        //     ).join(', ');
         // .map(
         //     (key) => `${ key }`
         //     ).join(`, `);
-        console.log('setString, ', setString);
+        // console.log('setString, ', setString);
+        // console.log('linkArray, ', linkArray);
         // 1, 3, 4, 2
 
-        const {rows: databaseResults} = await client.query(`
+        //setString = Object.keys(fields).map(
+        // this is like saying 'first key' = $1
+        // which we will throw into the [array] after the client.query
+        // (key, index) => `"${ key }"=$${ index + 1}`
+        // ).join(', ');
+
+        // let buildSearchString = "";
+
+        // for (let i = 1; i < userLinks.length; i++){
+        //     buildSearchString = buildSearchString + `OR title LIKE ('%${term}%') AND link_id = ${userLinks[i]}`
+        // }
+
+        let individualResults = []
+
+        for (let i = 0; i < userLinks.length; i++) {
+            const {rows: databaseResults} = await client.query(`
             SELECT * FROM rss
-            WHERE title LIKE ('%${term}%') AND link_id = ${setString}
-        ;
-        `);
+            WHERE title LIKE ('%${term}%') AND link_id = ${userLinks[i].link_id}
+            ;
+            `);
+            if (databaseResults.length > 0) {
+                individualResults.push(databaseResults);
+            }
+        }
+
+        console.log('individual', individualResults.length)
+
+        
+        // const {rows: databaseResults} = await client.query(`
+        //     SELECT * FROM rss
+        //     WHERE title LIKE ('%${term}%') AND link_id = $1
+        //     OR title LIKE ('%${term}%') AND link_id = $2
+        //     OR title LIKE ('%${term}%') AND link_id = $3
+        //     OR title LIKE ('%${term}%') AND link_id = $4
+        // ;
+        // `, linkArray[0]);
         // %term% is how SQL uses LIKE to search within something
         // 
-        console.log('database results: ', databaseResults);
-        return databaseResults;
+        // console.log('database results: ', databaseResults);
+        return individualResults;
     } catch (error) {
+        console.log('there was an error searching for posts')
         throw error;
     }
 }

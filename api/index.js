@@ -230,18 +230,6 @@ apiRouter.get('/api/me', async (request, response, next) => {
     }
 })
 
-// fetch all active links for the user
-apiRouter.get('/api/:userId', async(request, response, next) => {
-    try {
-        // console.log('backend api', request.params);
-        const {userId} = request.params;
-        const allUserLinks = await getActiveLinks(userId);
-        response.send(allUserLinks);
-    } catch (error) {
-        throw error;
-    }
-});
-
 apiRouter.get('/api/search/:term', async (request, response, next) => {
     try {
         const {term} = request.params;
@@ -254,6 +242,18 @@ apiRouter.get('/api/search/:term', async (request, response, next) => {
         throw error;
     }
 })
+
+// fetch all active links for the user
+apiRouter.get('/api/:userId', async(request, response, next) => {
+    try {
+        // console.log('backend api', request.params);
+        const {userId} = request.params;
+        const allUserLinks = await getActiveLinks(userId);
+        response.send(allUserLinks);
+    } catch (error) {
+        throw error;
+    }
+});
 
 //this function handles signing up and/or registering
 apiRouter.post('/api/sign-up', async (request, response, next) => {

@@ -46,6 +46,7 @@ export const App = () => {
     }
   }, [user])
   console.log('links app level', links);
+  
   return(
     <>
     {user ? (<h1><Link to="/links">STREAMER</Link></h1>) : <h1><Link to="/">STREAMER</Link></h1>}
