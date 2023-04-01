@@ -1,7 +1,8 @@
 // import everything
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { searchPosts } from '../api';
+import { Link } from 'react-router-dom';
 
 const SearchBar = ({links, user}) => {
 
@@ -29,6 +30,10 @@ const SearchBar = ({links, user}) => {
         }
     }
 
+    // useEffect(() => {
+    //     setSearch(search)
+    // }, search)
+
     const setNested = () => {
         for (let i=0;i<results.length; i++) {
             setDisplay(results[i]);
@@ -38,7 +43,7 @@ const SearchBar = ({links, user}) => {
 
 
     return (
-        <div className="search-container">
+        <div className="container search-container">
             <form onSubmit={(event) => event.preventDefault()}>
                 <input 
                     placeholder="Search posts" 
@@ -51,7 +56,8 @@ const SearchBar = ({links, user}) => {
                 console.log('posts????', post)
                 return(
                     <div className="search-results-container">
-                        <div key={post.id} className="one-result">{post.title}</div>
+                        <p key={post.id} className="one-result"><a href={post.url} target="_blank">{post.title}</a></p>
+                        <button>Save post</button>
                     </div>
                 )
             })

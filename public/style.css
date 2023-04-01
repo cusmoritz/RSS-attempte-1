@@ -38,36 +38,36 @@
 }
 
 .one-result {
-  padding-bottom: 15px;
   display: flex;
+  justify-content: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+}
+
+/* .search-results-container > div {
+  position: absolute;
+  z-index: 1;
+} */
+
+.search-container{
+  position: absolute;
+  width: 80%;
 }
 
 .search-results-container {
-  position: absolute;
+  background-color: white;
+  border-bottom: 2px solid #33C3F0;
+  margin-left: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
   z-index: 1;
-}
-
-/* .search-results-container {
-  position: absolute;
-  z-index: 1;
-  background-color: rgba(0, 0, 255, 0.651);
-}
-
-.one-result{
-  height: 50px;
-  border-radius: 30%;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  display: flex;
-  align-content: center;
-  justify-content: center;
-} */
-
-.search-container {
   position: relative;
-  width: 200%;
-  max-width: 960px;
-  margin: 0 auto;
+  width: 50%;
+  align-content: center;
+  display: flex;
+  justify-content: space-between;
 }
 
 #deactivate-button {
