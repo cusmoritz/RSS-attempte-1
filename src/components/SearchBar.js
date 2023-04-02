@@ -31,6 +31,9 @@ const SearchBar = ({links, user}) => {
     }
 
     // useEffect(() => {
+        // if (search !== "") {
+        //     setSearch(search)
+        // }
     //     setSearch(search)
     // }, search)
 
@@ -43,7 +46,7 @@ const SearchBar = ({links, user}) => {
 
 
     return (
-        <div className="container search-container">
+        <div className="container">
             <form onSubmit={(event) => event.preventDefault()}>
                 <input 
                     placeholder="Search posts" 
@@ -55,9 +58,11 @@ const SearchBar = ({links, user}) => {
             : display.map((post) => {
                 console.log('posts????', post)
                 return(
-                    <div className="search-results-container">
-                        <p key={post.id} className="one-result"><a href={post.url} target="_blank">{post.title}</a></p>
-                        <button>Save post</button>
+                    <div className="search-container">
+                        <div className="search-results-container">
+                            <p key={post.id} className="one-result"><a href={post.url} target="_blank">{post.title}</a></p>
+                            <button>Save post</button>
+                        </div>
                     </div>
                 )
             })

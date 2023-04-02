@@ -51,12 +51,13 @@
 } */
 
 .search-container{
-  position: absolute;
+  position: relative;
   width: 80%;
+  background: red;
 }
 
 .search-results-container {
-  background-color: white;
+  background-color: grey;
   border-bottom: 2px solid #33C3F0;
   margin-left: 40px;
   padding-left: 10px;
