@@ -44,28 +44,45 @@ const SearchBar = ({links, user}) => {
         console.log('display', display);
     }
 
-
     return (
         <div className="container">
             <form onSubmit={(event) => event.preventDefault()}>
                 <input 
-                    placeholder="Search posts" 
+                    placeholder="Search post titles" 
                     value={search} 
                     onChange={(event) => handleSearch(event.target.value) }></input>
             </form>
             {!display
-            ? null
-            : display.map((post) => {
-                console.log('posts????', post)
-                return(
-                    <div className="search-container">
-                        <div className="search-results-container">
-                            <p key={post.id} className="one-result"><a href={post.url} target="_blank">{post.title}</a></p>
+            ? (
+                <div className="search-container">
+                    <p>No search results!</p>
+                </div>
+            )
+            : (
+              <div className="search-container">
+                {display.map((post) => {
+                    return (
+                        <div className="search-results-container" key={post.id}>
+                            <p className="one-result"><a href={post.url} target="_blank">{post.title}</a></p>
                             <button>Save post</button>
                         </div>
-                    </div>
-                )
-            })
+                    )
+                })}
+              </div>  
+            ) 
+            
+            
+            // display.map((post) => {
+            //     console.log('posts????', post)
+            //     return(
+            //         <div className="search-container">
+            //             <div className="search-results-container">
+            //                 <p key={post.id} className="one-result"><a href={post.url} target="_blank">{post.title}</a></p>
+            //                 <button>Save post</button>
+            //             </div>
+            //         </div>
+            //     )
+            // })
             }
         </div>
 

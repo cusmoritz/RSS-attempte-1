@@ -27,14 +27,6 @@ const FEED_LINKS = [
     // {name: 'The Intercept', link: 'https://theintercept.com/feed/?lang=en'}
 ];
 
-// const fakeUsers = [
-//     {username: 'johnCReilley', password: 'StepBrothers'},
-//     {username: 'FamousAmos', password: 'ItsC00kieTime'},
-//     {username: 'Andrew', password: 'AndrewTime!!'},
-//     {username: 'Noah', password: 'Ark,TheHarald'},
-//     {username: 'Seamore', password: 'UnderTheBleachers'}
-// ]
-
 const parseNewLinkPosts = async (link, linkId) => {
     try {
 
