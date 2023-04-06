@@ -7,42 +7,26 @@ import { Link } from 'react-router-dom';
 const SearchBar = ({links, user}) => {
 
     const [search, setSearch] = useState("");
-    const [results, setResults] = useState();
-    const [display, setDisplay] = useState();
+    const [display, setDisplay] = useState([]);
 
     const userSearchPosts = async () => {
-        console.log('this was search: ', search);
         const searchResults = await searchPosts(search, user);
-        console.log('search results front: ', searchResults)
-        // this might be an array if i did it right
-        // make the call to the api here to find a post with the search term
-        // using the users id (user)
-        // and the search term
-        setResults(searchResults);
-        setNested();
+        setDisplay([]); // usestate for rendering
+        for (let i=0;i<searchResults.length; i++) { // arr of arr
+            for (let j=0; j<searchResults[i].length; j++){ // inside nested arr
+                setDisplay((previous) => [...previous, searchResults[i][j]]) // for each object, add it to the display arr
+            }
+        }
         return searchResults;
     };
 
-    const handleSearch = (searchTerm) => {
-        setSearch(searchTerm);
+    useEffect(() => {
         if (search !== "") {
-            userSearchPosts();
+            userSearchPosts(search)
+        } else {
+            setDisplay([])
         }
-    }
-
-    // useEffect(() => {
-        // if (search !== "") {
-        //     setSearch(search)
-        // }
-    //     setSearch(search)
-    // }, search)
-
-    const setNested = () => {
-        for (let i=0;i<results.length; i++) {
-            setDisplay(results[i]);
-        }
-        console.log('display', display);
-    }
+    }, [search])
 
     return (
         <div className="container">
@@ -50,13 +34,18 @@ const SearchBar = ({links, user}) => {
                 <input 
                     placeholder="Search post titles" 
                     value={search} 
-                    onChange={(event) => handleSearch(event.target.value) }></input>
+                    onChange={(event) => setSearch(event.target.value) }></input>
             </form>
             {!display
             ? (
-                <div className="search-container">
-                    <p>No search results!</p>
-                </div>
+                null
+                // <div className="search-container">
+                //     <div>
+                //         <div className="search-results-container">
+                //             <p className="one-result">No search results!</p>
+                //         </div> 
+                //     </div>   
+                // </div>
             )
             : (
               <div className="search-container">
@@ -70,19 +59,6 @@ const SearchBar = ({links, user}) => {
                 })}
               </div>  
             ) 
-            
-            
-            // display.map((post) => {
-            //     console.log('posts????', post)
-            //     return(
-            //         <div className="search-container">
-            //             <div className="search-results-container">
-            //                 <p key={post.id} className="one-result"><a href={post.url} target="_blank">{post.title}</a></p>
-            //                 <button>Save post</button>
-            //             </div>
-            //         </div>
-            //     )
-            // })
             }
         </div>
 
