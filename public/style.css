@@ -37,6 +37,13 @@
   background-color: #33C3F0;
 }
 
+.construction {
+  height: 175px;
+  width: 250px;
+  float: right;
+  display: flex;
+}
+
 .one-result {
   display: flex;
   justify-content: center;

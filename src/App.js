@@ -15,6 +15,7 @@ import LoginForm from './components/LoginForm';
 import Explainer from './components/Explainer';
 import SavedPosts from './components/SavedPosts';
 import { userCheck } from './api';
+import construction from './components/images/construction.gif';
 
 export const App = () => {
 
@@ -47,9 +48,10 @@ export const App = () => {
   }, [user])
   console.log('links app level', links);
   
+  // <img src={construction}></img>
   return(
     <>
-    {user ? (<h1><Link to="/links">STREAMER</Link></h1>) : <h1><Link to="/">STREAMER</Link></h1>}
+    {user ? (<div><img src={construction} className="construction" alt="under construction"/><h1><Link to="/links">STREAMER</Link></h1></div>) : <div><img src={construction} className="construction" alt="under construction"/><h1><Link to="/">STREAMER</Link></h1></div>}
         <NavBar token={token} setToken={setToken} userId={user} setUserId={setUser} setLinks={setLinks}/>
 
           <Routes>
