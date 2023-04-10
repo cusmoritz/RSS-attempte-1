@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { searchPosts } from '../api';
 import { Link } from 'react-router-dom';
+import { saveAPost } from '../api';
 
 const SearchBar = ({links, user}) => {
 
@@ -19,6 +20,11 @@ const SearchBar = ({links, user}) => {
         }
         return searchResults;
     };
+
+    const handleSave = async (postId) => {
+        const post = await saveAPost(postId, user);
+        return post;
+    }
 
     useEffect(() => {
         if (search !== "") {
@@ -50,10 +56,11 @@ const SearchBar = ({links, user}) => {
             : (
               <div className="search-container">
                 {display.map((post) => {
+                    console.log('post', post)
                     return (
                         <div className="search-results-container" key={post.id}>
                             <p className="one-result"><a href={post.url} target="_blank">{post.title}</a></p>
-                            <button>Save post</button>
+                            <button onClick={() => handleSave(post.id)}>Save post</button>
                         </div>
                     )
                 })}
