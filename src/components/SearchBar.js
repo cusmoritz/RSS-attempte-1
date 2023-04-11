@@ -56,7 +56,6 @@ const SearchBar = ({links, user}) => {
             : (
               <div className="search-container">
                 {display.map((post) => {
-                    console.log('post', post)
                     return (
                         <div className="search-results-container" key={post.id}>
                             <p className="one-result"><a href={post.url} target="_blank">{post.title}</a></p>

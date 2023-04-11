@@ -55,6 +55,7 @@ const LinkManager = ({setLinks}) => {
                     <input className="add-rss-link" type="text" required placeholder="link" value={newURL} onChange={(event) => setNewUrl(event.target.value)}/>
                     <input type="text" placeholder="website name" required value={newName} onChange={(event) => setNewName(event.target.value)}/>
                     <button type="submit">Add RSS link</button>
+                    <button id="deactivate-button" onClick={() => setCreateNew(!createNew)}>Cancel</button>
                 </form>
             )
             : null}
