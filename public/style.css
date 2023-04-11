@@ -37,6 +37,15 @@
   background-color: #33C3F0;
 }
 
+.date-search-form {
+  display: flex;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: space-around;
+}
+
 .construction {
   height: 175px;
   width: 250px;

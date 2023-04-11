@@ -16,7 +16,7 @@ apiRouter.use(cors());
 // define port
 const PORT = process.env.PORT || 3000;
 // get our client so we can connect
-const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks, savePost, fetchSavedPosts, unsavePost, fetchAllUserLinks, reactivateLink, searchPosts } = require('../db/index.js');
+const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks, savePost, fetchSavedPosts, unsavePost, fetchAllUserLinks, reactivateLink, searchPosts, searchPostsByDate } = require('../db/index.js');
 
 const { createNewUser, fetchUserByUsername, verifyUser, fetchUserByEmail, } = require('../db/users')
 
@@ -207,6 +207,20 @@ apiRouter.get('/api/:userId', async(request, response, next) => {
         throw error;
     }
 });
+
+// fetch(`${BASE_URL}/api/${date}/${user}`
+apiRouter.get('/api/:date/:user', async(request, response, next) => {
+    try {
+        const {date} = request.params;
+        const {user} = request.params;
+        console.log('date and user backend api, ', date, user);
+        const datePosts = await searchPostsByDate(date, user);
+        response.send(datePosts);
+    } catch (error) {
+        console.log('there was an error searching by date: ', error);
+        throw error;
+    }
+})
 
 //this function handles signing up and/or registering
 apiRouter.post('/api/sign-up', async (request, response, next) => {

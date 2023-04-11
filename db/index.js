@@ -295,6 +295,30 @@ const searchPosts = async (term, user) => {
     }
 }
 
+const searchPostsByDate = async (date, user) => {
+
+    try {
+    // arr of links for each user
+    const userLinks = await getActiveLinks(user);
+
+    let dateResults = [];
+
+    for (let i = 0; i < userLinks.length; i++) {
+        const {rows: dateSearchResults} = await client.query(`
+        SELECT * FROM rss
+        WHERE date=$1 AND link_id = ${userLinks[i].link_id}
+        ;
+        `, [date]);
+        if (dateSearchResults.length > 0) {
+            dateResults.push(dateSearchResults);
+        }
+    }
+    return dateResults;
+    } catch (error) {
+        console.log('there was a database error searching by date: ', error);
+    }
+}
+
 // client.connect();
 
 module.exports = {
@@ -317,6 +341,7 @@ module.exports = {
     fetchAllUserLinks,
     reactivateLink,
     searchPosts,
+    searchPostsByDate,
 
 }
 

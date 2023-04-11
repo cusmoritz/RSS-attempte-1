@@ -86,6 +86,25 @@ export const getTodaysPosts = async() => {
     }
 };
 
+export const fetchPostsByDate = async(date, user) => {
+    try {
+        console.log('date and user', date, user)
+        const response = await fetch(`${BASE_URL}/api/${date}/${user}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        console.log('respinse in api ,', response);
+        const datePosts = await response.json();
+        console.log('dateposts in api,', datePosts)
+        return datePosts;
+    } catch (error) {
+        console.log('there was a problem getting posts by a specific date: ', error);
+        throw error;
+    }
+};
+
 export const saveAPost = async(postId, userId) => {
     try {
         const result = await fetch(`${BASE_URL}/api/posts/saved/${postId}`, {
