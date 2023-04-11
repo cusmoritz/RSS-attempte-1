@@ -10,12 +10,12 @@ So I created this to find my own news and subscribe to creators that I applaud a
 
 It's built and designed to take an RSS / XML link, parse them into JSON, and serve it back to the user. 
 
-You have the ability to "Save a story" for reading later, saving because of interest or what-have-you.
+You have the ability to "Save a story" for reading later.
 
 The sign up is strictly used to save an individual user's posts and links to their associated sign-up email and username. 
 
-It doesn't currently have the ability to check for a link that ISN'T an RSS / XML link... so please check the link before you add it to make sure that it's actually an RSS link.
+It doesn't currently have the ability to check for a link that ISN'T an RSS / XML link ... so please check the link before you add it to make sure that it's actually an RSS link.
 
 This website is built in React on the front-end, Express.JS for API calls, and PostrgeSQL for the backend database. 
 
-It's quite robust, I think. And here is how you can clone and move along for your own purposes:
+It's quite robust, I think. And fun to be in charge of my own news again.
