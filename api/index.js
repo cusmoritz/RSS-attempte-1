@@ -30,21 +30,9 @@ apiRouter.use((request, response, next) => {
     next();
 });
 
-//fetch all links by user id, even inactive
-// `${BASE_URL}/api/active/${userId}
-// apiRouter.get('/api/active/:userId', async(request, response, next) => {
-//     try {
-//         const {userId} = request.params;
-//         const 
-//     } catch (error) {
-//         throw error;
-//     }
-// })
-
 // /api/posts returns all the posts, currently
 apiRouter.get('/api/posts', async (request, response, next) => {
     try {
-        // await buildDb();
         const allPosts = await getAllPosts();
         response.send(allPosts);
     } catch (error) {
@@ -56,18 +44,14 @@ apiRouter.get('/api/posts', async (request, response, next) => {
 // add a new link to scrape the rss from
 apiRouter.post('/api/newlink', async (request, response, next) => {
     try {
-        // request.body is an object
         const {newLink} = request.body;
         const {userId} = request.body
-        // console.log('this is request bodY: ', request.body);
 
         // we get a new link from the request and add it to the database
         const newLinkInDatabase = await addLinktoTable(newLink, userId);
-        // console.log('this is the new link: ', newLinkInDatabase);
 
         // then we bother to get the posts and add them to the database 
         const newPostsMaybe = await parseNewLinkPosts(newLink.link, newLinkInDatabase[0].link_id);
-        // console.log('did we get new posts? ', newPostsMaybe)
         response.send(newLinkInDatabase[0]);
     } catch (error) {
         console.log('there was an error in apiRouter/post/api/posts/new: ', error);
@@ -77,12 +61,9 @@ apiRouter.post('/api/newlink', async (request, response, next) => {
 
 // /api/manage shows every link that has been 'subscsribed' to 
 apiRouter.get('/api/manage/:userId', async (request, response, next) => {
-    // console.log('here')
     try {
-        // console.log('backend api', request.params);
         const {userId} = request.params;
         const allUserLinks = await fetchAllUserLinks(userId);
-        // console.log('active links backend api', activeLinks)
         response.send(allUserLinks);
     } catch (error) {
      console.log('there was an error in apiRouter/get/api/links: ', error);
@@ -96,14 +77,6 @@ apiRouter.get('/api/links/:linkId', async (request, response, next) => {
     try {
         const { linkId } = request.params;
         const postFromLink = await getPostsFromLinkId(linkId);
-        //should we error catch here in case there's not a link to the id? 
-        /*
-        postFromLink.forEach((link) => {
-            if (link.link_id != linkId) {
-                throw new "There is no link with that id."
-            }
-        })
-        */
         response.send(postFromLink);
     } catch (error) {
         console.log('there was an error in apiRouter/get/api/links/:linkId: ', error);
@@ -114,10 +87,8 @@ apiRouter.get('/api/links/:linkId', async (request, response, next) => {
 // get one post from its ID
 apiRouter.get('/api/posts/:postId', async (request, response, next) => {
     const { postId } = request.params;
-    // console.log('postId: ', postId);
     try {
         const onePost = await getOnePostById(postId);
-        // console.log('one post api side', onePost)
         response.send(onePost);
     } catch (error) {
         console.log('there was an error in apiRouter/get/api/posts/:postId: ', error);
@@ -141,12 +112,9 @@ apiRouter.post('/api/posts/saved/:postId', async (request, response, next) => {
 //POST call to remove one blog post
 apiRouter.post('/api/posts/unsave/:postId', async (request, response, next) => {
     try {
-        console.log('request body', request.body)
         const { postId } = request.params;
         const { userId } = request.body;
-        console.log('user and post', userId, postId)
         const unSave = await unsavePost(postId, userId);
-        console.log('this is unsaved post in api', unSave);
         response.send(unSave);
     } catch (error) {
         console.log('error unsaving a post in API');
@@ -172,13 +140,10 @@ apiRouter.get('/api/today', async (request, response, next) => {
         // build the day
         const now = new Date();
         const nowYear = now.getFullYear();
-        // console.log('year: ', todayYear);
         const nowMonth = now.getMonth() + 1;
-        // console.log('month: ', todayMonth);
         const nowDay = now.getDate();
         // build string for database call
         const inputDate = `${nowYear}-${nowMonth}-${nowDay}`
-        // console.log('our input datE: ', inputDate)
         const postsToday = await getPostsByDate(inputDate);
         response.send(postsToday);
     } catch (error) {
@@ -190,12 +155,9 @@ apiRouter.get('/api/today', async (request, response, next) => {
 // this function handles our logins
 apiRouter.post('/api/login', async (request, response, next) => {
     try {
-        // console.log('request body', request.body);
         const { username, password } = request.body;
-        // console.log('username, password', username, password);
 
         const userVerify = await verifyUser(username, password);
-        console.log('user in api: ', userVerify);
         const id = userVerify.user_id;
 
         if (userVerify) {
@@ -218,13 +180,7 @@ apiRouter.get('/api/me', async (request, response, next) => {
         const auth = request.header('Authorization');
         const [, token] = auth.split(" ")
         const userCheck = jwt.verify(token, JWT_SECRET);
-        console.log('usercheck', userCheck)
         response.send(userCheck);
-        // send the token to /api/me in request
-        // if there's a token
-        // verify the token
-        // token should include user id and stuff
-        // send back the id to set state
     } catch (error) {
         throw error;
     }
@@ -234,9 +190,7 @@ apiRouter.get('/api/search/:term', async (request, response, next) => {
     try {
         const {term} = request.params;
         const {user} = request.headers;
-        console.log('api search term: ', term)
         const findingPosts = await searchPosts(term, user);
-        console.log('api results: ', findingPosts)
         response.send(findingPosts);
     } catch (error) {
         throw error;
@@ -246,7 +200,6 @@ apiRouter.get('/api/search/:term', async (request, response, next) => {
 // fetch all active links for the user
 apiRouter.get('/api/:userId', async(request, response, next) => {
     try {
-        // console.log('backend api', request.params);
         const {userId} = request.params;
         const allUserLinks = await getActiveLinks(userId);
         response.send(allUserLinks);
@@ -258,11 +211,7 @@ apiRouter.get('/api/:userId', async(request, response, next) => {
 //this function handles signing up and/or registering
 apiRouter.post('/api/sign-up', async (request, response, next) => {
     try {
-        // console.log('req body', request.body)
         const { username, password, email, firstName, lastName } = request.body;
-        // console.log('new username? ', username);
-        // console.log('new password? ', password);
-        // check for dupe usernames
         const _user = await fetchUserByUsername(username);
         const _email = await fetchUserByEmail(email)
         if (_user) {
@@ -280,12 +229,8 @@ apiRouter.post('/api/sign-up', async (request, response, next) => {
          else {
             const hashedPass = await bcrypt.hash(password, SALT_ROUNDS);
             const hashedEmail = await bcrypt.hash(email, SALT_ROUNDS);
-            // console.log('hashed pass?', hashedPass)
             const newUser = await createNewUser(username, hashedPass, hashedEmail, firstName, lastName);
-            // const returnUser = newUser.json();
-            console.log('new user in api for real, ', newUser)
             const token = jwt.sign(newUser, JWT_SECRET);
-            // console.log('we got a new user signed up: ', token);
             response.send({message: "You're signed up!", token, newUser});
         }
     } catch (error) {
@@ -296,13 +241,9 @@ apiRouter.post('/api/sign-up', async (request, response, next) => {
 
 // /api currently returns all the links that have been 'subscribed' to
 apiRouter.get('/api', async (request, response, next) => {
-    // console.log('here we got the request: ', request);
     try {
-        // console.log('why arent we in here');
-        // await buildDb();
         const allLinks = await getAllLinks();
         response.send(allLinks).status(200);
-        // send is sinternally using JSON.Stringify
     } catch (error) {
         console.log('there was an error running apiRouter/get/api: ', error);
         throw error;
@@ -312,7 +253,6 @@ apiRouter.get('/api', async (request, response, next) => {
 apiRouter.post('/api/update', async (request, response, next) => {
     try {
         const newPosts = await updateDb();
-        console.log('this is new posts: ', newPosts)
         response.send().status(200);
     } catch (error) {
         console.log('there was an error trying to update the posts in /api/update: ', error)
@@ -323,7 +263,6 @@ apiRouter.post('/api/update', async (request, response, next) => {
 // deactive link route
 apiRouter.post('/api/deactivate/:linkId', async (request, response, next) => {
     try {
-        // console.log('working in back end: ', request)
         const {linkId} = request.params;
         const deactivated = await deactivateLink(linkId);
         response.send(deactivated);

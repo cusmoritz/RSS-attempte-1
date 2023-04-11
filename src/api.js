@@ -56,9 +56,7 @@ export const getActiveLinksByUserId = async(userId, token) => {
                 'Authorization': `Bearer ${token}`
             }
         });
-        console.log('links in user api', links);
         const userLinks = await links.json();
-        console.log('userlinks in user api', userLinks);
         return userLinks;
     } catch (error) {
         throw new Error (error);
@@ -70,10 +68,6 @@ export const updatePosts = async() => {
         const newPosts = await fetch(`${BASE_URL}/api/update`, {
             method: "POST"
         });
-        console.log(newPosts);
-        // const letsAddEm = await newPosts.json();
-        // console.log('lets add em: ', letsAddEm)
-        // return how many posts we updated?
         alert('Posts updated!')
     } catch (error) {
         console.log('there was an error updating the posts in src/api: ', error);
@@ -84,9 +78,7 @@ export const updatePosts = async() => {
 export const getTodaysPosts = async() => {
     try {
         const response = await fetch(`${BASE_URL}/api/today`);
-        // console.log('response in api', response)
         const todaysPosts = await response.json();
-        // console.log('todays posts in src/api: ', todaysPosts);
         return todaysPosts;
     } catch (error) {
         console.log('there was a problem getting todays posts in src/api: ', error);
@@ -126,7 +118,6 @@ export const unsavePost = async (postId, userId) => {
             }),
         });
         const unsavedPost = await result.json();
-        console.log('we got here', unsavedPost)
         return unsavedPost;
     } catch (error) {
         console.log('error in user api');
@@ -142,29 +133,12 @@ export const fetchOnePost = async(postId) => {
                 'Content-Type': 'application/json'
             }
         });
-        // console.log('result user side', result)
         const saved = await result.json();
-        // console.log('saved user side', saved);
         return saved;
     } catch (error) {
         throw error;
     }
 }
-
-// export const fetchTenPosts = async(pageNum, linkId) => {
-//     try {
-//         const result = await fetch(`${BASE_URL}/api/ten/${linkId}`, {
-//             method: "GET", 
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             }
-//         });
-//         const tenPosts = result.json();
-//         return tenPosts;
-//     } catch (error) {
-//         throw error;
-//     }
-// }
 
 export const fetchSaved = async(userId) => {
     try {
@@ -209,7 +183,6 @@ export const createNewLink = async(linkURL, linkName, userId) => {
                 "userId": userId
             })
         });
-        // console.log('we are trying to add a link: ', response);
         const newLink = response.json();
         return newLink;
     } catch (error) {
@@ -264,12 +237,10 @@ export const userRegister = async(username, password, email, firstName, lastName
                 lastName:lastName
             })
         });
-        // console.log('result in user api', process.env);
         if (result.error) {
             return error;
         } else {
             const newUser = await result.json();
-            // console.log('new user in front end', newUser)
             localStorage.setItem("token", newUser.token);
             return newUser;
         }
@@ -297,7 +268,6 @@ export const userLogin = async (username, password) => {
             throw result.error;
         } else {
             const userLoggedIn = await result.json();
-            console.log('user logged in ', userLoggedIn);
             return userLoggedIn;
         }
     } catch (error) {
@@ -307,7 +277,6 @@ export const userLogin = async (username, password) => {
 
 export const userCheck = async (token) => {
     try {
-        console.log('token in user api', token);
         const isThereUser = await fetch(`${BASE_URL}/api/me`, {
             method: "GET",
             headers: {
@@ -324,7 +293,6 @@ export const userCheck = async (token) => {
 
 export const searchPosts = async (term, user) => {
     try {
-        console.log('this is search term: ', term);
         const result = await fetch(`${BASE_URL}/api/search/${term}`, {
             method: "GET",
             headers: {
@@ -332,7 +300,6 @@ export const searchPosts = async (term, user) => {
                 'user': `${user}`
             }
         });
-        console.log('returned from api fetch: ', result);
         const searchResults = await result.json();
         return searchResults;
     } catch (error) {

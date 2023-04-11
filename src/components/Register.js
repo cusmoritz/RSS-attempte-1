@@ -21,9 +21,6 @@ const Register = ({token, setToken, setUserId}) => {
             setConfirm("");
         } else {
             const newUser = await userRegister(username, password, email, firstName, lastName);
-            // alert('Thanks for signing up!');
-            // navigate('/')
-            console.log('new user in register component', newUser)
             alert(newUser.message);
             setToken(newUser.token);
             setUserId(newUser.newUser.id)

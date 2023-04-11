@@ -19,7 +19,6 @@ const LinkManager = ({setLinks}) => {
     }, [])
 
     const handleSubmitNewLink = async () => {
-        // console.log(`you are adding ${url} to the list of links`);
         const newLink = await createNewLink(newURL, newName, idSwitch);
         setLinks((previousList) => [...previousList, newLink]);
         setNewName("");

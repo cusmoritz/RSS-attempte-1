@@ -1,7 +1,6 @@
 const { Client } = require('pg');
 const { linkParse } = require('./parse.js');
 const { createNewUser } = require('./users');
-// const {FEED_LINKS, fakeUsers } = require('../scr/seed');
 
 const DATABASE_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/rss-feed';
 //either local host or a PORT when deploying
@@ -31,7 +30,6 @@ const parseNewLinkPosts = async (link, linkId) => {
     try {
 
         const parsedPosts = await linkParse(link);
-        // console.log('this is the parsed post: ', parsedPosts)
         parsedPosts.forEach( async (post) => {
             await addRssItemDatabase(post, linkId);
         })
@@ -44,7 +42,6 @@ const parseNewLinkPosts = async (link, linkId) => {
 // item should be an object type
 const addRssItemDatabase = async (item, link_id) => {
     try {
-        console.log('item: ', item, link_id)
         if(!item.content) {
             // console.log('did we get here?: ', item, link_id);
             await client.query(`
@@ -70,7 +67,6 @@ const addRssItemDatabase = async (item, link_id) => {
 
 // add links to database link table
 const addLinktoTable = async (link) => {
-    // console.log('what are we working with again: ', link);
     try {
         const {rows: newLinksInTable} = await client.query(`
         INSERT INTO rss_links (link_title, url)
@@ -79,7 +75,6 @@ const addLinktoTable = async (link) => {
         RETURNING *
         ;
         `, [link.name, link.link]);
-
         return newLinksInTable;
     } catch (error) {
         console.log('there was an error putting a link in the database: ', error);
@@ -163,7 +158,6 @@ const getAllLinks = async () => {
         SELECT * FROM rss_links
         ;
         `);
-        // console.log('ALL THE LINKS: ', allLinks);
         return allLinks;
     } catch (error) {
         console.log('there was an error getting all links: ', error);
@@ -177,7 +171,6 @@ const getOnePostById = async(postId) => {
         SELECT * from rss
         WHERE id=$1;
         `, [postId]);
-        // console.log('here we got one post: ', onePost);
         return onePost.rows;
     } catch (error) {
         console.log('there was an error in getOnePostById: ', error);
@@ -219,7 +212,6 @@ const getLinkFromIdNumber = async (link_id) => {
         WHERE link_id=$1
         ;
         `, [link_id]);
-        // console.log('we got a link from its id: ', linkFromId);
         return linkFromId;
     } catch (error) {
         console.log('there was an error getting a link from its id number: ', error);
@@ -235,7 +227,6 @@ const getPostsFromLinkId = async (link_id) => {
         WHERE link_id=$1
         ;
         `, [link_id]);
-        // console.log('should be 4 posts: ', postsFromId);
         return postsFromId;
     } catch (error) {
         console.log('there was an error getting post by id number: ', error);
@@ -243,33 +234,13 @@ const getPostsFromLinkId = async (link_id) => {
     }
 };
 
-// puts a new user into the database
-// const createNewUser = async (username, password) => {
-//     // console.log('this is our input from the get: ', username, password);
-//     try {
-//         const {rows: [user]} = await client.query(`
-//         INSERT INTO users (username, password)
-//         VALUES ($1, $2)
-//         RETURNING *
-//         ;
-//         `, [username, password]);
-//         console.log('new user here: ', user);
-//         return (user);
-//     } catch (error) {
-//         console.log('there was an error creating a new user: ', error);
-//         throw error;
-//     } 
-// };
-
 const fetchUser = async (username) => {
     try {
-        // console.log('username? :', username)
         const {rows: [user]} = await client.query(`
         SELECT * FROM users
         WHERE username=$1
         ;
         `, [username]);
-        // console.log('user in fetchUser', user)
         return user;
     } catch (error) {
         console.log('there was an error fetching a user: ', error);
@@ -282,18 +253,12 @@ const buildDb = async () => {
     try {
 
         // build links table
-        // console.log('putting links in rss_links...')
         FEED_LINKS.forEach( async (link) => {
             const linksInTable = await addLinktoTable(link);
-            // console.log('linksInTable: ', linksInTable);
             linksInTable.forEach( async(link) => {
                 await parseNewLinkPosts(link.url, link.link_id);
             })
             });
-        // fakeUsers.forEach( async (user) => {
-        //     await createNewUser(user.username, user.password);
-        // })
-        
     } catch (error) {
         console.log('there was an error building the database: ', error);
         throw (error);

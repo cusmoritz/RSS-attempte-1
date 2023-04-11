@@ -16,22 +16,17 @@ const LinkPosts = ({user}) => {
         const gathering = async(linkSwitch) => {
             setAllPosts(await getPostsForLink(linkSwitch));
         };
-        console.log('page', page)
 
         gathering(linkSwitch);
-        console.log('one...', allPosts)
     }, [])
 
     useEffect(() => {
         // // this sets our pagination from all the posts
         const setPostsOnPage = (page) => {
-            console.log('three...', allPosts)
-
             const pageBegin = page*10;
             const pageEnd = (page*10)+10;
             const otherPagePosts = allPosts.slice(pageBegin, pageEnd);
             setPagePosts(otherPagePosts);
-            console.log('other page posts', otherPagePosts);
         };
         setPostsOnPage(page);
     }, [page, allPosts])

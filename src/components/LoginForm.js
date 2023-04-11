@@ -18,10 +18,8 @@ const LoginForm = ({setToken, setUser, setLinks}) => {
             setPassword("");
         } else {
             const result = await userLogin(username, password);
-            // console.log('result front end', result);
             setToken(result.token)
             localStorage.setItem('token', result.token);
-            console.log('user in login', result);
             setUser(result.id)
             navigate('/links');
             setLinks(await getActiveLinksByUserId(result.id, result.token));

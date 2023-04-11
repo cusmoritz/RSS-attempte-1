@@ -9,13 +9,11 @@ const SavedPosts = () => {
     const getSavedPosts = async () => {
         const gettingPosts = await fetchSaved(userId)
         setSavedPosts(gettingPosts)
-        console.log('saved posts', savedPosts)
         return;
     }
 
     const handleUnsave = async (postId) => {
         const noMorePost = await unsavePost(postId, userId);
-        console.log('no more post: ', noMorePost) 
         getSavedPosts();
     }
 

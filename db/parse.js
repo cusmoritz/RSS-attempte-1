@@ -4,9 +4,7 @@ let parser = new Parser();
 
 // convert iso string into date format
 const createDateFormat = (isoDate) => {
-  // console.log('this is the isoDate: ', isoDate)
   const oldDate = new Date(isoDate);
-  // console.log('this is the old date: ', oldDate)
 
   // get the year, month, and day
   const year = oldDate.getFullYear();
@@ -20,14 +18,11 @@ const linkParse = async (link) => {
 
   // parseURL OR parseString
   let feed = await parser.parseURL(link);
-  // console.log(feed);
 
   const linkArray = [];
 
   feed.items.map(item => {
 
-    // console.log('each item here', item);
-    // console.log('checking the date, ', item.isoDate)
     newDate = createDateFormat(item.isoDate)
 
       if (!item.content) {
@@ -48,7 +43,6 @@ const linkParse = async (link) => {
       }
     
   });
-  // console.log('this is the feed array before we send it out: ', linkArray)
   return linkArray;
 }; 
 

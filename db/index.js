@@ -13,7 +13,6 @@ const parseNewLinkPosts = async (link, linkId) => {
     try {
 
         const parsedPosts = await linkParse(link);
-        // console.log('this is the parsed post: ', parsedPosts)
         parsedPosts.forEach( async (post) => {
             await addRssItemDatabase(post, linkId);
         })
@@ -27,7 +26,6 @@ const parseNewLinkPosts = async (link, linkId) => {
 const addRssItemDatabase = async (item, link_id) => {
     try {
         if(item.content) { 
-            console.log('did we get here?: ', item, link_id);
             await client.query(`
             INSERT INTO rss (content, url, title, date, link_id)
             VALUES ($1, $2, $3, $4, $5)
@@ -49,7 +47,6 @@ const addRssItemDatabase = async (item, link_id) => {
 
 // add links to database link table
 const addLinktoTable = async (link, userId) => {
-    // console.log('what are we working with again: ', link);
     try {
         const {rows: newLinksInTable} = await client.query(`
         INSERT INTO rss_links (link_title, url, user_id)
@@ -57,7 +54,6 @@ const addLinktoTable = async (link, userId) => {
         RETURNING *
         ;
         `, [link.name, link.link, userId]);
-        // console.log('this is returned in the database function: ', newLinksInTable)
         return newLinksInTable;
     } catch (error) {
         console.log('there was an error putting a link in the database: ', error);
@@ -73,7 +69,6 @@ const getAllLinks = async () => {
         SELECT * FROM rss_links
         ;
         `);
-        // console.log('ALL THE LINKS: ', allLinks);
         return allLinks;
     } catch (error) {
         console.log('there was an error getting all links: ', error);
@@ -88,7 +83,6 @@ const getLinkFromIdNumber = async (link_id) => {
         WHERE link_id=$1
         ;
         `, [link_id]);
-        // console.log('we got a link from its id: ', linkFromId);
         return linkFromId;
     } catch (error) {
         console.log('there was an error getting a link from its id number: ', error);
@@ -141,7 +135,6 @@ const getOnePostById = async(postId) => {
         SELECT * from rss
         WHERE id=$1;
         `, [postId]);
-        // console.log('here we got one post: ', onePost);
         return onePost;
     } catch (error) {
         console.log('there was an error in getOnePostById: ', error);
@@ -152,7 +145,6 @@ const getOnePostById = async(postId) => {
 // getPosts by Date works for any date in YYYY-MM-DD format
 const getPostsByDate = async (date) => { // has to be year-month-day format
     try {
-        // const date = new Date(); // this is the instance the function runs
         const {rows: postsByDate} = await client.query(`
         SELECT * FROM rss
         WHERE date=$1
@@ -175,7 +167,6 @@ const getPostsFromLinkId = async (link_id) => {
         ORDER BY date DESC
         ;
         `, [link_id]);
-        // console.log('should be 4 posts: ', postsFromId);
         return postsFromId;
     } catch (error) {
         console.log('there was an error getting post by id number: ', error);
@@ -208,7 +199,6 @@ const updateDb = async () => {
 
 const deactivateLink = async(linkId) => {
     try {
-        // console.log('working in database: ', linkId)
         const {rows: link} = client.query(`
         UPDATE rss_links
         SET active = FALSE
@@ -253,14 +243,12 @@ const savePost = async(postId, userId) => {
 
 const unsavePost = async (postId, userId) => {
     try {
-        console.log(postId, userId, "in db")
         const {rows: [result]} = await client.query(`
         DELETE FROM user_saved
         WHERE post_id = $1 AND user_id = $2
         RETURNING *
         ;  
         `, [postId, userId]);
-        console.log('result', result)
         return result;
     } catch (error) {
         throw error;
@@ -284,40 +272,9 @@ const fetchSavedPosts = async (userId) => {
 const searchPosts = async (term, user) => {
     try {
 
-        console.log('database term: ', term, user)
-
         // will be an array of links [{}, {}, {}, {} ...]
         const userLinks = await getActiveLinks(user);
         console.log('userLinks db: ', userLinks);
-        // let setString = Object.keys(userLinks).map((key, index) => 
-        //     `${ index+1}`).join(' OR ');
-        
-        
-        // let linkArray = []
-        // userLinks.map((link) => {
-        //     linkArray.push(link.link_id)
-        // });
-        // userLinks.map(
-        //     (key, link) => `"${ key }"=$${ index + 1}`
-        //     ).join(', ');
-        // .map(
-        //     (key) => `${ key }`
-        //     ).join(`, `);
-        // console.log('setString, ', setString);
-        // console.log('linkArray, ', linkArray);
-        // 1, 3, 4, 2
-
-        //setString = Object.keys(fields).map(
-        // this is like saying 'first key' = $1
-        // which we will throw into the [array] after the client.query
-        // (key, index) => `"${ key }"=$${ index + 1}`
-        // ).join(', ');
-
-        // let buildSearchString = "";
-
-        // for (let i = 1; i < userLinks.length; i++){
-        //     buildSearchString = buildSearchString + `OR title LIKE ('%${term}%') AND link_id = ${userLinks[i]}`
-        // }
 
         let individualResults = []
 
@@ -331,32 +288,12 @@ const searchPosts = async (term, user) => {
                 individualResults.push(databaseResults);
             }
         }
-
-        console.log('individual', individualResults.length)
-
-        
-        // const {rows: databaseResults} = await client.query(`
-        //     SELECT * FROM rss
-        //     WHERE title LIKE ('%${term}%') AND link_id = $1
-        //     OR title LIKE ('%${term}%') AND link_id = $2
-        //     OR title LIKE ('%${term}%') AND link_id = $3
-        //     OR title LIKE ('%${term}%') AND link_id = $4
-        // ;
-        // `, linkArray[0]);
-        // %term% is how SQL uses LIKE to search within something
-        // 
-        // console.log('database results: ', databaseResults);
         return individualResults;
     } catch (error) {
         console.log('there was an error searching for posts')
         throw error;
     }
 }
-
-// SELECT column_name(s)
-// FROM table1
-// RIGHT JOIN table2
-// ON table1.column_name = table2.column_name;
 
 // client.connect();
 
