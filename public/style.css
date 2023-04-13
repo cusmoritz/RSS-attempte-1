@@ -133,6 +133,12 @@
 
 #deactivate-button {
   background-color: rgb(255, 114, 114);
+  color: black;
+}
+
+#clear-button {
+  background-color: rgb(255, 114, 114);
+  color: black;
 }
 
   /* For devices larger than 400px */

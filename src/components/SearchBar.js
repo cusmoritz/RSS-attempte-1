@@ -65,7 +65,6 @@ const SearchBar = ({links, user}) => {
                     value={dateSearch} 
                     onChange={(event) => setDateSearch(event.target.value)}></input>
                 <button onClick={handleDateSearch}>Search</button>
-                <p>{dateSearch}</p>
             </form>
             {display.length < 1
             ? (
@@ -106,6 +105,7 @@ const SearchBar = ({links, user}) => {
             : (
               <div className="date-search-container">
                 {dateResults.map((post) => {
+                    console.log('post', post)
                     return (
                         <div className="date-results-container" key={post.id}>
                             <p className="date-one-result"><a href={post.url} target="_blank">{post.title}</a></p>
@@ -113,6 +113,7 @@ const SearchBar = ({links, user}) => {
                         </div>
                     )
                 })}
+                <button id="clear-button"onClick={() => setDateResults([])}>Clear</button>
               </div>  
               
             ) 
