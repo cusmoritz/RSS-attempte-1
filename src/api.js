@@ -75,9 +75,14 @@ export const updatePosts = async() => {
     }
 }
 
-export const getTodaysPosts = async() => {
+export const getTodaysPosts = async(user) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/today`);
+        const response = await fetch(`${BASE_URL}/api/today/${user}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
         const todaysPosts = await response.json();
         return todaysPosts;
     } catch (error) {

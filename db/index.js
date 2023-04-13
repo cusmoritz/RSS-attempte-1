@@ -143,15 +143,32 @@ const getOnePostById = async(postId) => {
 };
 
 // getPosts by Date works for any date in YYYY-MM-DD format
-const getPostsByDate = async (date) => { // has to be year-month-day format
+const getPostsByDate = async (date, user) => { // has to be year-month-day format
     try {
-        const {rows: postsByDate} = await client.query(`
-        SELECT * FROM rss
-        WHERE date=$1
-        ORDER BY date DESC
-        ;`, [date]);
+
+        const userLinks = await getActiveLinks(user);
+
+        let todayResults = [];
+
+        for (let i = 0; i < userLinks.length; i++) {
+            const {rows: todaySearchResults} = await client.query(`
+            SELECT * FROM rss
+            WHERE date=$1 AND link_id = ${userLinks[i].link_id}
+            ORDER BY date DESC
+            ;
+            `, [date]);
+            if (todaySearchResults.length > 0) {
+                todayResults.push(todaySearchResults);
+            }
+        }
+
+        // const {rows: postsByDate} = await client.query(`
+        // SELECT * FROM rss
+        // WHERE date=$1
+        // ORDER BY date DESC
+        // ;`, [date]);
         // SORT BY column_name DESC
-        return postsByDate;
+        return todayResults;
     } catch (error) {
         console.log('there was an error in getPostsByDate: ', error);
         throw error;

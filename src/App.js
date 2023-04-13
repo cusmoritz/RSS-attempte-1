@@ -21,12 +21,12 @@ import { updatePosts } from './api';
 export const App = () => {
 
   // TODO => 
-    // add search by date feature
     // error handling on user login / register
     // finish README
     // change updatePosts function to run automatically 2x a day
     // change Today's Posts to be right
     // deactivate account?
+    // put link / post options inside sandwich bar?
 
   const [links, setLinks] = useState([]);
   const [token, setToken] = useState(window.localStorage.getItem('token') || null);

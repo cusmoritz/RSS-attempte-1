@@ -135,8 +135,9 @@ apiRouter.get('/api/saved/:userId', async (request, response, next) => {
 })
 
 // /today returns every post that was posted on 'todays date'
-apiRouter.get('/api/today', async (request, response, next) => {
+apiRouter.get('/api/today/:user', async (request, response, next) => {
     try {
+        const {user} = request.params;
         // build the day
         const now = new Date();
         const nowYear = now.getFullYear();
@@ -144,8 +145,9 @@ apiRouter.get('/api/today', async (request, response, next) => {
         const nowDay = now.getDate();
         // build string for database call
         const inputDate = `${nowYear}-${nowMonth}-${nowDay}`
-        const postsToday = await getPostsByDate(inputDate);
-        response.send(postsToday);
+        const postsToday = await getPostsByDate(inputDate, user);
+        const newArr = postsToday.flat();
+        response.send(newArr);
     } catch (error) {
         console.log('there was an error in apiRouter/get/today: ', error);
         throw error;

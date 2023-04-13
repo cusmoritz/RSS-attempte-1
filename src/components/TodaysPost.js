@@ -8,7 +8,7 @@ const TodaysPosts = ({user}) => {
 
     useEffect(() => {
         const gettingPosts = async() => {
-            const fetchingPosts = await getTodaysPosts();
+            const fetchingPosts = await getTodaysPosts(user);
             setTodayPosts(fetchingPosts);
         }
         gettingPosts();
