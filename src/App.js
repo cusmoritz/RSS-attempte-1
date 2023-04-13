@@ -16,6 +16,7 @@ import Explainer from './components/Explainer';
 import SavedPosts from './components/SavedPosts';
 import { userCheck } from './api';
 import construction from './components/images/construction.gif';
+import { updatePosts } from './api';
 
 export const App = () => {
 
@@ -31,6 +32,11 @@ export const App = () => {
   const [token, setToken] = useState(window.localStorage.getItem('token') || null);
   const [user, setUser] = useState(null);
 
+  // updates the database twice a day
+  const updateDaily = async () => {
+    await updatePosts()
+  }
+  
   useEffect(() => {
     if (token) {
       const checkingUser = async() => {
@@ -50,6 +56,10 @@ export const App = () => {
       getLinks();
     }
   }, [user])
+
+  useEffect(() => {
+    updateDaily;
+  }, [43200000])
   
   return(
     <>
