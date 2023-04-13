@@ -67,7 +67,7 @@ const SearchBar = ({links, user}) => {
                 <button onClick={handleDateSearch}>Search</button>
                 <p>{dateSearch}</p>
             </form>
-            {!display
+            {display.length < 1
             ? (
                 null
                 // <div className="search-container">
@@ -92,7 +92,7 @@ const SearchBar = ({links, user}) => {
               
             ) 
             }
-            {!dateResults
+            {dateResults.length < 1
             ? (
                 null
                 // <div className="search-container">
@@ -104,11 +104,11 @@ const SearchBar = ({links, user}) => {
                 // </div>
             )
             : (
-              <div className="search-container">
+              <div className="date-search-container">
                 {dateResults.map((post) => {
                     return (
-                        <div className="search-results-container" key={post.id}>
-                            <p className="one-result"><a href={post.url} target="_blank">{post.title}</a></p>
+                        <div className="date-results-container" key={post.id}>
+                            <p className="date-one-result"><a href={post.url} target="_blank">{post.title}</a></p>
                             <button onClick={() => handleSave(post.id)}>Save post</button>
                         </div>
                     )
