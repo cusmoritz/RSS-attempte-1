@@ -58,7 +58,7 @@ export const App = () => {
   }, [user])
 
   useEffect(() => {
-    updateDaily;
+    updateDaily();
   }, [43200000])
   
   return(
