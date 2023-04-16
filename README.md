@@ -2,9 +2,9 @@
 
 This website is a bare-ish bones RSS feed reader.
 
-It's an attempt at creating my own news feed, after Twitter had a change in management circa 2022. 
+It's an attempt at creating my own news feed. 
 
-I personally don't enjoy Facebook; Reddit is too much to take in at once; Instagram is for people who are much prettier than I am; MySpace has gone the way of the dinosaur; and every other social media site I can think of either buries the content you subscribe to among ads and "You might be interested in" content. 
+I personally don't enjoy Facebook; Reddit is too much to take in at once; Instagram is for people who are much prettier than I am; and every other social media site I can think of either buries the content you subscribe to among ads and behind the algorithm. 
 
 So I created this to find my own news and subscribe to creators that I applaud and enjoy. 
 
@@ -18,4 +18,7 @@ It doesn't currently have the ability to check for a link that ISN'T an RSS / XM
 
 This website is built in React on the front-end, Express.JS for API calls, and PostrgeSQL for the backend database. 
 
-It's quite robust, I think. And fun to be in charge of my own news again.
+It's fun to be in charge of my own news again.
+
+https://user-images.githubusercontent.com/109768964/232326301-4aad50eb-77d9-4f18-bf60-e78910239fcb.mov
+
