@@ -27,11 +27,24 @@ const Register = ({token, setToken, setUserId}) => {
             setEmail("");
         } else {
             const newUser = await userRegister(username, password, email, firstName, lastName);
-            alert(newUser.message);
-            setToken(newUser.token);
-            setUserId(newUser.newUser.id)
-            navigate('/');
-            return newUser;
+            if (newUser.error) {
+                alert(newUser.message);
+                setFirstName("");
+                setLastName("");
+                setUsername("");
+                setEmail("");
+            } else {
+                alert(newUser.message);
+                setToken(newUser.token);
+                setUserId(newUser.newUser.id)
+                navigate('/');
+                return newUser;
+            }
+            // alert(newUser.message);
+            // setToken(newUser.token);
+            // setUserId(newUser.newUser.id)
+            // navigate('/');
+            // return newUser;
         }
     }
 
