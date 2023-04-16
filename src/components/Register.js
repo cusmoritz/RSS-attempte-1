@@ -19,6 +19,12 @@ const Register = ({token, setToken, setUserId}) => {
             alert('You must confirm your password!');
             setPassword("");
             setConfirm("");
+        } else if (!firstName || !lastName || !username || !email) {
+            alert('Please fill in all fields to register.');
+            setFirstName("");
+            setLastName("");
+            setUsername("");
+            setEmail("");
         } else {
             const newUser = await userRegister(username, password, email, firstName, lastName);
             alert(newUser.message);
