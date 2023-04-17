@@ -7,7 +7,7 @@ const LinkPosts = ({user}) => {
     const {linkSwitch} = useParams();
 
     const [allPosts, setAllPosts] = useState([]);
-    const [pagePosts, setPagePosts] = useState(null)
+    const [pagePosts, setPagePosts] = useState([])
     const [page, setPage] = useState(0);
 
     useEffect(() => {
@@ -58,7 +58,8 @@ const LinkPosts = ({user}) => {
             </div>)}
                 {(page==0) ? null : (<button id="previous_button" onClick={() => setPage(page - 1)}>Page {page}</button>)}
                 
-                <button id="next-button" onClick={() => setPage(page + 1)}>Page {page + 2}</button>
+                {pagePosts.length < 10 ? null : (<button id="next-button" onClick={() => setPage(page + 1)}>Page {page + 2}</button>)}
+                
         </div>
     )
 }
