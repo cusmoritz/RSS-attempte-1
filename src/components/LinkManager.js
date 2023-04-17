@@ -16,7 +16,7 @@ const LinkManager = ({setLinks}) => {
             setAllLinks( await getAllLinksByUserId(idSwitch))
         };
         fetchAllLinks(idSwitch);
-    }, [])
+    }, [allLinks])
 
     const handleSubmitNewLink = async () => {
         const newLink = await createNewLink(newURL, newName, idSwitch);

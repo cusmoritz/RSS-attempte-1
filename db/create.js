@@ -24,6 +24,7 @@ const FEED_LINKS = [
     {name: 'Citations Needed', link: 'https://feeds.libsyn.com/102225/rss'},
     {name: 'Baseball Doesnt Exist', link: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCXjvsikVclbNRGRlzr8jTEg'},
     {name: "Jomboy Media", link: "https://www.youtube.com/feeds/videos.xml?channel_id=UCl9E4Zxa8CVr2LBLD0_TaNg"},
+    {name: "Camping with Steve", link: "https://www.youtube.com/feeds/videos.xml?channel_id=UCSnqXeK94-iNmwqGO__eJ5g"},
     // {name: 'The Intercept', link: 'https://theintercept.com/feed/?lang=en'}
 ];
 
