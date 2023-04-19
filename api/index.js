@@ -57,14 +57,14 @@ apiRouter.post('/api/newlink', async (request, response, next) => {
             console.log('new link in database', newLinkInDatabase)
             // then we bother to get the posts and add them to the database 
             const newPostsMaybe = await parseNewLinkPosts(newLink.link, newLinkInDatabase[0].link_id);
-            await updateUserLinks(userId, newLinkInDatabase[0].link_id);
+            await updateUserLinks(userId, newLinkInDatabase[0].link_id, newLink.name);
             response.send(newLinkInDatabase[0]);
         } else {
             console.log('the link DOES exist (in api)')
             console.log(checkLink)
             console.log('check link', checkLink)
             // this is the link EXISTING
-            const newUserLink = await updateUserLinks(userId, checkLink.id);
+            const newUserLink = await updateUserLinks(userId, checkLink.id, newLink.name);
             response.send(newUserLink);
         }
     } catch (error) {
@@ -78,6 +78,7 @@ apiRouter.get('/api/manage/:userId', async (request, response, next) => {
     try {
         const {userId} = request.params;
         const allUserLinks = await fetchAllUserLinks(userId);
+        console.log('all user links in api? ', allUserLinks)
         response.send(allUserLinks);
     } catch (error) {
      console.log('there was an error in apiRouter/get/api/links: ', error);
@@ -218,6 +219,7 @@ apiRouter.get('/api/:userId', async(request, response, next) => {
     try {
         const {userId} = request.params;
         const allUserLinks = await getActiveUserLinks(userId);
+        console.log('active user links in api', allUserLinks)
         response.send(allUserLinks);
     } catch (error) {
         throw error;

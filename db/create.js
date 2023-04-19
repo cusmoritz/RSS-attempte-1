@@ -116,7 +116,6 @@ const rebuildDatabase = async () => {
         await client.query(`
         CREATE TABLE IF NOT EXISTS rss_links (
             link_id SERIAL PRIMARY KEY,
-            link_title TEXT NOT NULL,
             url TEXT NOT NULL
             );
         `);
@@ -149,6 +148,7 @@ const rebuildDatabase = async () => {
         CREATE TABLE IF NOT EXISTS user_links (
             user_id INTEGER REFERENCES "users"(user_id) not null,
             link_id INTEGER REFERENCES "rss_links"(link_id) not null,
+            link_title TEXT NOT NULL,
             active BOOLEAN DEFAULT TRUE,
             PRIMARY KEY (user_id, link_id)
         );

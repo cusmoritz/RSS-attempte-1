@@ -57,6 +57,8 @@ export const App = () => {
     }
   }, [user])
 
+  console.log('links APP level', links)
+
   useEffect(() => {
     updateDaily();
   }, [43200000])

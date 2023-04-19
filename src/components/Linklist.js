@@ -2,13 +2,26 @@
 import React, { useEffect, useState, useHistory } from 'react';
 import EachLink from './EachLink';
 import SearchBar from './SearchBar';
+import { getAllLinksByUserId } from '../api';
 
-const Linklist = ({links, setLinks, user}) => {
+const Linklist = ({setLinks, user}) => {
+
+    const [allLinks, setAllLinks] = useState([]);
+
+    useEffect(() => {
+        const fetchAllLinks = async(user) => {
+            setAllLinks( await getAllLinksByUserId(user))
+        };
+        fetchAllLinks(user);
+    }, [allLinks])
+
+    console.log('links in LinkList', allLinks)
+    console.log('user in LinkList', user)
 
     return (
         <>
-        <SearchBar links={links} user={user}/>
-            {(links.length < 1) 
+        <SearchBar links={allLinks} user={user}/>
+            {(allLinks.length < 1) 
             ? 
             (
                 <div className="container">
@@ -22,7 +35,7 @@ const Linklist = ({links, setLinks, user}) => {
             ) 
             : 
             (<div className="container">
-                {links.map((link) => {
+                {allLinks.map((link) => {
                     return (<EachLink link={link} key={link.link_id}/>)
                 })}
             </div>)}

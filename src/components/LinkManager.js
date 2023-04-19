@@ -18,6 +18,7 @@ const LinkManager = ({setLinks}) => {
         fetchAllLinks(idSwitch);
     }, [allLinks])
 
+    console.log('all links LinkManager', allLinks)
     const handleSubmitNewLink = async () => {
         const newLink = await createNewLink(newURL, newName, idSwitch);
         setLinks((previousList) => [...previousList, newLink]);
