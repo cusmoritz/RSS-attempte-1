@@ -28,58 +28,60 @@ const FEED_LINKS = [
     // {name: 'The Intercept', link: 'https://theintercept.com/feed/?lang=en'}
 ];
 
-const parseNewLinkPosts = async (link, linkId) => {
-    try {
+// const parseNewLinkPosts = async (link, linkId) => {
+//     try {
 
-        const parsedPosts = await linkParse(link);
-        parsedPosts.forEach( async (post) => {
-            await addRssItemDatabase(post, linkId);
-        })
-    } catch (error) {
-        console.log('there was an error parsing the new link: ', error);
-        throw error;
-    }
-}
+//         const parsedPosts = await linkParse(link);
+//         parsedPosts.forEach( async (post) => {
+//             await addRssItemDatabase(post, linkId);
+//         })
+//     } catch (error) {
+//         console.log('there was an error parsing the new link: ', error);
+//         throw error;
+//     }
+// }
 
 // item should be an object type
-const addRssItemDatabase = async (item, link_id) => {
-    try {
-        if(!item.content) {
-            // console.log('did we get here?: ', item, link_id);
-            await client.query(`
-            INSERT INTO rss (url, title, date, link_id)
-            VALUES ($1, $2, $3, $4)
-            RETURNING *;
-            `, [item.link, item.title, item.date, link_id]);
-        } else {
-            await client.query(`
-            INSERT INTO rss (content, url, title, date, link_id)
-            VALUES ($1, $2, $3, $4, $5)
-            RETURNING *;
-            `, [item.content, item.link, item.title, item.date, link_id]);
-        }
+// const addRssItemDatabase = async (item, link_id) => {
+//     try {
+//         if(!item.content) {
+//             // console.log('did we get here?: ', item, link_id);
+//             await client.query(`
+//             INSERT INTO rss (url, title, date, link_id)
+//             VALUES ($1, $2, $3, $4)
+//             ON CONFLICT (url) DO NOTHING
+//             RETURNING *;
+//             `, [item.link, item.title, item.date, link_id]);
+//         } else {
+//             await client.query(`
+//             INSERT INTO rss (content, url, title, date, link_id)
+//             VALUES ($1, $2, $3, $4, $5)
+//             ON CONFLICT (url) DO NOTHING
+//             RETURNING *;
+//             `, [item.content, item.link, item.title, item.date, link_id]);
+//         }
         
-    } catch (error) {
-        console.log('there was an error inserting an item to the database: ', error);
-        throw(error);
-    }
-};
+//     } catch (error) {
+//         console.log('there was an error inserting an item to the database: ', error);
+//         throw(error);
+//     }
+// };
 
 // add links to database link table
-const addLinktoTable = async (link) => {
-    try {
-        const {rows: newLinksInTable} = await client.query(`
-        INSERT INTO rss_links (link_title, url)
-        VALUES ($1, $2)
-        RETURNING *
-        ;
-        `, [link.name, link.link]);
-        return newLinksInTable;
-    } catch (error) {
-        console.log('there was an error putting a link in the database: ', error);
-        throw (error)
-    }
-};
+// const addLinktoTable = async (link) => {
+//     try {
+//         const {rows: newLinksInTable} = await client.query(`
+//         INSERT INTO rss_links (link_title, url)
+//         VALUES ($1, $2)
+//         RETURNING *
+//         ;
+//         `, [link.name, link.link]);
+//         return newLinksInTable;
+//     } catch (error) {
+//         console.log('there was an error putting a link in the database: ', error);
+//         throw (error)
+//     }
+// };
 
 // rebuild the database
 const rebuildDatabase = async () => {
@@ -90,6 +92,7 @@ const rebuildDatabase = async () => {
         await client.query(`
         DROP TABLE IF EXISTS user_saved;
         DROP TABLE IF EXISTS rss;
+        DROP TABLE IF EXISTS user_links;
         DROP TABLE IF EXISTS rss_links;
         DROP TABLE IF EXISTS users;
         `);
@@ -114,11 +117,10 @@ const rebuildDatabase = async () => {
         CREATE TABLE IF NOT EXISTS rss_links (
             link_id SERIAL PRIMARY KEY,
             link_title TEXT NOT NULL,
-            user_id INTEGER REFERENCES users(user_id),
-            url TEXT NOT NULL,
-            active BOOLEAN DEFAULT TRUE
+            url TEXT NOT NULL
             );
         `);
+            // user_id INTEGER REFERENCES users(user_id),
 
         console.log('creating rss...')
         await client.query(`
@@ -126,7 +128,7 @@ const rebuildDatabase = async () => {
             id SERIAL PRIMARY KEY,
             content TEXT,
             link_id INTEGER REFERENCES rss_links(link_id),
-            url TEXT NOT NULL,
+            url TEXT UNIQUE NOT NULL,
             title TEXT NOT NULL,
             date DATE,
             saved BOOLEAN DEFAULT FALSE
@@ -141,7 +143,47 @@ const rebuildDatabase = async () => {
             post_id INTEGER REFERENCES "rss"(id) NOT NULL
         );
         `)
+
+        console.log('creating users links...')
+        await client.query(`
+        CREATE TABLE IF NOT EXISTS user_links (
+            user_id INTEGER REFERENCES "users"(user_id) not null,
+            link_id INTEGER REFERENCES "rss_links"(link_id) not null,
+            active BOOLEAN DEFAULT TRUE,
+            PRIMARY KEY (user_id, link_id)
+        );
+        `)
         console.log('done creating tables...');
+
+        /* 
+            users table:
+                user_id SERIAL PRIMARY KEY,
+                username TEXT UNIQUE NOT NULL,
+                password VARCHAR(255),
+                email VARCHAR(255) NOT NULL,
+                first_name VARCHAR(255) NOT NULL,
+                last_name VARCHAR(255) NOT NULL,
+                active BOOLEAN DEFAULT TRUE
+
+            rss_links:
+                link_id serial primary key
+                link_title text not null
+                link_url text not null
+                user_id integer references "users"(user_id) not null
+            
+            rss_posts:
+                post_id serial primary key
+                post_link_id integer not null references "rss_links"(link_id)
+                post_url text not null
+                post_title text
+                post_content text
+
+                if all the links go in unique,
+                and all the posts go in unique
+                that's fine, we just need to link the user to the link they have submitted
+                and pull the associated posts for that link. the link and posts should have no user details, each user needs to see each link they have submitted and the posts associated with those links. 
+                we can join / create a new table for each user, that keeps track of the links they are submitted with.
+        */
 
     } catch (error) {
         console.log('there was an error rebuilding the database: ', error);
@@ -150,119 +192,119 @@ const rebuildDatabase = async () => {
 };
 
 // get every link from the rss_links tabls
-const getAllLinks = async () => {
-    try {
-        // allLinks has: link_id, link_title, url
-        const {rows: allLinks} = await client.query(`
-        SELECT * FROM rss_links
-        ;
-        `);
-        return allLinks;
-    } catch (error) {
-        console.log('there was an error getting all links: ', error);
-        throw error;
-    }
-};
+// const getAllLinks = async () => {
+//     try {
+//         // allLinks has: link_id, link_title, url
+//         const {rows: allLinks} = await client.query(`
+//         SELECT * FROM rss_links
+//         ;
+//         `);
+//         return allLinks;
+//     } catch (error) {
+//         console.log('there was an error getting all links: ', error);
+//         throw error;
+//     }
+// };
 
-const getOnePostById = async(postId) => {
-    try {
-        const onePost = await client.query(`
-        SELECT * from rss
-        WHERE id=$1;
-        `, [postId]);
-        return onePost.rows;
-    } catch (error) {
-        console.log('there was an error in getOnePostById: ', error);
-        throw error;
-    }
-}
+// const getOnePostById = async(postId) => {
+//     try {
+//         const onePost = await client.query(`
+//         SELECT * from rss
+//         WHERE id=$1;
+//         `, [postId]);
+//         return onePost.rows;
+//     } catch (error) {
+//         console.log('there was an error in getOnePostById: ', error);
+//         throw error;
+//     }
+// }
 
-const getAllPosts = async () => {
-    try {
-        const allPosts = await client.query(`
-        SELECT * FROM rss;
-        `);
-        return allPosts;
-    } catch (error) {
-        console.log('there was an error inside getAllPosts: ', error);
-        throw error;
-    }
-};
+// const getAllPosts = async () => {
+//     try {
+//         const allPosts = await client.query(`
+//         SELECT * FROM rss;
+//         `);
+//         return allPosts;
+//     } catch (error) {
+//         console.log('there was an error inside getAllPosts: ', error);
+//         throw error;
+//     }
+// };
 
 // getPosts by Date works for any date in YYYY-MM-DD format
-const getPostsByDate = async (date) => { // has to be year-month-day format
-    try {
-        // const date = new Date(); // this is the instance the function runs
-        const {rows: postsByDate} = await client.query(`
-        SELECT * FROM rss
-        WHERE date=$1;
-        `, [date]);
-        return postsByDate;
-    } catch (error) {
-        console.log('there was an error in getPostsByDate: ', error);
-        throw error;
-    }
-};
+// const getPostsByDate = async (date) => { // has to be year-month-day format
+//     try {
+//         // const date = new Date(); // this is the instance the function runs
+//         const {rows: postsByDate} = await client.query(`
+//         SELECT * FROM rss
+//         WHERE date=$1;
+//         `, [date]);
+//         return postsByDate;
+//     } catch (error) {
+//         console.log('there was an error in getPostsByDate: ', error);
+//         throw error;
+//     }
+// };
 
-const getLinkFromIdNumber = async (link_id) => {
-    try {
-        const linkFromId = await client.query(`
-        SELECT * FROM rss_links
-        WHERE link_id=$1
-        ;
-        `, [link_id]);
-        return linkFromId;
-    } catch (error) {
-        console.log('there was an error getting a link from its id number: ', error);
-        throw (error);
-    }
-};
+// const getLinkFromIdNumber = async (link_id) => {
+//     try {
+//         const linkFromId = await client.query(`
+//         SELECT * FROM rss_links
+//         WHERE link_id=$1
+//         ;
+//         `, [link_id]);
+//         return linkFromId;
+//     } catch (error) {
+//         console.log('there was an error getting a link from its id number: ', error);
+//         throw (error);
+//     }
+// };
 
 // get posts from an individual link id number (rss_links)
-const getPostsFromLinkId = async (link_id) => {
-    try {
-        const {rows: postsFromId} = await client.query(`
-        SELECT * FROM rss
-        WHERE link_id=$1
-        ;
-        `, [link_id]);
-        return postsFromId;
-    } catch (error) {
-        console.log('there was an error getting post by id number: ', error);
-        throw error;
-    }
-};
+// const getPostsFromLinkId = async (link_id) => {
+//     try {
+//         const {rows: postsFromId} = await client.query(`
+//         SELECT * FROM rss
+//         WHERE link_id=$1
+//         ;
+//         `, [link_id]);
+//         return postsFromId;
+//     } catch (error) {
+//         console.log('there was an error getting post by id number: ', error);
+//         throw error;
+//     }
+// };
 
-const fetchUser = async (username) => {
-    try {
-        const {rows: [user]} = await client.query(`
-        SELECT * FROM users
-        WHERE username=$1
-        ;
-        `, [username]);
-        return user;
-    } catch (error) {
-        console.log('there was an error fetching a user: ', error);
-        throw error;
-    }
-};
+// const fetchUser = async (username) => {
+//     try {
+//         const {rows: [user]} = await client.query(`
+//         SELECT * FROM users
+//         WHERE username=$1
+//         ;
+//         `, [username]);
+//         return user;
+//     } catch (error) {
+//         console.log('there was an error fetching a user: ', error);
+//         throw error;
+//     }
+// };
 
-const buildDb = async () => {
+// const buildDb = async () => {
 
-    try {
+//     try {
 
-        // build links table
-        FEED_LINKS.forEach( async (link) => {
-            const linksInTable = await addLinktoTable(link);
-            linksInTable.forEach( async(link) => {
-                await parseNewLinkPosts(link.url, link.link_id);
-            })
-            });
-    } catch (error) {
-        console.log('there was an error building the database: ', error);
-        throw (error);
-    }
-};
+//         // build links table
+//         FEED_LINKS.forEach( async (link) => {
+//             const linksInTable = await addLinktoTable(link);
+//             linksInTable.forEach( async(link) => {
+//                 await parseNewLinkPosts(link.url, link.link_id);
+//             })
+//             });
+//     } catch (error) {
+//         console.log('there was an error building the database: ', error);
+//         throw (error);
+//     }
+// };
 
 // put all links in the database
     // fetch all links from the database,
@@ -271,19 +313,6 @@ const buildDb = async () => {
 
 client.connect().then(rebuildDatabase());
 
-module.exports = {
-    buildDb, 
+module.exports = { 
     rebuildDatabase, 
-    getPostsFromLinkId,
-    getLinkFromIdNumber,
-    getAllLinks,
-    addLinktoTable,
-    addRssItemDatabase,
-    getAllPosts,
-    getOnePostById,
-    parseNewLinkPosts,
-    getPostsByDate,
-    fetchUser,
-    createNewUser,
-
 };

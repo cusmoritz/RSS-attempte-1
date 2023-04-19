@@ -16,7 +16,7 @@ apiRouter.use(cors());
 // define port
 const PORT = process.env.PORT || 3000;
 // get our client so we can connect
-const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks, savePost, fetchSavedPosts, unsavePost, fetchAllUserLinks, reactivateLink, searchPosts, searchPostsByDate } = require('../db/index.js');
+const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, getActiveLinks, savePost, fetchSavedPosts, unsavePost, fetchAllUserLinks, reactivateLink, searchPosts, searchPostsByDate, linkChecker, updateUserLinks, getActiveUserLinks} = require('../db/index.js');
 
 const { createNewUser, fetchUserByUsername, verifyUser, fetchUserByEmail, } = require('../db/users')
 
@@ -46,15 +46,29 @@ apiRouter.post('/api/newlink', async (request, response, next) => {
     try {
         const {newLink} = request.body;
         const {userId} = request.body
+        console.log('new link', newLink)
+        // linkChecker
+        const checkLink = await linkChecker(newLink.link);
 
-        // we get a new link from the request and add it to the database
-        const newLinkInDatabase = await addLinktoTable(newLink, userId);
-
-        // then we bother to get the posts and add them to the database 
-        const newPostsMaybe = await parseNewLinkPosts(newLink.link, newLinkInDatabase[0].link_id);
-        response.send(newLinkInDatabase[0]);
+        // false means link DOES NOT exist
+        if (!checkLink) {
+            // we get a new link from the request and add it to the database
+            const newLinkInDatabase = await addLinktoTable(newLink, userId);
+            console.log('new link in database', newLinkInDatabase)
+            // then we bother to get the posts and add them to the database 
+            const newPostsMaybe = await parseNewLinkPosts(newLink.link, newLinkInDatabase[0].link_id);
+            await updateUserLinks(userId, newLinkInDatabase[0].link_id);
+            response.send(newLinkInDatabase[0]);
+        } else {
+            console.log('the link DOES exist (in api)')
+            console.log(checkLink)
+            console.log('check link', checkLink)
+            // this is the link EXISTING
+            const newUserLink = await updateUserLinks(userId, checkLink.id);
+            response.send(newUserLink);
+        }
     } catch (error) {
-        console.log('there was an error in apiRouter/post/api/posts/new: ', error);
+        console.log('there was an error in apiRouter.POST api/newlink: ', error);
         throw error;
     }
 });
@@ -203,7 +217,7 @@ apiRouter.get('/api/search/:term', async (request, response, next) => {
 apiRouter.get('/api/:userId', async(request, response, next) => {
     try {
         const {userId} = request.params;
-        const allUserLinks = await getActiveLinks(userId);
+        const allUserLinks = await getActiveUserLinks(userId);
         response.send(allUserLinks);
     } catch (error) {
         throw error;

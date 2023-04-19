@@ -34,7 +34,7 @@ const addRssItemDatabase = async (item, link_id) => {
             await client.query(`
             INSERT INTO rss (url, title, date, link_id)
             VALUES ($1, $2, $3, $4)
-            RETURNING *;
+            ;
             `, [item.link, item.title, item.date, link_id]);
         }
     } catch (error) {
@@ -43,15 +43,47 @@ const addRssItemDatabase = async (item, link_id) => {
     }
 };
 
+const updateUserLinks = async (user, link) => {
+    try {
+        await client.query(`
+        INSERT INTO user_links (user_id, link_id)
+        VALUES ($1, $2)
+        RETURNING *
+        ;
+        `, [user, link])
+    } catch (error) {
+        throw error;
+    }
+}
+
+const linkChecker = async (link_url) => {
+    try {
+        const {rows: [linkExists]} = await client.query(`
+        SELECT * FROM rss_links
+        WHERE url=$1
+        ;
+        `,[link_url]);
+        if (linkExists) {
+
+            return {id: linkExists.link_id, true: true};
+        } else {
+            console.log('the link doesnt exist in db')
+            return;
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
 // add links to database link table
 const addLinktoTable = async (link, userId) => {
     try {
         const {rows: newLinksInTable} = await client.query(`
-        INSERT INTO rss_links (link_title, url, user_id)
-        VALUES ($1, $2, $3)
+        INSERT INTO rss_links (link_title, url)
+        VALUES ($1, $2)
         RETURNING *
         ;
-        `, [link.name, link.link, userId]);
+        `, [link.name, link.link]);
         return newLinksInTable;
     } catch (error) {
         console.log('there was an error putting a link in the database: ', error);
@@ -114,11 +146,30 @@ const getActiveLinks = async(userId) => {
     }
 };
 
+const getActiveUserLinks = async(userId) => {
+    try {
+        const {rows: activeUserLinks} = await client.query(`
+            SELECT rss_links.link_id, rss_links.link_title, rss_links.url
+            FROM rss_links
+            LEFT JOIN user_links
+            ON user_links.link_id = rss_links.link_id 
+            WHERE user_links.user_id = $1 AND active = true
+            ;
+        `, [userId]);
+        console.log('these are active user links: ', activeUserLinks);
+        return activeUserLinks;
+    } catch (error) {
+        throw error;
+    }
+}
+
 const fetchAllUserLinks = async (userId) => {
     try {
         const {rows: allUserLinks} = await client.query(`
-        SELECT * FROM rss_links
-        WHERE user_id = $1
+        SELECT rss_links.link_id, rss_links.link_title, rss_links.url
+        FROM rss_links
+        LEFT JOIN user_links
+        ON user_links.link_id = rss_links.link_id WHERE user_links.user_id = $1
         ;
         `, [userId]);
         return allUserLinks;
@@ -358,6 +409,9 @@ module.exports = {
     reactivateLink,
     searchPosts,
     searchPostsByDate,
+    linkChecker,
+    updateUserLinks,
+    getActiveUserLinks,
 
 }
 
