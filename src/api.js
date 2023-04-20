@@ -207,7 +207,9 @@ export const createNewLink = async(linkURL, linkName, userId) => {
                 "userId": userId
             })
         });
-        const newLink = response.json();
+        console.log('response', response)
+        const newLink = await response.json();
+        console.log('new link? ', newLink)
         return newLink;
     } catch (error) {
         console.log('there was an error creating a new link: ', error);
