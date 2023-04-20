@@ -311,8 +311,8 @@ apiRouter.post('/api/deactivate/:linkId', async (request, response, next) => {
 apiRouter.post('/api/reactivate/:linkId', async (request, response, next) => {
     try {
         const {linkId} = request.params;
-        const {userId} = request.body;
-        const reactivated = await reactivateLink(linkId, userId);
+        const {user} = request.body;
+        const reactivated = await reactivateLink(linkId, user);
         response.send(reactivated);
     } catch (error) {
         throw error;

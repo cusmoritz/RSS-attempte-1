@@ -54,7 +54,7 @@ export const App = () => {
             setLinks( await getActiveLinksByUserId(user))
         };
         fetchAllLinks(user);
-    }, [links])
+    }, [])
 
   console.log('links APP level', links)
 

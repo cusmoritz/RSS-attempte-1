@@ -5,7 +5,6 @@ import { getAllLinksByUserId, getActiveLinksByUserId, createNewLink, deactivateL
 
 const LinkManager = ({setLinks}) => {
     const {idSwitch} = useParams();
-    console.log('id switch', idSwitch)
 
     const [newURL, setNewUrl] = useState("");
     const [newName, setNewName] = useState("");
@@ -17,11 +16,9 @@ const LinkManager = ({setLinks}) => {
     };
 
     useEffect(() => {
-        console.log('in use efect?');
         fetchAllLinks(idSwitch);
     }, [])
 
-    console.log('all links LinkManager', allLinks)
     const handleSubmitNewLink = async () => {
         const newLink = await createNewLink(newURL, newName, idSwitch);
         setLinks((previousList) => [...previousList, newLink]);
@@ -34,15 +31,13 @@ const LinkManager = ({setLinks}) => {
 
     const handleActivate = async (link_id) => {
         const reactivating = await reactivateLink(link_id, idSwitch); 
-        const rechecking = await fetchAllLinks(idSwitch);
-        setLinks(rechecking);
+        await fetchAllLinks(idSwitch);
         return reactivating;
     }
 
     const handleDeactivate = async (link_id) => {
         const linkNoMore = await deactivateLink(link_id, idSwitch);
-        const rechecking = await fetchAllLinks(idSwitch);
-        setAllLinks(rechecking)
+        await fetchAllLinks(idSwitch);
         return linkNoMore;
     }
 

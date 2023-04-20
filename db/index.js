@@ -175,7 +175,7 @@ const getActiveUserLinks = async(userId) => {
 const fetchAllUserLinks = async (userId) => {
     try {
         const {rows: allUserLinks} = await client.query(`
-        SELECT rss_links.link_id, rss_links.url, user_links.link_title
+        SELECT rss_links.link_id, rss_links.url, user_links.link_title, user_links.active
         FROM rss_links
         LEFT JOIN user_links
         ON user_links.link_id = rss_links.link_id WHERE user_links.user_id = $1
