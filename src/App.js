@@ -24,7 +24,6 @@ export const App = () => {
     // error handling on user login / register
     // finish README
     // change updatePosts function to run automatically 2x a day
-    // change Today's Posts to be right
     // deactivate account?
     // put link / post options inside sandwich bar?
 

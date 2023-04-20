@@ -24,6 +24,7 @@ const LinkManager = ({setLinks}) => {
         setLinks((previousList) => [...previousList, newLink]);
         setNewName("");
         setNewUrl("");
+        fetchAllLinks(idSwitch);
         setCreateNew(!createNew)
         alert('Link added!')
         return newLink;

@@ -194,7 +194,7 @@ export const getPostsForLink = async(linkId) => {
 // '/api/links/new'
 export const createNewLink = async(linkURL, linkName, userId) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/newlink`, {
+        const result = await fetch(`${BASE_URL}/api/newlink`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -207,8 +207,8 @@ export const createNewLink = async(linkURL, linkName, userId) => {
                 "userId": userId
             })
         });
-        console.log('response', response)
-        const newLink = await response.json();
+        console.log('response', result)
+        const newLink = await result.json();
         console.log('new link? ', newLink)
         return newLink;
     } catch (error) {
