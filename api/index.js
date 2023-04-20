@@ -296,7 +296,9 @@ apiRouter.post('/api/update', async (request, response, next) => {
 apiRouter.post('/api/deactivate/:linkId', async (request, response, next) => {
     try {
         const {linkId} = request.params;
-        const deactivated = await deactivateLink(linkId);
+        const {user} = request.body;
+        console.log('user and link in api', user, linkId)
+        const deactivated = await deactivateLink(linkId, user);
         response.send(deactivated);
     } catch (error) {
         console.log('there was an error deactivating a link');
@@ -309,7 +311,8 @@ apiRouter.post('/api/deactivate/:linkId', async (request, response, next) => {
 apiRouter.post('/api/reactivate/:linkId', async (request, response, next) => {
     try {
         const {linkId} = request.params;
-        const reactivated = await reactivateLink(linkId);
+        const {userId} = request.body;
+        const reactivated = await reactivateLink(linkId, userId);
         response.send(reactivated);
     } catch (error) {
         throw error;

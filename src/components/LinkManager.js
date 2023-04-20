@@ -5,18 +5,21 @@ import { getAllLinksByUserId, getActiveLinksByUserId, createNewLink, deactivateL
 
 const LinkManager = ({setLinks}) => {
     const {idSwitch} = useParams();
+    console.log('id switch', idSwitch)
 
     const [newURL, setNewUrl] = useState("");
     const [newName, setNewName] = useState("");
     const [createNew, setCreateNew] = useState(false);
     const [allLinks, setAllLinks] = useState([]);
 
+    const fetchAllLinks = async(idSwitch) => {
+        setAllLinks( await getAllLinksByUserId(idSwitch))
+    };
+
     useEffect(() => {
-        const fetchAllLinks = async(idSwitch) => {
-            setAllLinks( await getAllLinksByUserId(idSwitch))
-        };
+        console.log('in use efect?');
         fetchAllLinks(idSwitch);
-    }, [allLinks])
+    }, [])
 
     console.log('all links LinkManager', allLinks)
     const handleSubmitNewLink = async () => {
@@ -29,18 +32,19 @@ const LinkManager = ({setLinks}) => {
         return newLink;
     };
 
-    const handleActivate = async (id) => {
-        const reactivating = await reactivateLink(id); 
-        const rechecking = await getActiveLinksByUserId(idSwitch);
+    const handleActivate = async (link_id) => {
+        const reactivating = await reactivateLink(link_id, idSwitch); 
+        const rechecking = await fetchAllLinks(idSwitch);
         setLinks(rechecking);
         return reactivating;
     }
 
-    const handleDelete = async (id) => {
-        const linkNoMore = await deactivateLink(id);
-        const rechecking = await getActiveLinksByUserId(idSwitch);
-        setLinks(rechecking)
-        return linkNoMore;
+    const handleDeactivate = async (link_id) => {
+        const linkNoMore = await deactivateLink(link_id, idSwitch);
+        const rechecking = await fetchAllLinks(idSwitch);
+        // setLinks(rechecking)
+        // return linkNoMore;
+
     }
 
     return (
@@ -73,7 +77,7 @@ const LinkManager = ({setLinks}) => {
                         ? 
                         (<button id="activate-button" onClick={() => handleActivate(eachLink.link_id)}>Re-activate</button>) 
                         : 
-                        (<button id="deactivate-button" onClick={() => handleDelete(eachLink.link_id)}>Deactivate</button>)}
+                        (<button id="deactivate-button" onClick={() => handleDeactivate(eachLink.link_id)}>Deactivate</button>)}
                     </div>
                 )
             }))}

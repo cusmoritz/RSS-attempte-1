@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import Linklist from './components/Linklist';
 import Footer from './components/Footer'
 import Register from './components/Register';
-import { getActiveLinksByUserId } from './api';
+import { getActiveLinksByUserId  } from './api';
 import { Route, Routes, Link } from 'react-router-dom';
 import LinkPosts from './components/LinkPosts';
 import TodaysPosts from './components/TodaysPost';
@@ -30,7 +30,7 @@ export const App = () => {
 
   const [links, setLinks] = useState([]);
   const [token, setToken] = useState(window.localStorage.getItem('token') || null);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState();
 
   // updates the database twice a day
   const updateDaily = async () => {
@@ -48,14 +48,13 @@ export const App = () => {
 
   }, [token]);
 
-  useEffect(() => {
-    if(user != null){
-      async function getLinks(){
-        setLinks(await getActiveLinksByUserId(user, token));
-      }
-      getLinks();
-    }
-  }, [user])
+    useEffect(() => {
+      console.log('ping app level?')
+        const fetchAllLinks = async(user) => {
+            setLinks( await getActiveLinksByUserId(user))
+        };
+        fetchAllLinks(user);
+    }, [links])
 
   console.log('links APP level', links)
 

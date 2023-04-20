@@ -216,14 +216,18 @@ export const createNewLink = async(linkURL, linkName, userId) => {
 }
 
 // api/deactivate/:linkId
-export const deactivateLink = async(linkId) => {
+export const deactivateLink = async(linkId, userId) => {
     try {
-        // console.log('working in front end: ', linkId)
+        console.log('working in front end: ', linkId, userId)
+
         const response = fetch(`${BASE_URL}/api/deactivate/${linkId}`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },            
+            body: JSON.stringify({
+                user: userId,
+            })
         });
         return response;
     } catch (error) {
@@ -232,13 +236,16 @@ export const deactivateLink = async(linkId) => {
     }
 }
 
-export const reactivateLink = async(linkId) => {
+export const reactivateLink = async(linkId, userId) => {
     try {
         const response = fetch(`${BASE_URL}/api/reactivate/${linkId}`, {
             method: "POST",
             headers: {
                 'Content-type': 'application/json'
-            }
+            },
+            body: JSON.stringify({
+                user: userId,
+            })
         });
         return response;
     } catch (error) {

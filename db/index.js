@@ -266,15 +266,17 @@ const updateDb = async () => {
     }
 };
 
-const deactivateLink = async(linkId) => {
+const deactivateLink = async(linkId, userId) => {
     try {
+        console.log('link id and user id', linkId, userId)
+        console.log('deactivating!')
         const {rows: link} = client.query(`
-        UPDATE rss_links
-        SET active = FALSE
-        WHERE link_id = $1
+        UPDATE user_links
+        SET active = false
+        WHERE link_id = $1 AND user_id = $2
         RETURNING *
         ;
-        `, [linkId]);
+        `, [linkId, userId]);
         return link;
     } catch (error) {
         console.log('there was an error deactivating a link in the database: ', error);
@@ -282,14 +284,15 @@ const deactivateLink = async(linkId) => {
     }
 };
 
-const reactivateLink = async(linkId) => {
+const reactivateLink = async(linkId, userId) => {
+    console.log('reactivating!')
     try {
         const {rows: link} = await client.query(`
-        UPDATE rss_links
+        UPDATE user_links
         SET active = TRUE
-        WHERE link_id = $1
+        WHERE link_id = $1 AND user_id = $2
         RETURNING *
-        `, [linkId]);
+        `, [linkId, userId]);
         return link;
     } catch (error) {
         throw error;

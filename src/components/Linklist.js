@@ -4,24 +4,24 @@ import EachLink from './EachLink';
 import SearchBar from './SearchBar';
 import { getAllLinksByUserId } from '../api';
 
-const Linklist = ({setLinks, user}) => {
+const Linklist = ({links, setLinks, user}) => {
 
-    const [allLinks, setAllLinks] = useState([]);
+    // const [allLinks, setAllLinks] = useState([]);
 
-    useEffect(() => {
-        const fetchAllLinks = async(user) => {
-            setAllLinks( await getAllLinksByUserId(user))
-        };
-        fetchAllLinks(user);
-    }, [allLinks])
+    // useEffect(() => {
+    //     const fetchAllLinks = async(user) => {
+    //         setAllLinks( await getAllLinksByUserId(user))
+    //     };
+    //     fetchAllLinks(user);
+    // }, [allLinks])
 
-    console.log('links in LinkList', allLinks)
+    console.log('links in LinkList', links)
     console.log('user in LinkList', user)
 
     return (
         <>
-        <SearchBar links={allLinks} user={user}/>
-            {(allLinks.length < 1) 
+        <SearchBar links={links} user={user}/>
+            {(links.length < 1) 
             ? 
             (
                 <div className="container">
@@ -35,7 +35,7 @@ const Linklist = ({setLinks, user}) => {
             ) 
             : 
             (<div className="container">
-                {allLinks.map((link) => {
+                {links.map((link) => {
                     return (<EachLink link={link} key={link.link_id}/>)
                 })}
             </div>)}
