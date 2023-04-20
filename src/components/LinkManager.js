@@ -42,9 +42,8 @@ const LinkManager = ({setLinks}) => {
     const handleDeactivate = async (link_id) => {
         const linkNoMore = await deactivateLink(link_id, idSwitch);
         const rechecking = await fetchAllLinks(idSwitch);
-        // setLinks(rechecking)
-        // return linkNoMore;
-
+        setAllLinks(rechecking)
+        return linkNoMore;
     }
 
     return (

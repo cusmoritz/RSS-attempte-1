@@ -45,6 +45,7 @@ const addRssItemDatabase = async (item, link_id) => {
     }
 };
 
+// updates the user_links table with a userId, new url, and users' url_name
 const updateUserLinks = async (user, url, url_name) => {
     try {
         await client.query(`
@@ -58,6 +59,7 @@ const updateUserLinks = async (user, url, url_name) => {
     }
 }
 
+// checks to see if the link a user submits is already in the database
 const linkChecker = async (link_url) => {
     try {
         const {rows: [linkExists]} = await client.query(`
@@ -77,7 +79,7 @@ const linkChecker = async (link_url) => {
     }
 }
 
-// add links to database link table
+// adds a new link to the rss_links table with a url
 const addLinktoTable = async (link) => {
     try {
         const {rows: newLinksInTable} = await client.query(`
@@ -108,6 +110,7 @@ const getAllLinks = async () => {
     }
 };
 
+// fetches a link from rss_links that matches an id number
 const getLinkFromIdNumber = async (link_id) => {
     try {
         const linkFromId = await client.query(`
@@ -122,6 +125,7 @@ const getLinkFromIdNumber = async (link_id) => {
     }
 };
 
+// gets every post from rss table
 const getAllPosts = async () => {
     try {
         const allPosts = await client.query(`
@@ -134,20 +138,22 @@ const getAllPosts = async () => {
     }
 };
 
-const getActiveLinks = async(userId) => {
-    try {
-        const {rows: activeLinks} = await client.query(`
-        SELECT * FROM rss_links
-        WHERE active = TRUE AND user_id = $1
-        ;
-        `, [userId]);
-        return activeLinks;
-    } catch (error) {
-        console.log('there was an error getting active links: ', error);
-        throw error;
-    }
-};
+// old method, fetched urls from rss_links per user
+// const getActiveLinks = async(userId) => {
+//     try {
+//         const {rows: activeLinks} = await client.query(`
+//         SELECT * FROM rss_links
+//         WHERE active = TRUE AND user_id = $1
+//         ;
+//         `, [userId]);
+//         return activeLinks;
+//     } catch (error) {
+//         console.log('there was an error getting active links: ', error);
+//         throw error;
+//     }
+// };
 
+// fetches linkes from user_links that are marked as active
 const getActiveUserLinks = async(userId) => {
     try {
         const {rows: activeUserLinks} = await client.query(`
@@ -165,6 +171,7 @@ const getActiveUserLinks = async(userId) => {
     }
 }
 
+// fetches all user links from user_links table that match user id
 const fetchAllUserLinks = async (userId) => {
     try {
         const {rows: allUserLinks} = await client.query(`
@@ -181,6 +188,7 @@ const fetchAllUserLinks = async (userId) => {
     }
 }
 
+// fetches one post from rss table with a post id
 const getOnePostById = async(postId) => {
     try {
         const {rows: [onePost]} = await client.query(`
@@ -227,7 +235,7 @@ const getPostsByDate = async (date, user) => { // has to be year-month-day forma
     }
 };
 
-// get posts from an individual link id number (rss_links)
+// fetches posts in rss table that match a rss_links id
 const getPostsFromLinkId = async (link_id) => {
     try {
         const {rows: postsFromId} = await client.query(`
@@ -243,6 +251,7 @@ const getPostsFromLinkId = async (link_id) => {
     }
 };
 
+// notes in function
 const updateDb = async () => {
     try {
         // gets all the links from the database
@@ -266,10 +275,9 @@ const updateDb = async () => {
     }
 };
 
+// updates user_links to set an rss_links id as deactivated (user no longer wants to see it)
 const deactivateLink = async(linkId, userId) => {
     try {
-        console.log('link id and user id', linkId, userId)
-        console.log('deactivating!')
         const {rows: link} = client.query(`
         UPDATE user_links
         SET active = false
@@ -284,6 +292,7 @@ const deactivateLink = async(linkId, userId) => {
     }
 };
 
+// updates user_links to set an rss_links id as active (user wishes to see posts for that link)
 const reactivateLink = async(linkId, userId) => {
     console.log('reactivating!')
     try {
@@ -299,6 +308,7 @@ const reactivateLink = async(linkId, userId) => {
     }
 }
 
+// updates user_saved table with a post using postId and userId
 const savePost = async(postId, userId) => {
     try {
     const {rows: [savedPost]} = await client.query(`
@@ -313,6 +323,7 @@ const savePost = async(postId, userId) => {
     }
 }
 
+// removes a post from user_saved table
 const unsavePost = async (postId, userId) => {
     try {
         const {rows: [result]} = await client.query(`
@@ -327,6 +338,7 @@ const unsavePost = async (postId, userId) => {
     }
 }
 
+// joins user_saved posts to rss ids
 const fetchSavedPosts = async (userId) => {
     try {
         const {rows: savedPosts} = await client.query(`
@@ -407,7 +419,7 @@ module.exports = {
     getPostsFromLinkId,
     updateDb,
     deactivateLink,
-    getActiveLinks,
+    // getActiveLinks,
     savePost,
     fetchSavedPosts,
     unsavePost,
