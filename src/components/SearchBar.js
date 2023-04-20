@@ -5,7 +5,7 @@ import { searchPosts } from '../api';
 import { Link } from 'react-router-dom';
 import { saveAPost, fetchPostsByDate } from '../api';
 
-const SearchBar = ({links, user}) => {
+const SearchBar = ({user}) => {
 
     const [search, setSearch] = useState("");
     const [display, setDisplay] = useState([]);

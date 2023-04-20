@@ -357,7 +357,7 @@ const searchPosts = async (term, user) => {
     try {
 
         // will be an array of links [{}, {}, {}, {} ...]
-        const userLinks = await getActiveLinks(user);
+        const userLinks = await getActiveUserLinks(user);
         console.log('userLinks db: ', userLinks);
 
         let individualResults = []
