@@ -206,7 +206,7 @@ const getOnePostById = async(postId) => {
 const getPostsByDate = async (date, user) => { // has to be year-month-day format
     try {
 
-        const userLinks = await getActiveLinks(user);
+        const userLinks = await getActiveUserLinks(user);
 
         let todayResults = [];
 

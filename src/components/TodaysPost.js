@@ -6,11 +6,12 @@ import { getTodaysPosts, saveAPost } from '../api';
 const TodaysPosts = ({user}) => {
     const [todayPosts, setTodayPosts] = useState([]);
 
+    const gettingPosts = async() => {
+        const fetchingPosts = await getTodaysPosts(user);
+        setTodayPosts(fetchingPosts);
+    }
+
     useEffect(() => {
-        const gettingPosts = async() => {
-            const fetchingPosts = await getTodaysPosts(user);
-            setTodayPosts(fetchingPosts);
-        }
         gettingPosts();
     }, []);
 
