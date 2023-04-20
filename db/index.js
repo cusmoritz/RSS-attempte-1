@@ -383,7 +383,7 @@ const searchPostsByDate = async (date, user) => {
 
     try {
     // arr of links for each user
-    const userLinks = await getActiveLinks(user);
+    const userLinks = await getActiveUserLinks(user);
 
     let dateResults = [];
 
