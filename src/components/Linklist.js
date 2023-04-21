@@ -4,7 +4,7 @@ import EachLink from './EachLink';
 import SearchBar from './SearchBar';
 import { getActiveLinksByUserId } from '../api';
 
-const Linklist = ({links, user}) => {
+const Linklist = ({user}) => {
 
     const [activeLinks, setActiveLinks] = useState([]);
 
@@ -13,14 +13,14 @@ const Linklist = ({links, user}) => {
     };
 
     useEffect(() => {
-        fetchAllLinks(user);
+        if (user) {
+            fetchAllLinks(user);
+        }
     }, [])
-
-    console.log('active links in LinkList', activeLinks)
 
     return (
         <>
-        <SearchBar links={links} user={user}/>
+        <SearchBar user={user}/>
             {(activeLinks.length < 1) 
             ? 
             (

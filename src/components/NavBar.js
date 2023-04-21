@@ -23,7 +23,7 @@ const NavBar = ({token, setToken, userId, setLinks, setUserId}) => {
     }
 
     return (
-        <div className="container">
+        <div className="container nav-bar">
             <div className="header-container">
 
                 <button onClick={() => handleUpdate()}>Update posts</button>

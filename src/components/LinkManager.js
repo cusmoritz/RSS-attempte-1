@@ -65,8 +65,8 @@ const LinkManager = ({setLinks}) => {
             :
             (allLinks.map((eachLink) => {
                 return(
-                    <div className="link-container" key={eachLink.id}>
-                        <h4 className="link-title">{eachLink.link_title}</h4>
+                    <div className="link-container">
+                        <h4 className="link-title" key={eachLink.id}>{eachLink.link_title}</h4>
                         <p>{eachLink.url}</p>
                         {eachLink.active === false 
                         ? 

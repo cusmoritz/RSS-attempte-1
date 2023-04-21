@@ -4,7 +4,7 @@ import { userLogin } from '../api';
 import { useNavigate } from 'react-router-dom';
 import { getActiveLinksByUserId } from '../api';
 
-const LoginForm = ({setToken, setUser, setLinks}) => { 
+const LoginForm = ({setToken, setUser, setActiveLinks}) => { 
 
     const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ const LoginForm = ({setToken, setUser, setLinks}) => {
             localStorage.setItem('token', result.token);
             setUser(result.id)
             navigate('/links');
-            setLinks(await getActiveLinksByUserId(result.id, result.token));
+            setActiveLinks(await getActiveLinksByUserId(result.id, result.token));
         }
     }
 

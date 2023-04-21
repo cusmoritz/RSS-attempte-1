@@ -22,20 +22,16 @@ export const App = () => {
 
   // TODO => 
     // error handling on user login / register
+    // handle error for submitting the same link as a user
     // finish README
     // change updatePosts function to run automatically 2x a day
     // deactivate account?
     // put link / post options inside sandwich bar?
 
-  const [links, setLinks] = useState([]);
+  const [activeLinks, setActiveLinks] = useState([]);
   const [token, setToken] = useState(window.localStorage.getItem('token') || null);
   const [user, setUser] = useState();
 
-  // updates the database twice a day
-  const updateDaily = async () => {
-    await updatePosts()
-  }
-  
   useEffect(() => {
     if (token) {
       const checkingUser = async() => {
@@ -44,36 +40,40 @@ export const App = () => {
       }
       checkingUser();
     }
-
   }, [token]);
 
     useEffect(() => {
-      console.log('ping app level?')
-        const fetchAllLinks = async(user) => {
-            setLinks( await getActiveLinksByUserId(user))
-        };
+      const fetchAllLinks = async(user) => {
+        setActiveLinks( await getActiveLinksByUserId(user))
+      };
+      if (user) {
         fetchAllLinks(user);
+      }
     }, [])
 
-  console.log('links APP level', links)
+    console.log('user app level', user)
 
   useEffect(() => {
+    // updates the database twice a day
+    const updateDaily = async () => {
+      await updatePosts()
+    }
     updateDaily();
   }, [43200000])
   
   return(
     <>
     {user ? (<div><img src={construction} className="construction" alt="under construction"/><h1><Link to="/links">STREAMER</Link></h1></div>) : <div><img src={construction} className="construction" alt="under construction"/><h1><Link to="/">STREAMER</Link></h1></div>}
-        <NavBar token={token} setToken={setToken} userId={user} setUserId={setUser} setLinks={setLinks}/>
+        <NavBar token={token} setToken={setToken} userId={user} setUserId={setUser} setActiveLinks={setActiveLinks}/>
 
           <Routes>
 
             <Route path="/today" element={<TodaysPosts user={user}/>} />
-            <Route path="/links" element={<Linklist setLinks={setLinks} links={links} user={user}/>}/>
-            <Route path="/:linkSwitch/posts" element={<LinkPosts links={links} user={user}/>} />
+            <Route path="/links" element={<Linklist user={user}/>}/>
+            <Route path="/:linkSwitch/posts" element={<LinkPosts activeLinks={activeLinks} user={user}/>} />
             <Route path="/register" element={<Register token={token} setToken={setToken} setUserId={setUser}/>} />
-            <Route path="/manage/:idSwitch" element={<LinkManager setLinks={setLinks} />} />
-            <Route path="/login" element={<LoginForm setToken={setToken} setUser={setUser} setLinks={setLinks}/>} />
+            <Route path="/manage/:idSwitch" element={<LinkManager setActiveLinks={setActiveLinks} />} />
+            <Route path="/login" element={<LoginForm setToken={setToken} setUser={setUser} setActiveLinks={setActiveLinks}/>} />
             <Route path="/:userId/saved" element={<SavedPosts />}/>
             <Route exact path="/" element={<Explainer />} />
           </Routes>
