@@ -24,7 +24,6 @@ export const App = () => {
     // error handling on user login / register
     // handle error for submitting the same link as a user
     // finish README
-    // change updatePosts function to run automatically 2x a day
     // deactivate account?
     // put link / post options inside sandwich bar?
 
