@@ -10,6 +10,8 @@ const LinkManager = ({setLinks}) => {
     const [newName, setNewName] = useState("");
     const [createNew, setCreateNew] = useState(false);
     const [allLinks, setAllLinks] = useState([]);
+    const [changeTitle, setChangeTitle] = useState("");
+    const [changeTitleState, setChangeTitleState] = useState(false);
 
     const fetchAllLinks = async(idSwitch) => {
         setAllLinks( await getAllLinksByUserId(idSwitch))
@@ -42,6 +44,11 @@ const LinkManager = ({setLinks}) => {
         return linkNoMore;
     }
 
+    const handleTitleChange = async (link_id) => {
+        console.log('new name here: ', changeTitle, link_id)
+
+    }
+
     return (
         <div className="container">
             {createNew
@@ -72,7 +79,26 @@ const LinkManager = ({setLinks}) => {
                         ? 
                         (<button id="activate-button" onClick={() => handleActivate(eachLink.link_id)}>Re-activate</button>) 
                         : 
-                        (<button id="deactivate-button" onClick={() => handleDeactivate(eachLink.link_id)}>Deactivate</button>)}
+                        (   
+                            <div>
+                            <button id="deactivate-button" onClick={() => handleDeactivate(eachLink.link_id)}>Deactivate</button>
+                            <button onClick={() => setChangeTitleState(!changeTitleState)}>
+                                Change title
+                            </button>
+                            {!changeTitleState ? null : 
+                                <form onSubmit={(event) => event.preventDefault()}>
+                                    <label htmlFor="changeName">New title:</label>
+                                    <input 
+                                        id="changeName" 
+                                        placeholder="Type new name here" 
+                                        value={changeTitle} 
+                                        onChange={(event) => setChangeTitle(event.target.value)}/>
+                                    <button type="submit" onClick={handleTitleChange(eachLink.id)}>Submit</button>
+                                    <button>Cancel</button>
+                                </form>
+                            }
+                            </div>
+                        )}
                     </div>
                 )
             }))}

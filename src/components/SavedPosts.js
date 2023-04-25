@@ -30,7 +30,6 @@ const SavedPosts = () => {
             </div>)
             : 
             savedPosts.map((post) => {
-                console.log('each post', post)
                 return(
                     <div className="post-container" key={savedPosts.indexOf(post) + 1}>
                         <p>Saved post #{savedPosts.indexOf(post) + 1}</p>
