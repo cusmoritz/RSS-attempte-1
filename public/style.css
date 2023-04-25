@@ -346,6 +346,10 @@
     float: right;
   }
 
+  .search-field {
+    height: 20px;
+  }
+
   .register-form label {
     width: 50%;
     align-self:flex-start;

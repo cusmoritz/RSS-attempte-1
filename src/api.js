@@ -92,16 +92,13 @@ export const getTodaysPosts = async(user) => {
 
 export const fetchPostsByDate = async(date, user) => {
     try {
-        console.log('date and user', date, user)
         const response = await fetch(`${BASE_URL}/api/${date}/${user}`, {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
             }
         });
-        console.log('respinse in api ,', response);
         const datePosts = await response.json();
-        console.log('dateposts in api,', datePosts)
         return datePosts;
     } catch (error) {
         console.log('there was a problem getting posts by a specific date: ', error);
@@ -206,9 +203,7 @@ export const createNewLink = async(linkURL, linkName, userId) => {
                 "userId": userId
             })
         });
-        console.log('response', result)
         const newLink = await result.json();
-        console.log('new link? ', newLink)
         return newLink;
     } catch (error) {
         console.log('there was an error creating a new link: ', error);
@@ -219,8 +214,6 @@ export const createNewLink = async(linkURL, linkName, userId) => {
 // api/deactivate/:linkId
 export const deactivateLink = async(linkId, userId) => {
     try {
-        console.log('working in front end: ', linkId, userId)
-
         const response = fetch(`${BASE_URL}/api/deactivate/${linkId}`, {
             method: "POST",
             headers: {

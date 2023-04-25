@@ -292,7 +292,6 @@ const deactivateLink = async(linkId, userId) => {
 
 // updates user_links to set an rss_links id as active (user wishes to see posts for that link)
 const reactivateLink = async(linkId, userId) => {
-    console.log('reactivating!')
     try {
         const {rows: link} = await client.query(`
         UPDATE user_links
@@ -356,7 +355,6 @@ const searchPosts = async (term, user) => {
 
         // will be an array of links [{}, {}, {}, {} ...]
         const userLinks = await getActiveUserLinks(user);
-        console.log('userLinks db: ', userLinks);
 
         let individualResults = []
 

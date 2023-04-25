@@ -46,7 +46,6 @@ apiRouter.post('/api/newlink', async (request, response, next) => {
     try {
         const {newLink} = request.body;
         const {userId} = request.body
-        console.log('new link', newLink)
         // linkChecker
         const checkLink = await linkChecker(newLink.link);
 
@@ -54,15 +53,11 @@ apiRouter.post('/api/newlink', async (request, response, next) => {
         if (!checkLink) {
             // we get a new link from the request and add it to the database
             const newLinkInDatabase = await addLinktoTable(newLink, userId);
-            console.log('new link in database', newLinkInDatabase)
             // then we bother to get the posts and add them to the database 
             const newPostsMaybe = await parseNewLinkPosts(newLink.link, newLinkInDatabase[0].link_id);
             await updateUserLinks(userId, newLinkInDatabase[0].link_id, newLink.name);
             response.send(newLinkInDatabase[0]);
         } else {
-            console.log('the link DOES exist (in api)')
-            console.log(checkLink)
-            console.log('check link', checkLink)
             // this is the link EXISTING
             const newUserLink = await updateUserLinks(userId, checkLink.id, newLink.name);
             response.send(newUserLink);
@@ -78,7 +73,6 @@ apiRouter.get('/api/manage/:userId', async (request, response, next) => {
     try {
         const {userId} = request.params;
         const allUserLinks = await fetchAllUserLinks(userId);
-        console.log('all user links in api? ', allUserLinks)
         response.send(allUserLinks);
     } catch (error) {
      console.log('there was an error in apiRouter/get/api/links: ', error);
@@ -230,7 +224,6 @@ apiRouter.get('/api/:date/:user', async(request, response, next) => {
     try {
         const {date} = request.params;
         const {user} = request.params;
-        console.log('date and user backend api, ', date, user);
         const datePosts = await searchPostsByDate(date, user);
         response.send(datePosts);
     } catch (error) {
@@ -296,7 +289,6 @@ apiRouter.post('/api/deactivate/:linkId', async (request, response, next) => {
     try {
         const {linkId} = request.params;
         const {user} = request.body;
-        console.log('user and link in api', user, linkId)
         const deactivated = await deactivateLink(linkId, user);
         response.send(deactivated);
     } catch (error) {

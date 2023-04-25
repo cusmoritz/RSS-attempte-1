@@ -51,8 +51,6 @@ export const App = () => {
       }
     }, [])
 
-    console.log('user app level', user)
-
   useEffect(() => {
     // updates the database twice a day
     const updateDaily = async () => {
