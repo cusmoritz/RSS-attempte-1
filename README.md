@@ -18,7 +18,7 @@ The sign up is strictly used to save an individual user's posts and links to the
 
 It doesn't currently have the ability to check for a link that ISN'T an RSS / XML link ... so please check the link before you add it to make sure that it's actually an RSS link.
 
-This website is built in React on the front-end, Express.JS for API calls, and PostrgeSQL for the backend database. 
+This website is built in React on the front-end, Express.JS for server and API calls, and PostrgeSQL for the backend database. 
 
 It's fun to be in charge of my own news again.
 

@@ -68,7 +68,6 @@ export const updatePosts = async() => {
         const newPosts = await fetch(`${BASE_URL}/api/update`, {
             method: "POST"
         });
-        alert('Posts updated!')
     } catch (error) {
         console.log('there was an error updating the posts in src/api: ', error);
         throw error;

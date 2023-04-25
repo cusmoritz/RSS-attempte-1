@@ -219,7 +219,6 @@ apiRouter.get('/api/:userId', async(request, response, next) => {
     try {
         const {userId} = request.params;
         const allUserLinks = await getActiveUserLinks(userId);
-        console.log('active user links in api', allUserLinks)
         response.send(allUserLinks);
     } catch (error) {
         throw error;

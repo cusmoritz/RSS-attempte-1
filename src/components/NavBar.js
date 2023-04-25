@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { updatePosts } from "../api";
 
-const NavBar = ({token, setToken, userId, setLinks, setUserId}) => {
+const NavBar = ({token, setToken, userId, setActiveLinks, setUserId}) => {
 
     const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const NavBar = ({token, setToken, userId, setLinks, setUserId}) => {
         setToken("");
         window.localStorage.removeItem("token")
         navigate('/');
-        setLinks([]);
+        setActiveLinks([]);
         setUserId(null)
     }
 

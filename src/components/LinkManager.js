@@ -82,7 +82,7 @@ const LinkManager = ({setLinks}) => {
                         (   
                             <div>
                             <button id="deactivate-button" onClick={() => handleDeactivate(eachLink.link_id)}>Deactivate</button>
-                            <button onClick={() => setChangeTitleState(!changeTitleState)}>
+                            {/* <button onClick={() => setChangeTitleState(!changeTitleState)}>
                                 Change title
                             </button>
                             {!changeTitleState ? null : 
@@ -96,7 +96,7 @@ const LinkManager = ({setLinks}) => {
                                     <button type="submit" onClick={handleTitleChange(eachLink.id)}>Submit</button>
                                     <button>Cancel</button>
                                 </form>
-                            }
+                            } */}
                             </div>
                         )}
                     </div>

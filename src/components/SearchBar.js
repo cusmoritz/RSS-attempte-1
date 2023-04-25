@@ -31,7 +31,6 @@ const SearchBar = ({user}) => {
                 setDateResults((previous) => [...previous, returnPosts[i][j]]) // for each object, add it to the display arr
             }
         }
-        console.log('return posts? ', returnPosts);
         return returnPosts;
     }
 
@@ -105,7 +104,6 @@ const SearchBar = ({user}) => {
             : (
               <div className="date-search-container">
                 {dateResults.map((post) => {
-                    console.log('post', post)
                     return (
                         <div className="date-results-container" key={post.id}>
                             <p className="date-one-result"><a href={post.url} target="_blank">{post.title}</a></p>

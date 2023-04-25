@@ -164,7 +164,6 @@ const getActiveUserLinks = async(userId) => {
             WHERE user_links.user_id = $1 AND active = true
             ;
         `, [userId]);
-        console.log('these are active user links: ', activeUserLinks);
         return activeUserLinks;
     } catch (error) {
         throw error;
@@ -181,7 +180,6 @@ const fetchAllUserLinks = async (userId) => {
         ON user_links.link_id = rss_links.link_id WHERE user_links.user_id = $1
         ;
         `, [userId]);
-        console.log('all user links in db', allUserLinks)
         return allUserLinks;
     } catch (error) {
         throw error;
