@@ -289,8 +289,8 @@ export const userLogin = async (username, password) => {
             })
         });
 
-        if (result.message) {
-            throw result.error;
+        if (result.error) {
+            return result;
         } else {
             const userLoggedIn = await result.json();
             return userLoggedIn;

@@ -169,16 +169,16 @@ apiRouter.post('/api/login', async (request, response, next) => {
         const { username, password } = request.body;
 
         const userVerify = await verifyUser(username, password);
-        const id = userVerify.user_id;
 
-        if (userVerify) {
-            const token = jwt.sign(userVerify, JWT_SECRET);
-            response.status(200).send({message: "You're logged in!", token, id})
-        } else {
+        if (userVerify.error) {
             response.status(400).send({
                 error: "AuthenticationError",
                 message: "You did not log in right. Please try again."
             });
+        } else {
+            const id = userVerify.user_id;
+            const token = jwt.sign(userVerify, JWT_SECRET);
+            response.status(200).send({message: "You're logged in!", token, id})
         }
     } catch (error) {
         console.log('there was an error in router.get/login: ', error);

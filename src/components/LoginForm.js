@@ -18,11 +18,17 @@ const LoginForm = ({setToken, setUser, setActiveLinks}) => {
             setPassword("");
         } else {
             const result = await userLogin(username, password);
-            setToken(result.token)
-            localStorage.setItem('token', result.token);
-            setUser(result.id)
-            navigate('/links');
-            setActiveLinks(await getActiveLinksByUserId(result.id, result.token));
+            if(result.error) {
+                alert(result.message);
+                setUsername("");
+                setPassword("");
+            } else {
+                setToken(result.token)
+                localStorage.setItem('token', result.token);
+                setUser(result.id)
+                navigate('/links');
+                setActiveLinks(await getActiveLinksByUserId(result.id, result.token));
+            }
         }
     }
 

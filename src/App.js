@@ -15,7 +15,7 @@ import LoginForm from './components/LoginForm';
 import Explainer from './components/Explainer';
 import SavedPosts from './components/SavedPosts';
 import { userCheck } from './api';
-import construction from './components/images/construction.gif';
+import construction from './components/images/betaversion.gif';
 import { updatePosts } from './api';
 
 export const App = () => {
