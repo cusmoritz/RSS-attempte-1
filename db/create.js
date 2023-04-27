@@ -312,6 +312,8 @@ const rebuildDatabase = async () => {
 
 client.connect().then(rebuildDatabase());
 
+client.end();
+
 module.exports = { 
     rebuildDatabase, 
 };
