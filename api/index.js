@@ -167,13 +167,11 @@ apiRouter.get('/api/today/:user', async (request, response, next) => {
 apiRouter.post('/api/login', async (request, response, next) => {
     try {
         const { username, password } = request.body;
-
         const userVerify = await verifyUser(username, password);
-
         if (userVerify.error) {
             response.status(400).send({
-                error: "AuthenticationError",
-                message: "You did not log in right. Please try again."
+                error: userVerify.error,
+                message: userVerify.message
             });
         } else {
             const id = userVerify.user_id;

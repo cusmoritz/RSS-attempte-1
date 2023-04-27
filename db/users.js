@@ -50,15 +50,15 @@ const verifyUser = async(username, password) => {
         WHERE username = $1
         ;    
         `, [username]);
-        if (!user) {
-            return {message: "You did not type a valid username. Please try again.", error: "ValidationError"}
-        } else {
+        if (user) {
             const passCheck = await bcrypt.compare(password, user.password);
             if (passCheck === true){
                 return user;
             } else {
                 return {message: "That is the incorrect password! Please try again.", error: "ValidationError"}
             }
+        } else {
+            return {message: "That user does not exist. Please try again.", error: "ValidationError"}
         }
     } catch (error) {
         throw new Error (error);
