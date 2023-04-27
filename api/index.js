@@ -235,25 +235,25 @@ apiRouter.get('/api/:date/:user', async(request, response, next) => {
 //this function handles signing up and/or registering
 apiRouter.post('/api/sign-up', async (request, response, next) => {
     try {
-        const { username, password, email, firstName, lastName } = request.body;
+        const { username, password, firstName, lastName } = request.body;
         const _user = await fetchUserByUsername(username);
-        const _email = await fetchUserByEmail(email)
+        // const _email = await fetchUserByEmail(email)
         if (_user) {
             // this should be error handling instead
             response.status(400).send({
                 error: "UserNameTaken",
                 message: "That username is already taken, try again."
             });
-        } else if (_email) {
-            response.status(400).send({
-                error: "EmailTaken",
-                message: "That email is already associated with a user. Please try a different email."
-            });
-        }
+        } 
+        // else if (_email) {
+        //     response.status(400).send({
+        //         error: "EmailTaken",
+        //         message: "That email is already associated with a user. Please try a different email."
+        //     });
+        // }
          else {
             const hashedPass = await bcrypt.hash(password, SALT_ROUNDS);
-            const hashedEmail = await bcrypt.hash(email, SALT_ROUNDS);
-            const newUser = await createNewUser(username, hashedPass, hashedEmail, firstName, lastName);
+            const newUser = await createNewUser(username, hashedPass, firstName, lastName);
             const token = jwt.sign(newUser, JWT_SECRET);
             response.send({message: "You're signed up!", token, newUser});
         }

@@ -247,7 +247,7 @@ export const reactivateLink = async(linkId, userId) => {
     }
 }
 
-export const userRegister = async(username, password, email, firstName, lastName) => {
+export const userRegister = async(username, password, firstName, lastName) => {
     try {
         const result = await fetch(`${BASE_URL}/api/sign-up`, {
             method: "POST",
@@ -257,7 +257,6 @@ export const userRegister = async(username, password, email, firstName, lastName
             body: JSON.stringify({
                 username:username,
                 password:password,
-                email:email,
                 firstName:firstName,
                 lastName:lastName
             })

@@ -19,12 +19,12 @@ const Register = ({token, setToken, setUserId}) => {
             alert('You must confirm your password!');
             setPassword("");
             setConfirm("");
-        } else if (!firstName || !lastName || !username || !email) {
+        } else if (!firstName || !lastName || !username) {
             alert('Please fill in all fields to register.');
             setFirstName("");
             setLastName("");
             setUsername("");
-            setEmail("");
+            // setEmail("");
         } else {
             const newUser = await userRegister(username, password, email, firstName, lastName);
             if (newUser.error) {
@@ -37,7 +37,7 @@ const Register = ({token, setToken, setUserId}) => {
                 alert(newUser.message);
                 setToken(newUser.token);
                 setUserId(newUser.newUser.id)
-                navigate('/');
+                navigate('/links');
                 return newUser;
             }
             // alert(newUser.message);
@@ -51,7 +51,7 @@ const Register = ({token, setToken, setUserId}) => {
     return (
         <div className="register-container">
             <h5>Register a new user with the following form:</h5>
-            <p>(Your email address is only used to keep track of links you have saved! Nothing else.)</p>
+            {/* <p>(Your email address is only used to keep track of links you have saved! Nothing else.)</p> */}
             <form className="register-form" onSubmit={(event) => event.preventDefault()}>
                 <label htmlFor="first-name"> First name: </label>
                     <input type="text" required className="first-name" 
@@ -62,9 +62,9 @@ const Register = ({token, setToken, setUserId}) => {
                 <label htmlFor="username-input"> Username:</label>
                     <input type="text" required className="username" 
                     value={username} onChange={(event) => {setUsername(event.target.value)}}/>
-                <label htmlFor="email-input"> Email:</label>
+                {/* <label htmlFor="email-input"> Email:</label>
                     <input type="text" required className="email-input" 
-                    value={email} onChange={(event) => {setEmail(event.target.value)}}/>
+                    value={email} onChange={(event) => {setEmail(event.target.value)}}/> */}
                 <label htmlFor="password-input"> Password:</label>
                     <input type="password" required className="password-input" 
                     value={password} onChange={(event) => {setPassword(event.target.value)}}/>
