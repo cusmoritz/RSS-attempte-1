@@ -310,7 +310,7 @@ const rebuildDatabase = async () => {
         // parse each link through the parser, returning posts
             // send each post into the database, this time tied to the rss_link id
 
-client.connect().then(rebuildDatabase()).then(client.end());
+client.connect().then(rebuildDatabase());
 
 module.exports = { 
     rebuildDatabase, 
