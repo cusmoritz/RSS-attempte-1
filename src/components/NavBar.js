@@ -7,11 +7,11 @@ const NavBar = ({token, setToken, userId, setActiveLinks, setUserId}) => {
     const navigate = useNavigate();
 
     // updates post on button press
-    const handleUpdate = async () => {
-        console.log('updating...');
-        await updatePosts();
-        console.log('done updating');
-    };
+    // const handleUpdate = async () => {
+    //     console.log('updating...');
+    //     await updatePosts();
+    //     console.log('done updating');
+    // };
 
     // log us out and set tokens
     const handleLogout = () => {
@@ -26,7 +26,7 @@ const NavBar = ({token, setToken, userId, setActiveLinks, setUserId}) => {
         <div className="container nav-bar">
             <div className="header-container">
 
-                <button onClick={() => handleUpdate()}>Update posts</button>
+                {/* <button onClick={() => handleUpdate()}>Update posts</button> */}
 
                 {!token ?
                 <div>

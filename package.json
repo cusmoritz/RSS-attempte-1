@@ -6,7 +6,8 @@
   "scripts": {
     "db:build": "node db/create.js",
     "api:test": "node api/index.js",
-    "dev:start": "react-scripts start"
+    "dev:start": "react-scripts start",
+    "build": "react-scripts build"
   },
   "author": "Marcus",
   "license": "ISC",
