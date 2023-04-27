@@ -8,7 +8,6 @@ const Register = ({token, setToken, setUserId}) => {
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [username, setUsername] = useState("")
-    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirm, setConfirm] = useState("")
 
@@ -26,13 +25,12 @@ const Register = ({token, setToken, setUserId}) => {
             setUsername("");
             // setEmail("");
         } else {
-            const newUser = await userRegister(username, password, email, firstName, lastName);
+            const newUser = await userRegister(username, password, firstName, lastName);
             if (newUser.error) {
                 alert(newUser.message);
                 setFirstName("");
                 setLastName("");
                 setUsername("");
-                setEmail("");
             } else {
                 alert(newUser.message);
                 setToken(newUser.token);

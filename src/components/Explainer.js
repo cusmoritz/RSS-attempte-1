@@ -20,6 +20,7 @@ const Explainer = () => {
             <p><i>https://www.youtube.com/feeds/videos.xml?channel_id= [a series of letters and numbers here]</i></p>
             <p>Channel ids for YouTube are easily findable with a website such as <a href="https://commentpicker.com/youtube-channel-id.php" target="_blank">commentpicker.com.</a> Go to your favorite channel, copy and paste the URL into that website, and you have the channel id. It will look something like this: <i>UCXjvsikVclbNRGRlzr8jTEg</i></p>
             <p>Then you have the whole YouTube RSS link: <a href="https://www.youtube.com/feeds/videos.xml?channel_id=UCXjvsikVclbNRGRlzr8jTEg">https://www.youtube.com/feeds/videos.xml?channel_id=UCXjvsikVclbNRGRlzr8jTEg.</a></p>
+            <p>Fun fact! Most WordPress websites have a built-in RSS feed, just type /feed or /rss at the end of a websites' url. The Onion, America's Finest News Source, for example, runs on WordPress. <a href="https://www.theonion.com/rss">https://www.theonion.com/rss</a></p>
             <p>RSS feeds have to be supported from the website, so a lot of websites as of 2023 do not support RSS! Which is sad, but sort of makes sense. It's old tech. </p>
             <p>However don't let that deter you from googling something!</p>
             <p><Link to="/register">Register</Link> to try it out!</p>
