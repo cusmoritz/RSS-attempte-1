@@ -6,13 +6,16 @@ const morgan = require("morgan");
 const client = require("./db/index");
 const apiRouter = require("./api/index");
 const path = require('path')
-client.connect();
+
+server.use( express.static(path.join(__dirname, 'build')))
+
+server.connect();
 server.use(cors());
 server.use(morgan("dev"));
 server.use(express.json());
 server.use("/api", apiRouter);
 
-server.use( express.static(path.join(__dirname, 'build')))
+
 
 server.get('*', (req, res ,next) => {
 res.sendFile(path.join(__dirname, 'build', 'index.html'))
