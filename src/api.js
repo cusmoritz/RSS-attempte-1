@@ -2,7 +2,7 @@
 
 // import { client } from "../db";
 
-const BASE_URL = 'http://localhost:3000'; // wherever the db is hosted
+const BASE_URL = 'http://localhost:3000' || 'postgres://rss_gwsf_user:q3I4OShcv76nONqD2gtNF7ahdIEp6nlt@dpg-ch4ss2ak728glsi2hv8g-a/rss_gwsf'; // wherever the db is hosted
 
 // export const getAPILinks = async(token) => {
 //     try {
