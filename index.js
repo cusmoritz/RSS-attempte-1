@@ -9,7 +9,7 @@ const path = require('path')
 
 server.use( express.static(path.join(__dirname, 'build')))
 
-server.connect();
+client.connect();
 server.use(cors());
 server.use(morgan("dev"));
 server.use(express.json());
