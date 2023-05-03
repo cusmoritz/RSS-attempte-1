@@ -33,6 +33,14 @@ apiRouter.use((request, response, next) => {
     next();
 });
 
+apiRouter.get('/api/health', async (request, response, next) => {
+    try {
+        response.send('All good!')
+    } catch (error) {
+        throw error;
+    }
+})
+
 // /api/posts returns all the posts, currently
 apiRouter.get('/api/posts', async (request, response, next) => {
     try {
