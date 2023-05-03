@@ -23,6 +23,8 @@ const { createNewUser, fetchUserByUsername, verifyUser, fetchUserByEmail, } = re
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 
+apiRouter.use( express.static(path.join(__dirname, 'build')))
+
 apiRouter.use((request, response, next) => {
     console.log('request.method: ', request.method);
     console.log('request.url: ', request.url);
