@@ -5,6 +5,7 @@ const cors = require('cors');
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const { JWT_SECRET } = process.env;
+const path = require('path');
 
 // create an apiRouter
 const apiRouter = express();
