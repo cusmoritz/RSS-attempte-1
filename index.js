@@ -9,13 +9,10 @@ const path = require('path')
 
 server.use( express.static(path.join(__dirname, 'build')))
 
-client.connect();
 server.use(cors());
 server.use(morgan("dev"));
 server.use(express.json());
 server.use("/api", apiRouter);
-
-
 
 server.get('*', (req, res ,next) => {
 res.sendFile(path.join(__dirname, 'build', 'index.html'))
@@ -32,6 +29,8 @@ res.sendFile(path.join(__dirname, 'build', 'index.html'))
 // });
 
 const { PORT = 3001 } = process.env;
+
+client.connect();
 
 server.listen(PORT, () => {
   console.log(`Server Listening on ${PORT}`);
