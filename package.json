@@ -8,9 +8,9 @@
     "api:test": "node api/index.js",
     "api:run": "node index.js",
     "dev:start": "react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "npm install && node db/create.js && node api/index.js"
-
+    "server": "node index.js"
   },
   "author": "Marcus",
   "license": "ISC",
