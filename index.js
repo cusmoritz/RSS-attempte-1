@@ -3,7 +3,7 @@ const express = require("express");
 const server = express();
 const cors = require("cors");
 const morgan = require("morgan");
-const { Client } = require("./db/index");
+const client = require("./db/index");
 const apiRouter = require("./api/index");
 const path = require('path')
 
@@ -30,6 +30,7 @@ res.sendFile(path.join(__dirname, 'build', 'index.html'))
 
 const { PORT = 3000 } = process.env;
 
+client.connect();
 
 server.listen(PORT, () => {
   console.log(`Server Listening on ${PORT}`);
