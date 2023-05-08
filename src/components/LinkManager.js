@@ -23,7 +23,7 @@ const LinkManager = ({setLinks}) => {
 
     const handleSubmitNewLink = async () => {
         const newLink = await createNewLink(newURL, newName, idSwitch);
-        setLinks((previousList) => [...previousList, newLink]);
+        setAllLinks((previousList) => [...previousList, newLink]);
         setNewName("");
         setNewUrl("");
         fetchAllLinks(idSwitch);

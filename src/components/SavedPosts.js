@@ -30,11 +30,20 @@ const SavedPosts = () => {
             </div>)
             : 
             savedPosts.map((post) => {
+                const embedURL = post.url.slice(32)
+
                 return(
                     <div className="post-container" key={savedPosts.indexOf(post) + 1}>
                         <p>Saved post #{savedPosts.indexOf(post) + 1}</p>
                         <h4>{post.title}</h4>
-                        {post.content ? <p dangerouslySetInnerHTML={{__html: post.content}}></p> : null }
+                        {post.content 
+                        ? <p dangerouslySetInnerHTML={{__html: post.content}}></p> 
+                        : 
+                            <div className="iframe-container">
+                                <iframe src={`https://www.youtube.com/embed/${embedURL}`} title={post.title}>
+                                </iframe> 
+                            </div>
+                        }
                         <p><a href={post.url} target="_blank">See original post.</a></p>
                         <button onClick={() => {handleUnsave(post.post_id)}}>Unsave post</button>
                     </div>

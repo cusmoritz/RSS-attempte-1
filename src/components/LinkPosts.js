@@ -45,11 +45,23 @@ const LinkPosts = ({user}) => {
                 (<div>
                 {pagePosts.map((post) => {
 
+                    // build youtube links for each post to disply on the site
+                    const embedURL = post.url.slice(32)
+
                     return (
                         <div key={post.id} className="post-container">
                             <h4>{post.title}</h4>
                             <p>Posted on: {post.date.slice(0, -14)}</p>
                             {post.content ? <p dangerouslySetInnerHTML={{__html: post.content}}></p> : null }
+                            {!post.content 
+                            ? 
+                                <div className="iframe-container">
+                                    <iframe src={`https://www.youtube.com/embed/${embedURL}`} title={post.title}>
+                                    </iframe> 
+                                </div>
+
+                            : null}
+
                             <button><a href={`${post.url}`} target="_blank">See original post</a></button>
                             <button onClick={() => handleSave(post.id)}>Save Post</button>
                         </div>

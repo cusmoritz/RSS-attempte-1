@@ -324,3 +324,5 @@ client.connect();
 apiRouter.listen(PORT, function () {
     console.log(`listening on port ${PORT}`);
 });
+
+module.exports = apiRouter;
