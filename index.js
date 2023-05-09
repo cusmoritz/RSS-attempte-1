@@ -3,7 +3,7 @@ const express = require("express");
 const server = express();
 const cors = require("cors");
 const morgan = require("morgan");
-const client = require("./db/index");
+const {client} = require("./db/index");
 const apiRouter = require("./api/index");
 const path = require('path')
 
