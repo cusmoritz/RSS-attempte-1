@@ -7,7 +7,7 @@ require('dotenv').config();
 const { JWT_SECRET } = process.env;
 
 // create an apiRouter
-const apiRouter = express();
+const apiRouter = express.Router();
 
 apiRouter.use(express.json());
 
