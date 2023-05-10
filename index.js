@@ -5,7 +5,6 @@ const cors = require("cors");
 const morgan = require("morgan");
 const {client} = require("./db/index");
 const apiRouter = require("./api/index");
-const path = require('path')
 
 // not used
 // server.use( express.static(path.join(__dirname, 'build')))
@@ -15,9 +14,9 @@ server.use(morgan("dev"));
 server.use(express.json());
 server.use("/api", apiRouter);
 
-server.get('*', (req, res ,next) => {
-res.sendFile(path.join(__dirname, 'build', 'index.html'))
-})
+// server.get('*', (req, res ,next) => {
+// res.sendFile(path.join(__dirname, 'build', 'index.html'))
+// })
 
 
 // server.use((error, req, res, next) => {

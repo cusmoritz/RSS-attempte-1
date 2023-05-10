@@ -5,7 +5,6 @@ const cors = require('cors');
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const { JWT_SECRET } = process.env;
-const path = require('path');
 
 // create an apiRouter
 const apiRouter = express();
@@ -25,7 +24,7 @@ const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 
 // not used
-apiRouter.use( express.static(path.join(__dirname, 'build')))
+// apiRouter.use( express.static(path.join(__dirname, 'build')))
 
 apiRouter.use((request, response, next) => {
     console.log('request.method: ', request.method);
