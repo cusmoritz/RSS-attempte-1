@@ -26,6 +26,7 @@ const FEED_LINKS = [
     {name: "Jomboy Media", link: "https://www.youtube.com/feeds/videos.xml?channel_id=UCl9E4Zxa8CVr2LBLD0_TaNg"},
     {name: "Camping with Steve", link: "https://www.youtube.com/feeds/videos.xml?channel_id=UCSnqXeK94-iNmwqGO__eJ5g"},
     {name: "The Verge Decoder", link: "https://www.theverge.com/rss/decoder-podcast-with-nilay-patel/index.xml"},
+    {name: "The Verge Google", link: "https://www.theverge.com/rss/google/index.xml"},
     // {name: 'The Intercept', link: 'https://theintercept.com/feed/?lang=en'}
 ];
 
