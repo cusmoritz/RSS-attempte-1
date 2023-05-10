@@ -1,12 +1,13 @@
 const { Client } = require('pg');
 const { linkParse } = require('./parse.js');
 const { createNewUser } = require('./users');
-const {CONNECTION_STRING} = require('./index');
 
 // const DATABASE_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/rss-feed' || 'postgres://rss_gwsf_user:q3I4OShcv76nONqD2gtNF7ahdIEp6nlt@dpg-ch4ss2ak728glsi2hv8g-a/rss_gwsf';
 
+const DATABASE_URL = process.env.DATABASE_URL || "postgres://localhost:5432/rss-feed" || 'postgres://rss_gwsf_user:q3I4OShcv76nONqD2gtNF7ahdIEp6nlt@dpg-ch4ss2ak728glsi2hv8g-a/rss_gwsf';
+
 // //either local host or a PORT when deploying
-const client = CONNECTION_STRING;
+const client = DATABASE_URL;
 
 // this is where we will run the links through the parser
 // then after we parse them, send each 'item' to the database

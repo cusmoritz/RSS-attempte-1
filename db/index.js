@@ -1,13 +1,14 @@
 // Require the Client constructor from the pg package
 const { Client } = require('pg');
+const {DATABASE_URL} = require('./create');
 
 //nabs the parser from the other file
 const { linkParse } = require('./parse.js');
 
-const CONNECTION_STRING = process.env.DATABASE_URL || "postgres://localhost:5432/rss-feed" || 'postgres://rss_gwsf_user:q3I4OShcv76nONqD2gtNF7ahdIEp6nlt@dpg-ch4ss2ak728glsi2hv8g-a/rss_gwsf';
+// const CONNECTION_STRING = process.env.DATABASE_URL || "postgres://localhost:5432/rss-feed" || 'postgres://rss_gwsf_user:q3I4OShcv76nONqD2gtNF7ahdIEp6nlt@dpg-ch4ss2ak728glsi2hv8g-a/rss_gwsf';
 // Create the client using new Client(CONNECTION_STRING)
 
-const client = new Client(CONNECTION_STRING);
+const client = DATABASE_URL;
 
 const parseNewLinkPosts = async (link, linkId) => {
     try {
