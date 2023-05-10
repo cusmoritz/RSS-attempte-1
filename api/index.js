@@ -319,7 +319,7 @@ apiRouter.post('/api/reactivate/:linkId', async (request, response, next) => {
     }
 })
 
-client.connect();
+// client.connect();
 
 // apiRouter.listen(PORT, function () {
 //     console.log(`listening on port ${PORT}`);
