@@ -8,7 +8,7 @@ const apiRouter = require("./api/index");
 const path = require('path')
 
 // not used
-server.use( express.static(path.join(__dirname, 'build')))
+// server.use( express.static(path.join(__dirname, 'build')))
 
 server.use(cors());
 server.use(morgan("dev"));
