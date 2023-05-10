@@ -7,6 +7,7 @@ const {client} = require("./db/index");
 const apiRouter = require("./api/index");
 const path = require('path')
 
+// not used
 server.use( express.static(path.join(__dirname, 'build')))
 
 server.use(cors());

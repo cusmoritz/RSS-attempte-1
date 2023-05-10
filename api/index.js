@@ -15,7 +15,7 @@ apiRouter.use(express.json());
 apiRouter.use(cors());
 
 // define port
-const PORT = process.env.PORT || 3000;
+// const PORT = process.env.PORT || 3000;
 // get our client so we can connect
 const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, savePost, fetchSavedPosts, unsavePost, fetchAllUserLinks, reactivateLink, searchPosts, searchPostsByDate, linkChecker, updateUserLinks, getActiveUserLinks} = require('../db/index.js');
 
@@ -24,6 +24,7 @@ const { createNewUser, fetchUserByUsername, verifyUser, fetchUserByEmail, } = re
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 
+// not used
 apiRouter.use( express.static(path.join(__dirname, 'build')))
 
 apiRouter.use((request, response, next) => {
@@ -321,8 +322,8 @@ apiRouter.post('/api/reactivate/:linkId', async (request, response, next) => {
 
 client.connect();
 
-apiRouter.listen(PORT, function () {
-    console.log(`listening on port ${PORT}`);
-});
+// apiRouter.listen(PORT, function () {
+//     console.log(`listening on port ${PORT}`);
+// });
 
-module.exports = apiRouter;
+// module.exports = apiRouter;
