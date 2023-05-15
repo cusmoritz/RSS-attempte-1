@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const { JWT_SECRET } = process.env;
 
+const {client} = require('../db/create');
+
 // create an apiRouter
 const apiRouter = express.Router();
 

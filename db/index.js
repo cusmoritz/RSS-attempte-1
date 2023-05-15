@@ -1,5 +1,5 @@
 // Require the Client constructor from the pg package
-const client = require('./create');
+const {client} = require('./create');
 
 //nabs the parser from the other file
 const { linkParse } = require('./parse.js');
