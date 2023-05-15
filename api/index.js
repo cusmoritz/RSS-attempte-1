@@ -16,9 +16,9 @@ apiRouter.use(cors());
 // define port
 // const PORT = process.env.PORT || 3000;
 // get our client so we can connect
-const { client, getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, savePost, fetchSavedPosts, unsavePost, fetchAllUserLinks, reactivateLink, searchPosts, searchPostsByDate, linkChecker, updateUserLinks, getActiveUserLinks} = require('../db/index.js');
+const { getAllLinks, getAllPosts, getOnePostById, addLinktoTable, getPostsFromLinkId, parseNewLinkPosts, getPostsByDate, updateDb, deactivateLink, savePost, fetchSavedPosts, unsavePost, fetchAllUserLinks, reactivateLink, searchPosts, searchPostsByDate, linkChecker, updateUserLinks, getActiveUserLinks} = require('../db/index.js');
 
-const { createNewUser, fetchUserByUsername, verifyUser, fetchUserByEmail, } = require('../db/users')
+const { createNewUser, fetchUserByUsername, verifyUser, } = require('../db/users')
 
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
