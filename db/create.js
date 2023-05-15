@@ -1,5 +1,5 @@
 const {Client} = require('pg')
-const { DATABASE_URL = 'postgres://localhost:5432/todo' } = process.env;
+const { DATABASE_URL = 'postgres://localhost:5432/rss-feed' } = process.env;
 const client = new Client({
     connectionString: DATABASE_URL,
     ssl: process.env.NODE_ENV === 'production' ? {rejectUnauthorized: false} : undefined,
@@ -325,6 +325,5 @@ rebuildDatabase();
 
 module.exports = { 
     rebuildDatabase, 
+    client,
 };
-
-module.exports = client
