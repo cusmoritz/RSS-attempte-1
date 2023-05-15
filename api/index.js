@@ -325,4 +325,4 @@ apiRouter.post('/api/reactivate/:linkId', async (request, response, next) => {
 //     console.log(`listening on port ${PORT}`);
 // });
 
-// module.exports = apiRouter;
+module.exports = apiRouter;
