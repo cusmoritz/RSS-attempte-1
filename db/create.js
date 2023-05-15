@@ -1,15 +1,19 @@
-const { Client } = require('pg');
-const { linkParse } = require('./parse.js');
-const { createNewUser } = require('./users');
+const {Client} = require('pg')
+const { DATABASE_URL = 'postgres://localhost:5432/todo' } = process.env;
+const client = new Client({
+    connectionString: DATABASE_URL,
+    ssl: process.env.NODE_ENV === 'production' ? {rejectUnauthorized: false} : undefined,
+
+})
 
 // const DATABASE_URL = process.env.DATABASE_URL || 'postgres://localhost:5432/rss-feed' || 'postgres://rss_gwsf_user:q3I4OShcv76nONqD2gtNF7ahdIEp6nlt@dpg-ch4ss2ak728glsi2hv8g-a/rss_gwsf';
 
-const DATABASE_URL = process.env.DATABASE_URL || "postgres://localhost:5432/rss-feed" || 'postgres://rss_gwsf_user:q3I4OShcv76nONqD2gtNF7ahdIEp6nlt@dpg-ch4ss2ak728glsi2hv8g-a/rss_gwsf';
+// const DATABASE_URL = process.env.DATABASE_URL || "postgres://localhost:5432/rss-feed" || 'postgres://rss_gwsf_user:q3I4OShcv76nONqD2gtNF7ahdIEp6nlt@dpg-ch4ss2ak728glsi2hv8g-a/rss_gwsf';
 
-DATABASE_URL = new Client(); 
+// DATABASE_URL = new Client(); 
 
 // //either local host or a PORT when deploying
-const client = DATABASE_URL;
+// const client = DATABASE_URL;
 
 // this is where we will run the links through the parser
 // then after we parse them, send each 'item' to the database
@@ -322,3 +326,5 @@ rebuildDatabase();
 module.exports = { 
     rebuildDatabase, 
 };
+
+module.exports = client

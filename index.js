@@ -3,11 +3,11 @@ const express = require("express");
 const server = express();
 const cors = require("cors");
 const morgan = require("morgan");
-const {client} = require("./db/index");
+const client = require("./db/create");
 const apiRouter = require("./api/index");
 
-// not used
-// server.use( express.static(path.join(__dirname, 'build')))
+
+client.connect();
 
 server.use(cors());
 server.use(morgan("dev"));
