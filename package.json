@@ -6,7 +6,6 @@
   "scripts": {
     "db:build": "node db/create.js",
     "api:test": "node api/index.js",
-    "api:run": "node index.js",
     "dev:start": "react-scripts start",
     "start": "react-scripts start",
     "build": "react-scripts build",
