@@ -1,4 +1,4 @@
-const {client} = require('./index');
+const {client} = require('./create');
 const bcrypt = require('bcrypt');
 
 // puts a new user into the database
