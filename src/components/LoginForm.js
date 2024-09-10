@@ -38,6 +38,7 @@ const LoginForm = ({setToken, setUser, setActiveLinks}) => {
                     event.preventDefault();
                     handleLogin(username, password);
                 }}>
+                    <p>To see this in action, log in with marcus as the username, and password as the password.</p>
                     <label htmlFor='username-input'>Username:</label>
                     <input 
                         id='username-input'
